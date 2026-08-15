@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="am">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ጂንካ ገበያ — የዴሊቨሪ እና ትራንስፖርት አገልግሎት</title>
+  <meta name="description" content="ጂንካ ገበያ Delivery — ባጀጅ, ሞተር, ታክሲ በጂንካ እና አካባቢው"/>
+  
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- AOS (scroll animations) -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+  <style>
+    .glass { backdrop-filter: blur(6px); }
+  </style>
+</head>
+<body class="bg-blue-50 text-gray-900 antialiased">
+
+  <!-- NAV / TOPBAR -->
+  <header class="sticky top-0 z-50 glass bg-white/80 border-b">
+    <div class="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
+      <a href="#home" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-2xl">🚖</div>
+        <div>
+          <div class="font-bold text-emerald-800">ጂንካ ገበያ Delivery</div>
+          <div class="text-xs text-emerald-600">በጂንካ እና አካባቢው ፈጣን እቃ ማድረስ</div>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex gap-3 text-sm font-medium">
+        <a href="#services" class="px-3 py-2 rounded-full hover:bg-gray-100">አገልግሎቶች</a>
+        <a href="#estimate" class="px-3 py-2 rounded-full hover:bg-gray-100">የዴሊቨሪ ታሪፍ</a>
+        <a href="#booking" class="px-3 py-2 rounded-full hover:bg-gray-100">እቃ ማድረሻ ይዘዙ</a>
+        <a href="#driver" class="px-3 py-2 rounded-full hover:bg-gray-100">አሽከርካሪ ምዝገባ</a>
+        <a href="#payment" class="px-3 py-2 rounded-full hover:bg-gray-100">ክፍያ</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <a href="tel:0945900829" class="bg-emerald-600 text-white px-4 py-2 rounded-2xl text-sm font-semibold hover:bg-emerald-700">📞 0945 900 829</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <main class="max-w-6xl mx-auto px-4 py-12" id="home">
+    <div class="grid md:grid-cols-2 gap-8 items-center">
+      <div data-aos="fade-up">
+        <h1 class="text-3xl md:text-5xl font-extrabold leading-tight">የጂንካ ገበያ እቃ ማድረሻ (Delivery) አገልግሎት</h1>
+        <p class="mt-4 text-gray-600">በጂንካ እና አካባቢዋ ከጂንካ ገበያ የገዟቸውን እቃዎች ወይም የትራንስፖርት አገልግሎት በባጀጅ፣ ሞተር እና መኪና በፍጥነት እናደርሳለን።</p>
+
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="#booking" class="inline-flex items-center gap-2 bg-emerald-600 text-white px-5 py-3 rounded-2xl font-semibold shadow hover:bg-emerald-700">እቃ እንዲደርስዎ ይዘዙ</a>
+          <a href="#driver" class="inline-flex items-center gap-2 border border-gray-300 bg-white px-5 py-3 rounded-2xl font-semibold hover:bg-gray-50">አሽከርካሪ ይሁኑ</a>
+        </div>
+
+        <ul class="mt-6 space-y-2 text-gray-600 text-sm">
+          <li>• ⚡️ ፈጣን እና አስተማማኝ እቃ ማድረስ</li>
+          <li>• 💰 ግልጽ የትራንስፖርት ታሪፍ</li>
+          <li>• 🛡️ የተረጋገጡ አሽከርካሪዎች</li>
+        </ul>
+      </div>
+
+      <div data-aos="fade-left" class="flex items-center justify-center">
+       <img src="https://cdn.imageurlgenerator.com/uploads/5697026a-313c-45f1-855d-2bff36a9d77c.png" alt="Jinka Market Delivery Banner" class="rounded-2xl max-h-96 w-full object-cover shadow-lg"/>
+      </div>
+    </div>
+  </main>
+
+  <!-- SERVICES -->
+  <section id="services" class="max-w-6xl mx-auto px-4 py-8">
+    <h2 class="text-2xl font-bold" data-aos="fade-right">የማጓጓዣ አማራጮች</h2>
+    <div class="mt-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="p-5 bg-white rounded-2xl shadow" data-aos="fade-up"><div class="font-bold text-lg">🛺 ባጀጅ</div><div class="text-sm text-gray-600 mt-1">አነስተኛ እቃዎችና በከተማ ውስጥ • ~ETB 40/km</div></div>
+      <div class="p-5 bg-white rounded-2xl shadow" data-aos="fade-up" data-aos-delay="50"><div class="font-bold text-lg">🏍️ ሞተር</div><div class="text-sm text-gray-600 mt-1">ቀለል ያሉ እቃዎችና ሰነዶች • ~ETB 30/km</div></div>
+      <div class="p-5 bg-white rounded-2xl shadow" data-aos="fade-up" data-aos-delay="100"><div class="font-bold text-lg">🚕 ታክሲ / ላዳ</div><div class="text-sm text-gray-600 mt-1">መካከለኛ እቃዎችና ጉዞ • ~ETB 50/km</div></div>
+      <div class="p-5 bg-white rounded-2xl shadow" data-aos="fade-up" data-aos-delay="150"><div class="font-bold text-lg">🚗 መኪና / ካርጎ</div><div class="text-sm text-gray-600 mt-1">ከበድ ያሉ እቃዎችና ኪራይ • ~ETB 80/km</div></div>
+    </div>
+  </section>
+
+  <!-- ESTIMATOR -->
+  <section id="estimate" class="max-w-6xl mx-auto px-4 py-8">
+    <div class="bg-white p-6 rounded-2xl shadow" data-aos="fade-up">
+      <h3 class="font-bold text-lg">የዴሊቨሪ ዋጋ ማስያ (Estimator)</h3>
+      <div class="mt-4 grid md:grid-cols-4 gap-4">
+        <div class="md:col-span-2">
+          <label class="text-sm font-medium">ርቀት (በ ኪሎሜትር - km)</label>
+          <input id="distanceKm" type="number" step="0.1" min="0" placeholder="ለምሳሌ: 3" class="mt-1 w-full border rounded-2xl px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
+        </div>
+        <div>
+          <label class="text-sm font-medium">የተሽከርካሪ አይነት</label>
+          <select id="vehicleType" class="mt-1 w-full border rounded-2xl px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none">
+            <option value="bajaj">ባጀጅ</option>
+            <option value="motor">ሞተር</option>
+            <option value="taxi">ታክሲ</option>
+            <option value="car">መኪና</option>
+          </select>
+        </div>
+        <div class="flex items-end">
+          <div id="estimateOut" class="w-full rounded-2xl border px-3 py-2 bg-emerald-50 text-emerald-800 text-center font-bold text-lg">~ ETB 0</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CUSTOMER BOOKING -->
+  <section id="booking" class="max-w-6xl mx-auto px-4 py-8">
+    <div class="bg-white p-6 rounded-2xl shadow" data-aos="fade-up">
+      <h3 class="font-bold text-xl text-emerald-800">የዴሊቨሪ/ትራንስፖርት ትእዛዝ መሙያ</h3>
+      <form id="bookingForm" class="mt-4 grid md:grid-cols-3 gap-4">
+        <input name="name" required placeholder="የእርስዎ ስም" class="rounded-2xl border px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
+        <input name="phone" required placeholder="ስልክ ቁጥር" class="rounded-2xl border px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
+        <select name="vehicle" class="rounded-2xl border px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none">
+          <option value="ባጀጅ">ባጀጅ</option>
+          <option value="ሞተር">ሞተር</option>
+          <option value="ታክሲ">ታክሲ</option>
+          <option value="መኪና">መኪና</option>
+        </select>
+        <input name="pickup" required placeholder="እቃው የሚነሳበት ቦታ (Pickup)" class="rounded-2xl border px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
+        <input name="destination" required placeholder="እቃው የሚደርስበት ቦታ (Destination)" class="rounded-2xl border px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
+        <input name="notes" placeholder="ተጨማሪ ማስታወሻ (የእቃው አይነት)" class="rounded-2xl border px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
+        <div class="md:col-span-3">
+          <button type="submit" class="bg-emerald-600 text-white px-6 py-3 rounded-2xl font-semibold hover:bg-emerald-700 w-full md:w-auto">ትእዛዝ ላክ</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- DRIVER REGISTRATION -->
+  <section id="driver" class="max-w-6xl mx-auto px-4 py-8">
+    <div class="bg-white p-6 rounded-2xl shadow" data-aos="fade-up">
+      <h3 class="font-bold text-xl text-emerald-800">የአሽከርካሪዎች ምዝገባ</h3>
+      <form id="driverForm" class="mt-4 grid md:grid-cols-3 gap-4">
+        <input name="fullName" required placeholder="ሙሉ ስም" class="rounded-2xl border px-4 py-2 outline-none"/>
+        <input name="phone" required placeholder="ስልክ ቁጥር" class="rounded-2xl border px-4 py-2 outline-none"/>
+        <select name="vehicleType" required class="rounded-2xl border px-4 py-2 outline-none">
+          <option value="ባጀጅ">ባጀጅ</option>
+          <option value="ሞተር">ሞተር</option>
+          <option value="ታክሲ">ታክሲ</option>
+          <option value="መኪና">መኪና</option>
+        </select>
+        <input name="plate" required placeholder="የታርጋ ቁጥር" class="rounded-2xl border px-4 py-2 outline-none"/>
+        <select name="city" class="rounded-2xl border px-4 py-2 outline-none">
+          <option>ጂንካ</option>
+          <option>ኮንሶ</option>
+          <option>ሀዋሳ</option>
+        </select>
+        <input name="experienceYears" type="number" min="0" placeholder="የልምድ ዓመታት" class="rounded-2xl border px-4 py-2 outline-none"/>
+        
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1">🪪 የብሔራዊ መታወቂያ (National ID) ፎቶ</label>
+          <input type="file" id="nationalIdFile" accept="image/*" required class="w-full text-xs text-gray-500 file:mr-2 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"/>
+        </div>
+        
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1">🖼️ ጉርድ ፎቶ (ለአሽከርካሪ መታወቂያ የሚሆን)</label>
+          <input type="file" id="driverPhotoFile" accept="image/*" required class="w-full text-xs text-gray-500 file:mr-2 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"/>
+        </div>
+
+        <label class="md:col-span-3 flex items-center gap-2 text-sm text-gray-600 mt-2">
+          <input required type="checkbox" class="rounded text-emerald-600"> ሕግና ደንቦችን እቀበላለሁ
+        </label>
+        <div class="md:col-span-3">
+          <button type="submit" class="bg-emerald-600 text-white px-6 py-3 rounded-2xl font-semibold hover:bg-emerald-700">ምዝገባ ላክ</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- BANK PAYMENT -->
+  <section id="payment" class="max-w-6xl mx-auto px-4 py-8">
+    <div class="bg-white p-6 rounded-2xl shadow" data-aos="fade-up">
+      <h3 class="font-bold text-xl text-emerald-800">የባንክ / የቴሌብር ክፍያ ማረጋገጫ</h3>
+      <form id="bankForm" class="mt-4 grid md:grid-cols-2 gap-4">
+        <input name="fullName" required placeholder="ሙሉ ስም" class="rounded-2xl border px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
+        <input name="phone" required placeholder="ስልክ ቁጥር" class="rounded-2xl border px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
+        <select name="bank" required class="rounded-2xl border px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none">
+          <option value="Telebirr">Telebirr</option>
+          <option value="CBE">Commercial Bank of Ethiopia (CBE)</option>
+          <option value="Abyssinia">Bank of Abyssinia</option>
+          <option value="Awash">Awash Bank</option>
+        </select>
+        <input name="amount" type="number" min="1" required placeholder="የተከፈለው መጠን (ETB)" class="rounded-2xl border px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
+        
+        <input name="reference" placeholder="የግብይት መለያ ቁጥር (Transaction Ref/FT) - አማራጭ" class="rounded-2xl border px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
+        
+        <!-- 📄 አዲስ የተጨመረው የደረሰኝ ፎቶ ወይም PDF መስቀያ -->
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1">📄 የክፍያ ደረሰኝ (Photo / Image ወይም PDF)</label>
+          <input type="file" id="receiptFile" accept="image/*,.pdf" required class="w-full text-xs text-gray-500 file:mr-2 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"/>
+        </div>
+
+        <div class="md:col-span-2">
+          <button type="submit" class="bg-emerald-600 text-white px-6 py-3 rounded-2xl font-semibold hover:bg-emerald-700 w-full">ክፍያ አረጋግጥ</button>
+        </div>
+      </form>
+    </div>
+  </section>
+  <!-- FOOTER -->
+  <footer class="bg-white border-t mt-12">
+    <div class="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div>
+        <div class="font-bold text-emerald-800">ጂንካ ገበያ Delivery</div>
+        <div class="text-sm text-gray-600 mt-1">📞 0945 900 829</div>
+      </div>
+      <div class="text-sm text-gray-600">© <span id="yearNow"></span> ጂንካ ገበያ — መብቱ በሕግ የተጠበቀ ነው</div>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // AOS Init
+    AOS.init({ once: true, duration: 600, easing: 'ease-out' });
+    document.getElementById('yearNow').textContent = new Date().getFullYear();
+
+    // Telegram Bot መረጃዎች
+    const BOT_TOKEN = "8779386690:AAFrSyxbsheMNod0TVfiHHWaeLSihQ7MMKg";
+    const CHAT_ID = "801120038";
+
+    // 1. Estimator Logic
+    const rates = { bajaj: 40, motor: 30, taxi: 50, car: 80 };
+    const base = 30;
+    const distanceEl = document.getElementById('distanceKm');
+    const vehicleEl = document.getElementById('vehicleType');
+    const outEl = document.getElementById('estimateOut');
+
+    function calcEstimate() {
+      const d = parseFloat(distanceEl?.value || 0);
+      const v = vehicleEl?.value || 'bajaj';
+      if (!d || d <= 0) { 
+        outEl.textContent = '~ ETB 0'; 
+        return; 
+      }
+      const price = Math.round((base + d * (rates[v] || 30)) / 5) * 5;
+      outEl.textContent = `~ ETB ${price}`;
+    }
+
+    distanceEl?.addEventListener('input', calcEstimate);
+    vehicleEl?.addEventListener('change', calcEstimate);
+
+    // 2. የዴሊቨሪ ትእዛዝ ለቴሌግራም መላኪያ
+    document.getElementById('bookingForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+
+      const textMessage = `🚨 *አዲስ የዴሊቨሪ ትእዛዝ ደርሷል!* 📦\n\n` +
+                          `👤 *ስም:* ${data.name}\n` +
+                          `📞 *ስልክ:* ${data.phone}\n` +
+                          `🚖 *የተሽከርካሪ አይነት:* ${data.vehicle}\n` +
+                          `📍 *መነሻ ቦታ (Pickup):* ${data.pickup}\n` +
+                          `🏁 *መድረሻ ቦታ (Destination):* ${data.destination}\n` +
+                          `📝 *ማስታወሻ:* ${data.notes || 'የለም'}`;
+
+      try {
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: CHAT_ID, text: textMessage, parse_mode: 'Markdown' })
+        });
+        alert('የዴሊቨሪ ትእዛዝዎ ተቀብለናል! አድሚኑ በቴሌግራም ደርሶታል፣ በጥቂት ደቂቃዎች ውስጥ እናነጋግርዎታለን።');
+        e.target.reset();
+      } catch (err) {
+        alert('ትእዛዙን ሲላክ ስህተት አጋጥሟል! እባክዎ እንደገና ይሞክሩ።');
+      }
+    });
+
+    // 3. የአሽከርካሪዎች ምዝገባ እና ፎቶዎችን ወደ Telegram መላኪያ
+    document.getElementById('driverForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+
+      const textMessage = `👨‍✈️ *አዲስ የአሽከርካሪ ምዝገባ!* 🚖\n\n` +
+                          `👤 *ሙሉ ስም:* ${data.fullName}\n` +
+                          `📞 *ስልክ:* ${data.phone}\n` +
+                          `🛺 *የተሽከርካሪ አይነት:* ${data.vehicleType}\n` +
+                          `🔢 *የታርጋ ቁጥር:* ${data.plate}\n` +
+                          `🏙️ *ከተማ:* ${data.city}\n` +
+                          `⏳ *የልምድ ዓመታት:* ${data.experienceYears || 0} ዓመት`;
+
+      try {
+        // 1. የፅሁፍ መረጃ መላክ
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: CHAT_ID, text: textMessage, parse_mode: 'Markdown' })
+        });
+
+        // 2. National ID ፎቶ መላክ
+        const nationalIdFile = document.getElementById('nationalIdFile').files[0];
+        if(nationalIdFile) {
+          const photoData = new FormData();
+          photoData.append('chat_id', CHAT_ID);
+          photoData.append('caption', `🪪 ብሔራዊ መታወቂያ: ${data.fullName}`);
+          photoData.append('photo', nationalIdFile);
+          await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: photoData });
+        }
+
+        // 3. ጉርድ ፎቶ መላክ
+        const driverPhotoFile = document.getElementById('driverPhotoFile').files[0];
+        if(driverPhotoFile) {
+          const photoData = new FormData();
+          photoData.append('chat_id', CHAT_ID);
+          photoData.append('caption', `🖼️ ጉርድ ፎቶ (ለመታወቂያ): ${data.fullName}`);
+          photoData.append('photo', driverPhotoFile);
+          await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: photoData });
+        }
+
+        alert('ምዝገባዎ እና ፎቶዎችዎ በስኬት ተልከዋል! እናረጋግጣለን።');
+        e.target.reset();
+      } catch (err) {
+        alert('ምዝገባውን ሲላክ ስህተት አጋጥሟል! እባክዎ እንደገና ይሞክሩ።');
+      }
+    });
+
+   // 4. የባንክ ክፍያ ማረጋገጫ እና ደረሰኝ (Photo/PDF) ለቴሌግራም መላኪያ
+    document.getElementById('bankForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+
+      const textMessage = `💳 *አዲስ የባንክ/ቴሌብር ክፍያ ማረጋገጫ!* 💵\n\n` +
+                          `👤 *ስም:* ${data.fullName}\n` +
+                          `📞 *ስልክ:* ${data.phone}\n` +
+                          `🏦 *የባንክ/አገልግሎት አይነት:* ${data.bank}\n` +
+                          `💰 *የተከፈለው መጠን:* ${data.amount} ETB\n` +
+                          `🔢 *የግብይት መለያ (Ref):* ${data.reference || 'በደረሰኝ ተያይዟል'}`;
+
+      try {
+        // 1. የጽሁፍ መረጃውን መላክ
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: CHAT_ID, text: textMessage, parse_mode: 'Markdown' })
+        });
+
+        // 2. የደረሰኝ ፋይል (Photo ወይም PDF) መላክ
+        const receiptFile = document.getElementById('receiptFile').files[0];
+        if (receiptFile) {
+          const fileData = new FormData();
+          fileData.append('chat_id', CHAT_ID);
+          fileData.append('caption', `📄 የክፍያ ደረሰኝ: ${data.fullName} (${data.amount} ETB)`);
+
+          // ፋይሉ PDF ከሆነ እንደ Document፣ ምስል ከሆነ እንደ Photo ይላካል
+          if (receiptFile.type === 'application/pdf') {
+            fileData.append('document', receiptFile);
+            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendDocument`, { method: 'POST', body: fileData });
+          } else {
+            fileData.append('photo', receiptFile);
+            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fileData });
+          }
+        }
+
+        alert('የክፍያ መረጃዎ እና ደረሰኝዎ በስኬት ተልኳል! አድሚኑ አረጋግጦ በጥቂት ደቂቃዎች ውስጥ ያሳውቅዎታል።');
+        e.target.reset();
+      } catch (err) {
+        alert('ክፍያውን ሲላክ ስህተት አጋጥሟል! እባክዎ እንደገና ይሞክሩ።');
+      }
+    });
+  </script>
+</body>
+</html>

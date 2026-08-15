@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ጂንካ ገበያ - አድሚን ዳሽቦርድ</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- html2pdf Library (ለ ID Card እና Tourism/Seller PDF ዝግጅት) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  
+  <style>
+    /* ID Card Generator Specific Styles */
+    .id-card { width: 360px; height: 230px; background: white; border-radius: 10px; border: 1px solid #ccc; position: relative; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.15); margin-bottom: 20px; }
+    .id-stripe { height: 6px; background: linear-gradient(90deg, #000 20%, #ef4444 40%, #eab308 60%, #22c55e 80%, #2563eb 100%); }
+    .id-header { background: #0284c7; color: #fde047; text-align: center; font-weight: bold; padding: 4px; font-size: 13px; }
+    .id-logo-header { background: #0369a1; padding: 4px 10px; display: flex; justify-content: space-between; align-items: center; }
+    .id-logo-box { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; }
+    .id-header-title-text { color: white; font-weight: bold; font-size: 13px; }
+    .id-code-tag { background: white; color: black; padding: 1px 6px; border-radius: 3px; font-size: 11px; font-weight: bold; }
+    .id-body-content { display: flex; padding: 8px 10px; gap: 10px; }
+    .id-photo-box { width: 80px; height: 96px; border: 2px solid #0284c7; background: #eee; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .id-photo-box img { width: 100%; height: 100%; object-fit: cover; }
+    .id-details { font-size: 11px; flex: 1; }
+    .id-row { display: flex; margin-bottom: 4px; }
+    .id-label { width: 80px; color: #0284c7; font-weight: bold; }
+    .id-val { flex: 1; border-bottom: 1px solid #0284c7; font-weight: bold; color: #333; }
+    .id-footer { position: absolute; bottom: 0; left: 0; right: 0; background: #0284c7; color: white; text-align: center; font-size: 11px; padding: 3px; font-weight: bold; }
+    .id-magnetic-strip { height: 35px; background: #1e293b; margin-top: 5px; }
+    .id-back-body { padding: 10px 12px; font-size: 12px; color: #333; position: relative; height: 160px; }
+    .id-validity { text-align: right; font-weight: bold; margin-bottom: 8px; font-size: 11px; }
+    .id-back-middle-container { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+    .id-notice-section { flex: 1; }
+    .id-notice-title { font-weight: bold; font-size: 12px; color: #0f172a; margin-bottom: 3px; }
+    .id-notice-text { font-size: 10px; color: #475569; line-height: 1.3; }
+    .id-barcode-box { width: 75px; height: 75px; border: 1px dashed #0284c7; background: #f8fafc; border-radius: 4px; display: flex; align-items: center; justify-content: center; overflow: hidden; text-align: center; }
+    .id-barcode-box img { width: 100%; height: 100%; object-fit: contain; }
+    .id-barcode-placeholder { font-size: 8px; color: #94a3b8; }
+    .id-signature-area { position: absolute; bottom: 8px; right: 12px; text-align: center; width: 100px; }
+    .id-sig-line { border-top: 1px solid #64748b; margin-top: 15px; font-size: 10px; color: #64748b; }
+
+    /* PRINT SETTINGS */
+    @media print {
+      body * { visibility: hidden; }
+      #printableIdArea, #printableIdArea * { visibility: visible; }
+      #printableIdArea { position: absolute; left: 0; top: 0; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+      .id-card { box-shadow: none; page-break-inside: avoid; }
+      .id-barcode-box { border: none; }
+    }
+  </style>
+
+  <!-- Firebase SDK Modules -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCwAk45bie0KbuZtcp50zEkMkcY7RPwUp4",
+      authDomain: "jinka-market-8231a.firebaseapp.com",
+      projectId: "jinka-market-8231a",
+      storageBucket: "jinka-market-8231a.firebasestorage.app",
+      messagingSenderId: "711006866553",
+      appId: "1:711006866553:web:cf709c47bf126f96ecd8a8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const TELEGRAM_BOT_TOKEN = "8779386690:AAFrSyxbsheMNod0TVfiHHWaeLSihQ7MMKg";
+    const TELEGRAM_CHAT_ID = "801120038";
+
+    // Auth Observer
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById('loginSection').classList.add('hidden');
+        document.getElementById('adminDashboard').classList.remove('hidden');
+        document.getElementById('userEmailDisplay').textContent = user.email;
+        loadPromos(); 
+        loadSellers(); 
+      } else {
+        document.getElementById('loginSection').classList.remove('hidden');
+        document.getElementById('adminDashboard').classList.add('hidden');
+      }
+    });
+
+    // Login Form Submit
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      try {
+        await signInWithEmailAndPassword(auth, document.getElementById('adminEmail').value, document.getElementById('adminPassword').value);
+        document.getElementById('loginForm').reset();
+      } catch (error) {
+        alert("የተሳሳተ ኢሜይል ወይም ፓስወርድ አስገብተዋል!");
+      }
+    });
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
+
+    // Helper function to read file as Base64
+    const readFileAsBase64 = (file) => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+        reader.readAsDataURL(file);
+      });
+    };
+
+    // ==========================================
+    // 1. PROMO SLIDER LOGIC (ADD / EDIT / DELETE)
+    // ==========================================
+    const promoForm = document.getElementById('promoForm');
+    const promoMsg = document.getElementById('promoMsg');
+    const promoListContainer = document.getElementById('promoListContainer');
+
+    promoForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      promoMsg.classList.add('hidden');
+
+      const promoId = document.getElementById('promoId').value;
+      const title = document.getElementById('promoTitle').value;
+      const imageUrl = document.getElementById('promoImageUrl').value;
+      const desc = document.getElementById('promoDesc').value;
+
+      try {
+        if (promoId) {
+          await updateDoc(doc(db, "promotions", promoId), {
+            title, imageUrl, description: desc, updatedAt: serverTimestamp()
+          });
+          promoMsg.textContent = "ፕሮሞሽኑ በስኬት ተስተካክሏል!";
+        } else {
+          await addDoc(collection(db, "promotions"), {
+            title, imageUrl, description: desc, createdAt: serverTimestamp()
+          });
+          promoMsg.textContent = "አዲስ ፕሮሞሽን ስላይደር ተመዝግቧል!";
+        }
+        
+        promoMsg.className = "p-3 bg-emerald-100 text-emerald-700 rounded-lg text-sm mb-4";
+        resetPromoForm();
+      } catch (err) {
+        promoMsg.textContent = "ስህተት፦ " + err.message;
+        promoMsg.className = "p-3 bg-red-100 text-red-700 rounded-lg text-sm mb-4";
+      }
+    });
+
+    function loadPromos() {
+      onSnapshot(collection(db, "promotions"), (snapshot) => {
+        promoListContainer.innerHTML = "";
+        if (snapshot.empty) {
+          promoListContainer.innerHTML = `<p class="text-xs text-gray-500 text-center py-4">ምንም የተመዘገበ ፕሮሞሽን የለም</p>`;
+          return;
+        }
+
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          const id = docSnap.id;
+
+          const item = document.createElement('div');
+          item.className = "flex items-center gap-3 p-2 border rounded-lg bg-gray-50 hover:bg-white transition";
+          item.innerHTML = `
+            <img src="${data.imageUrl}" class="w-14 h-10 object-cover rounded border" alt="promo" onerror="this.src='https://via.placeholder.com/60'">
+            <div class="flex-1 min-w-0">
+              <h4 class="text-xs font-bold text-gray-800 truncate">${data.title}</h4>
+              <p class="text-[10px] text-gray-500 truncate">${data.description || 'ምንም መግለጫ የለውም'}</p>
+            </div>
+            <div class="flex gap-1">
+              <button onclick="editPromo('${id}', '${escape(data.title)}', '${escape(data.imageUrl)}', '${escape(data.description || '')}')" class="p-1.5 text-blue-600 hover:bg-blue-50 rounded text-xs">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button onclick="deletePromo('${id}')" class="p-1.5 text-red-600 hover:bg-red-50 rounded text-xs">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </div>
+          `;
+          promoListContainer.appendChild(item);
+        });
+      });
+    }
+
+    window.editPromo = (id, title, imageUrl, desc) => {
+      document.getElementById('promoId').value = id;
+      document.getElementById('promoTitle').value = unescape(title);
+      document.getElementById('promoImageUrl').value = unescape(imageUrl);
+      document.getElementById('promoDesc').value = unescape(desc);
+      document.getElementById('promoSubmitBtn').innerHTML = `<i class="fas fa-save mr-1"></i> ፕሮሞሽን አስተካክል (Save)`;
+      document.getElementById('promoCancelBtn').classList.remove('hidden');
+    };
+
+    window.cancelEditPromo = () => resetPromoForm();
+
+    function resetPromoForm() {
+      promoForm.reset();
+      document.getElementById('promoId').value = "";
+      document.getElementById('promoSubmitBtn').innerHTML = `<i class="fas fa-plus-circle mr-1"></i> አዲስ ፕሮሞሽን መዝግብ`;
+      document.getElementById('promoCancelBtn').classList.add('hidden');
+    }
+
+    window.deletePromo = async (id) => {
+      if (confirm("ይህን ፕሮሞሽን ስላይደር እርግጠኛ ሆነው መደለት ይፈልጋሉ?")) {
+        try {
+          await deleteDoc(doc(db, "promotions", id));
+        } catch (e) { alert("መደለት አልተቻለም፦ " + e.message); }
+      }
+    };
+
+    // ==========================================
+    // 2. ID CARD TO TELEGRAM BOT (PDF SEND)
+    // ==========================================
+    window.sendIdToTelegram = async () => {
+      const idArea = document.getElementById('printableIdArea');
+      const idCode = document.getElementById('outCode').innerText;
+      const idName = document.getElementById('outName').innerText;
+      const statusMsg = document.getElementById('idTelegramMsg');
+
+      statusMsg.classList.remove('hidden');
+      statusMsg.textContent = "የመታወቂያ PDF በመዘጋጀት ላይ ነው...";
+      statusMsg.className = "p-2 bg-blue-100 text-blue-700 text-xs rounded mb-2 text-center";
+
+      try {
+        const opt = {
+          margin:       5,
+          filename:     `ID_Card_${idCode}_${Date.now()}.pdf`,
+          image:        { type: 'jpeg', quality: 0.98 },
+          html2canvas:  { scale: 2, useCORS: true },
+          jsPDF:        { unit: 'mm', format: 'a5', orientation: 'landscape' }
+        };
+
+        const pdfBlob = await html2pdf().set(opt).from(idArea).output('blob');
+
+        const formData = new FormData();
+        formData.append("chat_id", TELEGRAM_CHAT_ID);
+        formData.append("caption", `🎴 አዲስ የአሽከርካሪ መታወቂያ ካርድ!\n\n▪️ ኮድ፦ ${idCode}\n▪️ ስም፦ ${idName}`);
+        formData.append("document", pdfBlob, `ID_Card_${idCode}.pdf`);
+
+        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument`, {
+          method: 'POST',
+          body: formData
+        });
+
+        const resData = await response.json();
+        if (resData.ok) {
+          statusMsg.textContent = "መታወቂያው በስኬት በPDF ወደ Telegram ተልኳል!";
+          statusMsg.className = "p-2 bg-emerald-100 text-emerald-700 text-xs rounded mb-2 text-center";
+        } else {
+          throw new Error(resData.description || "ወደ Telegram መላክ አልተቻለም");
+        }
+      } catch (err) {
+        statusMsg.textContent = "ስህተት፦ " + err.message;
+        statusMsg.className = "p-2 bg-red-100 text-red-700 text-xs rounded mb-2 text-center";
+      }
+    };
+
+    // ቴሌግራም PDF መላኪያ LOGIC (ቱሪዝም ምዝገባ)
+    const serviceForm = document.getElementById('serviceForm');
+    const serviceMsg = document.getElementById('serviceMsg');
+
+    serviceForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      serviceMsg.classList.remove('hidden');
+      serviceMsg.textContent = "የቱሪዝም ፖስተር/PDF በመዘጋጀት ላይ ነው...";
+      serviceMsg.className = "p-3 bg-blue-100 text-blue-700 rounded-lg text-sm mb-4";
+
+      const name = document.getElementById('serviceName').value;
+      const type = document.getElementById('serviceType').value;
+      const location = document.getElementById('serviceLocation').value;
+      const price = document.getElementById('servicePrice').value;
+      const phone = document.getElementById('servicePhone').value;
+      const desc = document.getElementById('serviceDesc').value;
+      const photoInput = document.getElementById('servicePhoto');
+
+      let pdfElement = null;
+
+      try {
+        let photoHtml = "";
+        if (photoInput.files && photoInput.files[0]) {
+          const imageBase64 = await readFileAsBase64(photoInput.files[0]);
+          photoHtml = `
+            <div style="margin-top: 15px; text-align: center;">
+              <p><strong>የተያያዘ ፎቶ፦</strong></p>
+              <img src="${imageBase64}" style="max-width: 100%; max-height: 250px; border-radius: 8px; border: 1px solid #ddd; margin-top: 5px; object-fit: cover;" />
+            </div>
+          `;
+        }
+
+        // 1. Create Element and Append to DOM temporarily so html2canvas can read it properly
+        pdfElement = document.createElement('div');
+        pdfElement.className = "p-6 bg-white border font-sans";
+        pdfElement.style.position = 'absolute';
+        pdfElement.style.left = '-9999px';
+        pdfElement.style.top = '0';
+        pdfElement.style.width = '800px';
+        pdfElement.innerHTML = `
+          <div style="padding: 20px; border: 1px solid #ccc; font-family: sans-serif; background: #ffffff;">
+            <h2 style="color: #059669; border-bottom: 2px solid #059669; padding-bottom: 5px; text-align: center;">ጂንካ ገበያ - የቱሪዝም አገልግሎት ምዝገባ</h2>
+            <div style="margin-top: 15px; line-height: 1.8;">
+              <p><strong>የተቋሙ / አገልግሎቱ ስም፦</strong> ${name}</p>
+              <p><strong>የአገልግሎት አይነት፦</strong> ${type}</p>
+              <p><strong>አድራሻ / ቦታ፦</strong> ${location}</p>
+              <p><strong>ታሪፍ / ዋጋ፦</strong> ${price} ETB</p>
+              <p><strong>ስልክ ቁጥር፦</strong> ${phone}</p>
+              <p><strong>ዝርዝር ማብራሪያ፦</strong> ${desc}</p>
+            </div>
+            ${photoHtml}
+            <p style="font-size: 11px; color: #666; margin-top: 25px; text-align: right;">የተመዘገበበት ቀን፦ ${new Date().toLocaleString()}</p>
+          </div>
+        `;
+        document.body.appendChild(pdfElement);
+
+        const opt = {
+          margin:       10,
+          filename:     `Service_Registration_${Date.now()}.pdf`,
+          image:        { type: 'jpeg', quality: 0.98 },
+          html2canvas:  { scale: 2, useCORS: true, logging: true },
+          jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        const pdfBlob = await html2pdf().set(opt).from(pdfElement).output('blob');
+
+        const formData = new FormData();
+        formData.append("chat_id", TELEGRAM_CHAT_ID);
+        formData.append("caption", `📌 አዲስ የቱሪዝም አገልግሎት ምዝገባ!\n\n▪️ ስም፦ ${name}\n▪️ አይነት፦ ${type}\n▪️ ስልክ፦ ${phone}`);
+        formData.append("document", pdfBlob, `Tourism_Registration_${Date.now()}.pdf`);
+
+        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument`, {
+          method: 'POST',
+          body: formData
+        });
+
+        const resData = await response.json();
+
+        if (resData.ok) {
+          serviceMsg.textContent = "የቱሪዝም አገልግሎቱ በስኬት በPDF ወደ ቴሌግራም ተልኳል!";
+          serviceMsg.className = "p-3 bg-emerald-100 text-emerald-700 rounded-lg text-sm mb-4";
+          serviceForm.reset();
+        } else {
+          throw new Error(resData.description || "ወደ ቴሌግራም መላክ አልተቻለም");
+        }
+
+      } catch (err) {
+        serviceMsg.textContent = "ስህተት፦ " + err.message;
+        serviceMsg.className = "p-3 bg-red-100 text-red-700 rounded-lg text-sm mb-4";
+      } finally {
+        // Clean up temporary DOM element
+        if (pdfElement && pdfElement.parentNode) {
+          document.body.removeChild(pdfElement);
+        }
+      }
+    });
+
+    // ==========================================
+    // 3. SELLER / SHOP REGISTRATION LOGIC (PDF + PHOTO UPLOAD/URL)
+    // ==========================================
+    const sellerForm = document.getElementById('sellerForm');
+    const sellerMsg = document.getElementById('sellerMsg');
+    const sellerListContainer = document.getElementById('sellerListContainer');
+
+    sellerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      sellerMsg.classList.remove('hidden');
+      sellerMsg.textContent = "ምዝገባው በመከናወን ላይ እና ፖስተር/PDF ወደ ቴሌግራም በመላክ ላይ ነው...";
+      sellerMsg.className = "p-3 bg-blue-100 text-blue-700 rounded-lg text-sm mb-4";
+
+      const shopName = document.getElementById('sellerShopName').value;
+      const ownerName = document.getElementById('sellerOwnerName').value;
+      const category = document.getElementById('sellerCategory').value;
+      const phone = document.getElementById('sellerPhone').value;
+      const location = document.getElementById('sellerLocation').value;
+      const telegram = document.getElementById('sellerTelegram').value;
+      const imageUrlInput = document.getElementById('sellerImageUrl').value;
+      const photoInput = document.getElementById('sellerPhoto');
+
+      let pdfElement = null;
+
+      try {
+        let finalImageUrl = imageUrlInput;
+        let photoHtml = "";
+
+        // ፎቶ ፋይል ከተመረጠ ወደ Base64 ይቀይራል
+        if (photoInput.files && photoInput.files[0]) {
+          finalImageUrl = await readFileAsBase64(photoInput.files[0]);
+        }
+
+        if (finalImageUrl) {
+          photoHtml = `
+            <div style="margin-top: 15px; text-align: center;">
+              <p><strong>የሱቁ ፎቶ፦</strong></p>
+              <img src="${finalImageUrl}" style="max-width: 100%; max-height: 220px; border-radius: 8px; border: 1px solid #ddd; margin-top: 5px; object-fit: cover;" />
+            </div>
+          `;
+        }
+
+        // Save to Firestore
+        await addDoc(collection(db, "sellers"), {
+          shopName, ownerName, category, phone, location, telegram, imageUrl: finalImageUrl, createdAt: serverTimestamp()
+        });
+
+        // Create PDF element for Seller Registration and append to DOM temporarily
+        pdfElement = document.createElement('div');
+        pdfElement.className = "p-6 bg-white border font-sans";
+        pdfElement.style.position = 'absolute';
+        pdfElement.style.left = '-9999px';
+        pdfElement.style.top = '0';
+        pdfElement.style.width = '800px';
+        pdfElement.innerHTML = `
+          <div style="padding: 20px; border: 1px solid #ccc; font-family: sans-serif; background: #ffffff;">
+            <h2 style="color: #d97706; border-bottom: 2px solid #d97706; padding-bottom: 5px; text-align: center;">ጂንካ ገበያ - አዲስ ሻጭ / ባለሱቅ ምዝገባ</h2>
+            <div style="margin-top: 15px; line-height: 1.8;">
+              <p><strong>የሱቁ / የንግድ ስም፦</strong> ${shopName}</p>
+              <p><strong>የባለቤቱ ሙሉ ስም፦</strong> ${ownerName}</p>
+              <p><strong>የንግድ ዘርፍ፦</strong> ${category}</p>
+              <p><strong>ስልክ ቁጥር፦</strong> ${phone}</p>
+              <p><strong>አድራሻ / ቦታ፦</strong> ${location}</p>
+              <p><strong>ቴሌግራም፦</strong> ${telegram || 'አልተሰጠም'}</p>
+            </div>
+            ${photoHtml}
+            <p style="font-size: 11px; color: #666; margin-top: 25px; text-align: right;">የተመዘገበበት ቀን፦ ${new Date().toLocaleString()}</p>
+          </div>
+        `;
+        document.body.appendChild(pdfElement);
+
+        const opt = {
+          margin:       10,
+          filename:     `Seller_Registration_${Date.now()}.pdf`,
+          image:        { type: 'jpeg', quality: 0.98 },
+          html2canvas:  { scale: 2, useCORS: true, logging: true },
+          jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        const pdfBlob = await html2pdf().set(opt).from(pdfElement).output('blob');
+
+        const formData = new FormData();
+        formData.append("chat_id", TELEGRAM_CHAT_ID);
+        formData.append("caption", `🛒 አዲስ ሻጭ / ባለሱቅ ተመዝግቧል (PDF)!\n\n▪️ የሱቅ ስም፦ ${shopName}\n▪️ ባለቤት፦ ${ownerName}\n▪️ ዘርፍ፦ ${category}\n▪️ ስልክ፦ ${phone}`);
+        formData.append("document", pdfBlob, `Seller_Registration_${Date.now()}.pdf`);
+
+        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument`, {
+          method: 'POST',
+          body: formData
+        });
+
+        const resData = await response.json();
+        if (!resData.ok) {
+          throw new Error(resData.description || "ወደ ቴሌግራም PDF መላክ አልተቻለም");
+        }
+
+        sellerMsg.textContent = "ሻጩ/ባለሱቁ በስኬት ተመዝግቦ በPDF ወደ ቴሌግራም ተልኳል!";
+        sellerMsg.className = "p-3 bg-emerald-100 text-emerald-700 rounded-lg text-sm mb-4";
+        sellerForm.reset();
+      } catch (err) {
+        sellerMsg.textContent = "ስህተት፦ " + err.message;
+        sellerMsg.className = "p-3 bg-red-100 text-red-700 rounded-lg text-sm mb-4";
+      } finally {
+        // Clean up temporary DOM element
+        if (pdfElement && pdfElement.parentNode) {
+          document.body.removeChild(pdfElement);
+        }
+      }
+    });
+
+    function loadSellers() {
+      onSnapshot(collection(db, "sellers"), (snapshot) => {
+        sellerListContainer.innerHTML = "";
+        if (snapshot.empty) {
+          sellerListContainer.innerHTML = `<p class="text-xs text-gray-500 text-center py-4">ምንም የተመዘገበ ሻጭ የለም</p>`;
+          return;
+        }
+
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          const id = docSnap.id;
+          const imgTag = data.imageUrl ? `<img src="${data.imageUrl}" class="w-10 h-10 object-cover rounded border" onerror="this.src='https://via.placeholder.com/40'">` : `<div class="w-10 h-10 bg-gray-200 rounded flex items-center justify-center text-xs text-gray-500"><i class="fas fa-store"></i></div>`;
+
+          const item = document.createElement('div');
+          item.className = "flex items-center gap-3 p-2 border rounded-lg bg-gray-50 hover:bg-white transition";
+          item.innerHTML = `
+            ${imgTag}
+            <div class="flex-1 min-w-0">
+              <h4 class="text-xs font-bold text-gray-800 truncate">${data.shopName} (${data.ownerName})</h4>
+              <p class="text-[10px] text-gray-500 truncate">${data.category} - ${data.phone}</p>
+            </div>
+            <button onclick="deleteSeller('${id}')" class="p-1.5 text-red-600 hover:bg-red-50 rounded text-xs">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          `;
+          sellerListContainer.appendChild(item);
+        });
+      });
+    }
+
+    window.deleteSeller = async (id) => {
+      if (confirm("ይህን ሻጭ መረጃ ከእርግጠኛነት ማጥፋት ይፈልጋሉ?")) {
+        try {
+          await deleteDoc(doc(db, "sellers", id));
+        } catch (e) { alert("መደለት አልተቻለም፦ " + e.message); }
+      }
+    };
+  </script>
+</head>
+<body class="bg-gray-100 min-h-screen text-gray-800">
+
+  <!-- ==================== LOGIN SECTION ==================== -->
+  <div id="loginSection" class="flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-100">
+      <div class="text-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-900">ጂንካ ገበያ - አድሚን</h1>
+        <p class="text-gray-500 text-sm mt-1">ለመቀጠል እባክዎን መለያዎን ያስገቡ</p>
+      </div>
+
+      <form id="loginForm" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">ኢሜይል</label>
+          <input type="email" id="adminEmail" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">ሚስጥር ቃል</label>
+          <input type="password" id="adminPassword" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
+        </div>
+        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-lg transition">
+          ግባ <i class="fas fa-sign-in-alt ml-1"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== ADMIN DASHBOARD ==================== -->
+  <div id="adminDashboard" class="hidden">
+    <nav class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center shadow-md">
+      <div class="flex items-center gap-3">
+        <span class="text-xl font-bold text-emerald-400">ጂንካ ገበያ አድሚን</span>
+      </div>
+      <div class="flex items-center gap-4 text-sm">
+        <span id="userEmailDisplay" class="text-gray-300"></span>
+        <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg transition">
+          <i class="fas fa-sign-out-alt"></i> ውጣ
+        </button>
+      </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto p-6">
+      
+      <!-- 2-Column Grid Layout for Sections -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        <!-- SECTION 1: PROMOTION SLIDER MANAGER -->
+        <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+          <h2 class="text-lg font-bold mb-4 text-gray-900 flex items-center gap-2">
+            <i class="fas fa-images text-indigo-600"></i> የፕሮሞሽን ስላይደር ማስተዳደሪያ
+          </h2>
+
+          <div id="promoMsg" class="hidden"></div>
+
+          <form id="promoForm" class="space-y-3">
+            <input type="hidden" id="promoId">
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">የስላይደሩ ርዕስ (Title)</label>
+              <input type="text" id="promoTitle" required placeholder="ምሳሌ፦ የ50% ታላቅ ቅናሽ!" class="w-full px-3 py-1.5 border rounded-lg text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">የምስል (Image) URL</label>
+              <input type="url" id="promoImageUrl" required placeholder="https://example.com/banner.jpg" class="w-full px-3 py-1.5 border rounded-lg text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">አጭር መግለጫ (Description)</label>
+              <textarea id="promoDesc" rows="2" placeholder="ስለ ፕሮሞሽኑ መግለጫ..." class="w-full px-3 py-1.5 border rounded-lg text-sm"></textarea>
+            </div>
+            
+            <div class="flex gap-2">
+              <button type="submit" id="promoSubmitBtn" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 rounded-lg transition text-xs">
+                <i class="fas fa-plus-circle mr-1"></i> አዲስ ፕሮሞሽን መዝግብ
+              </button>
+              <button type="button" id="promoCancelBtn" onclick="cancelEditPromo()" class="hidden bg-gray-400 hover:bg-gray-500 text-white font-bold px-3 py-2 rounded-lg transition text-xs">
+                ሰርዝ
+              </button>
+            </div>
+          </form>
+
+          <hr class="my-4 border-gray-200">
+
+          <h3 class="text-xs font-bold text-gray-700 uppercase mb-3">📌 በአሁኑ ወቅት ያሉ ፕሮሞሽኖች</h3>
+          <div id="promoListContainer" class="space-y-2 max-h-60 overflow-y-auto pr-1">
+            <!-- Promo Items -->
+          </div>
+        </div>
+
+        <!-- SECTION 2: DRIVER ID CARD GENERATOR -->
+        <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+          <h2 class="text-lg font-bold mb-4 text-gray-900 flex items-center gap-2">
+            <i class="fas fa-id-card text-sky-600"></i> አሽከርካሪ መታወቂያ Generator
+          </h2>
+
+          <div id="idTelegramMsg" class="hidden"></div>
+
+          <div class="space-y-3">
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">ኮድ (ID Code)</label>
+                <input type="text" id="inCode" oninput="runIdGen()" placeholder="JM-001" class="w-full px-3 py-1.5 border rounded-lg text-sm">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">ሙሉ ስም</label>
+                <input type="text" id="inName" oninput="runIdGen()" placeholder="አበበ ከበደ" class="w-full px-3 py-1.5 border rounded-lg text-sm">
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">አገልግሎቱ</label>
+                <input type="text" id="inService" oninput="runIdGen()" placeholder="አሸከርካሪ" class="w-full px-3 py-1.5 border rounded-lg text-sm">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">አድራሻ</label>
+                <input type="text" id="inAddress" oninput="runIdGen()" placeholder="ጂንካ" class="w-full px-3 py-1.5 border rounded-lg text-sm">
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">ስልክ</label>
+                <input type="text" id="inPhone" oninput="runIdGen()" placeholder="0911223344" class="w-full px-3 py-1.5 border rounded-lg text-sm">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">ተርጋ ቁጥር</label>
+                <input type="text" id="inPlate" oninput="runIdGen()" placeholder="AA-C 12345" class="w-full px-3 py-1.5 border rounded-lg text-sm">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">የሰውየው ፎቶ (የፊት)</label>
+              <input type="file" accept="image/*" onchange="loadPhoto(event)" class="w-full px-3 py-1 border rounded-lg text-xs bg-gray-50">
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">የሚያበቃበት ዓ.ም</label>
+                <input type="text" id="inExpire" oninput="runIdGen()" placeholder="2018" class="w-full px-3 py-1.5 border rounded-lg text-sm">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-sky-600 uppercase mb-1">Barcode / QR ፎቶ</label>
+                <input type="file" accept="image/*" onchange="loadBarcode(event)" class="w-full px-3 py-1 border rounded-lg text-xs bg-gray-50">
+              </div>
+            </div>
+
+            <!-- ACTION BUTTONS: PRINT & TELEGRAM PDF -->
+            <div class="grid grid-cols-2 gap-2 mt-4">
+              <button onclick="window.print()" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 rounded-lg transition text-xs flex items-center justify-center gap-1">
+                <i class="fas fa-print"></i> አትም (Print)
+              </button>
+              <button onclick="sendIdToTelegram()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-lg transition text-xs flex items-center justify-center gap-1">
+                <i class="fab fa-telegram-plane"></i> ወደ Telegram (PDF)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3: TOURISM SERVICE ENTRY -->
+        <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+          <h2 class="text-lg font-bold mb-4 text-gray-900 flex items-center gap-2">
+            <i class="fas fa-route text-emerald-600"></i> አዲስ የቱሪዝም ምዝገባ (Telegram PDF)
+          </h2>
+          
+          <div id="serviceMsg" class="hidden"></div>
+
+          <form id="serviceForm" class="space-y-3">
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">የተቋሙ / አገልግሎቱ ስም</label>
+              <input type="text" id="serviceName" required placeholder="ምሳሌ፦ ኦሞ ቫሊ ቱር ኤጀንሲ" class="w-full px-3 py-1.5 border rounded-lg text-sm">
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">አይነት (Type)</label>
+                <select id="serviceType" class="w-full px-3 py-1.5 border rounded-lg text-sm bg-white">
+                  <option value="የቱሪዝም ኤጀንሲ">የቱሪዝም ኤጀንሲ</option>
+                  <option value="የቱር ጋይድ">የቱር ጋይድ</option>
+                  <option value="ሆቴል / ሪዞርት">ሆቴል / ሪዞርት</option>
+                  <option value="የመኪና ኪራይ">የመኪና ኪራይ</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">አድራሻ / ቦታ</label>
+                <input type="text" id="serviceLocation" required placeholder="ጂንካ" class="w-full px-3 py-1.5 border rounded-lg text-sm">
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">ታሪፍ / ዋጋ (ETB)</label>
+                <input type="number" id="servicePrice" required placeholder="2500" class="w-full px-3 py-1.5 border rounded-lg text-sm">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">ስልክ ቁጥር</label>
+                <input type="text" id="servicePhone" required placeholder="+2519..." class="w-full px-3 py-1.5 border rounded-lg text-sm">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">የምስል / ፎቶ መጫኛ</label>
+              <input type="file" id="servicePhoto" accept="image/*" class="w-full px-3 py-1 border rounded-lg text-xs bg-gray-50">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">የአገልግሎቱ ዝርዝር ማብራሪያ</label>
+              <textarea id="serviceDesc" rows="2" placeholder="ስለ አገልግሎቱ አጭር መግለጫ..." class="w-full px-3 py-1.5 border rounded-lg text-sm"></textarea>
+            </div>
+            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-lg transition text-xs flex items-center justify-center gap-2">
+              <i class="fab fa-telegram-plane"></i> በPDF ወደ Telegram ላክ
+            </button>
+          </form>
+        </div>
+
+        <!-- SECTION 4: NEW SELLER / SHOP REGISTRATION -->
+        <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+          <h2 class="text-lg font-bold mb-4 text-gray-900 flex items-center gap-2">
+            <i class="fas fa-store text-amber-600"></i> አዲስ ሻጭ / ባለሱቅ ምዝገባ (PDF & Photo Upload)
+          </h2>
+          
+          <div id="sellerMsg" class="hidden"></div>
+
+          <form id="sellerForm" class="space-y-3">
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">የሱቁ / የንግድ ስም</label>
+              <input type="text" id="sellerShopName" required placeholder="ምሳሌ፦ ጂንካ ኤሌክትሮኒክስ ሱቅ" class="w-full px-3 py-1.5 border rounded-lg text-sm">
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">የባለቤቱ ሙሉ ስም</label>
+                <input type="text" id="sellerOwnerName" required placeholder="አበበ ከበደ" class="w-full px-3 py-1.5 border rounded-lg text-sm">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">የንግድ ዘርፍ</label>
+                <select id="sellerCategory" class="w-full px-3 py-1.5 border rounded-lg text-sm bg-white">
+                  <option value="የልብስና ጫማ መሸጫ">የልብስና ጫማ መሸጫ</option>
+                  <option value="የኤሌክትሮኒክስ እቃዎች">የኤሌክትሮኒክስ እቃዎች</option>
+                  <option value="ግሮሰሪ / ሱፐርማርኬት">ግሮሰሪ / ሱፐርማርኬት</option>
+                  <option value="የቤት እቃዎች">የቤት እቃዎች</option>
+                  <option value="ሌላ">ሌላ</option>
+                </select>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">ስልክ ቁጥር</label>
+                <input type="text" id="sellerPhone" required placeholder="0911223344" class="w-full px-3 py-1.5 border rounded-lg text-sm">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">አድራሻ / ቦታ</label>
+                <input type="text" id="sellerLocation" required placeholder="ጂንካ ማዕከላዊ ገበያ" class="w-full px-3 py-1.5 border rounded-lg text-sm">
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">ቴሌግራም (Username)</label>
+                <input type="text" id="sellerTelegram" placeholder="@pikalopikao4" class="w-full px-3 py-1.5 border rounded-lg text-sm">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">የሱቁ ፎቶ (ፋይል አፕሎድ)</label>
+                <input type="file" id="sellerPhoto" accept="image/*" class="w-full px-3 py-1 border rounded-lg text-xs bg-gray-50">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">ወይም የሱቁ ፎቶ (Image URL አማራጭ)</label>
+              <input type="url" id="sellerImageUrl" placeholder="https://example.com/shop.jpg" class="w-full px-3 py-1.5 border rounded-lg text-sm">
+            </div>
+            <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 rounded-lg transition text-xs flex items-center justify-center gap-2">
+              <i class="fab fa-telegram-plane"></i> ሻጩን መዝግብና በPDF ወደ ቴሌግራም ላክ
+            </button>
+          </form>
+
+          <hr class="my-4 border-gray-200">
+          <h3 class="text-xs font-bold text-gray-700 uppercase mb-3">📌 የተመዘገቡ ባለሱቆች ዝርዝር</h3>
+          <div id="sellerListContainer" class="space-y-2 max-h-40 overflow-y-auto pr-1">
+            <!-- ሻጮች -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ID CARD PREVIEW AREA -->
+      <div id="printableIdArea" class="mt-10 bg-white p-6 rounded-2xl shadow-md border border-gray-100 flex flex-wrap justify-center gap-10">
+        <!-- ፊት ገጽ (FRONT) -->
+        <div>
+          <h3 class="text-sm font-bold text-gray-700 mb-2 text-center"><i class="fas fa-id-card"></i> የፊት ገጽ (Front)</h3>
+          <div class="id-card">
+            <div class="id-stripe"></div>
+            <div class="id-header">የጂንካ ገበያ እቃ ማድረሻ (Delivery) አገልግሎት</div>
+            
+            <div class="id-logo-header">
+              <div class="id-logo-box">
+                <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                  <clipPath id="circleClip">
+                    <circle cx="50" cy="50" r="48"/>
+                  </clipPath>
+                  <g clip-path="url(#circleClip)">
+                    <rect x="0" y="0" width="100" height="33.3" fill="#009A44"/>
+                    <rect x="0" y="33.3" width="100" height="33.3" fill="#FED100"/>
+                    <rect x="0" y="66.6" width="100" height="33.4" fill="#E4002B"/>
+                  </g>
+                  <circle cx="50" cy="50" r="46" fill="none" stroke="#FFFFFF" stroke-width="4"/>
+                  <path d="M 30 65 L 30 45 L 42 35 L 72 35 L 80 48 L 80 65 C 80 67, 78 68, 75 68 L 70 68 C 70 73, 62 73, 62 68 L 48 68 C 48 73, 40 73, 40 68 L 35 68 C 32 68, 30 67, 30 65 Z" fill="#FFFFFF" stroke="#000000" stroke-width="2"/>
+                  <polygon points="44,38 70,38 66,48 44,48" fill="#0284c7"/>
+                  <polygon points="34,48 41,48 41,58 34,58" fill="#0284c7"/>
+                  <circle cx="44" cy="68" r="5" fill="#1e293b"/>
+                  <circle cx="66" cy="68" r="5" fill="#1e293b"/>
+                </svg>
+              </div>
+              <div class="id-header-title-text">የመታወቂያ ካርድ</div>
+              <div>ኮድ፦ <span class="id-code-tag" id="outCode">---</span></div>
+            </div>
+
+            <div class="id-body-content">
+              <div class="id-photo-box">
+                <img id="outPhoto" src="" alt="Photo">
+              </div>
+              <div class="id-details">
+                <div class="id-row"><span class="id-label">ሙሉ፤ ስም</span><span class="id-val" id="outName">---</span></div>
+                <div class="id-row"><span class="id-label">አገልግሎቱ</span><span class="id-val" id="outService">---</span></div>
+                <div class="id-row"><span class="id-label">አድራሻ</span><span class="id-val" id="outAddress">---</span></div>
+                <div class="id-row"><span class="id-label">ስልክ</span><span class="id-val" id="outPhone">---</span></div>
+                <div class="id-row"><span class="id-label">ተርጋ ቁጥር</span><span class="id-val" id="outPlate">---</span></div>
+              </div>
+            </div>
+            <div class="id-footer">የድርጅት ስልክ፦ 0945900829</div>
+          </div>
+        </div>
+
+        <!-- ጀርባ ገጽ (BACK) -->
+        <div>
+          <h3 class="text-sm font-bold text-gray-700 mb-2 text-center"><i class="fas fa-id-card-clip"></i> የጀርባ ገጽ (Back)</h3>
+          <div class="id-card">
+            <div class="id-stripe"></div>
+            <div class="id-magnetic-strip"></div>
+            <div class="id-back-body">
+              <div class="id-validity">
+                የካርዱ ዋጋ የሚያበቃው፦ <span id="outExpire" style="border-bottom: 1px solid #000; padding: 0 10px;">______</span> ዓ.ም.
+              </div>
+
+              <div class="id-back-middle-container">
+                <div class="id-notice-section">
+                  <div class="id-notice-title">አስተዋጽኦ</div>
+                  <div class="id-notice-text">
+                    ይህ ካርድ የአገልግሎቱ መታወቂያ ነው።<br>
+                    ቢጠፋ በአድራሻው ይመልሱ።
+                  </div>
+                </div>
+
+                <div class="id-barcode-box">
+                  <img id="outBarcode" src="" alt="Barcode" style="display:none;">
+                  <span id="barcodeText" class="id-barcode-placeholder">BarCode / QR</span>
+                </div>
+              </div>
+
+              <div class="id-signature-area">
+                <div class="id-sig-line">Signature</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- JavaScript for Live ID Card Preview -->
+  <script>
+    function runIdGen() {
+      document.getElementById('outCode').innerText = document.getElementById('inCode').value || '---';
+      document.getElementById('outName').innerText = document.getElementById('inName').value || '---';
+      document.getElementById('outService').innerText = document.getElementById('inService').value || '---';
+      document.getElementById('outAddress').innerText = document.getElementById('inAddress').value || '---';
+      document.getElementById('outPhone').innerText = document.getElementById('inPhone').value || '---';
+      document.getElementById('outPlate').innerText = document.getElementById('inPlate').value || '---';
+      document.getElementById('outExpire').innerText = document.getElementById('inExpire').value || '______';
+    }
+
+    function loadPhoto(e) {
+      if (e.target.files && e.target.files[0]) {
+        document.getElementById('outPhoto').src = URL.createObjectURL(e.target.files[0]);
+      }
+    }
+
+    function loadBarcode(e) {
+      if (e.target.files && e.target.files[0]) {
+        var barcodeImg = document.getElementById('outBarcode');
+        var placeholder = document.getElementById('barcodeText');
+        barcodeImg.src = URL.createObjectURL(e.target.files[0]);
+        barcodeImg.style.display = 'block';
+        placeholder.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>

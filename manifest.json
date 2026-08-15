@@ -1,0 +1,41 @@
+{
+  "id": "https://jinkamarkets.et/",
+  "name": "ጂንካ ገበያ - Jinka Market",
+  "short_name": "ጂንካ ገበያ",
+  "start_url": "https://jinkamarkets.et/",
+  "scope": "https://jinkamarkets.et/",
+  "background_color": "#ffffff",
+  "theme_color": "#0d6efd",
+  "display": "standalone",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://jinkamarkets.et/images/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "https://jinkamarkets.et/images/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://jinkamarkets.et/images/screenshot-wide.png",
+      "sizes": "1408x768",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Jinka Market Desktop View"
+    },
+    {
+      "src": "https://jinkamarkets.et/images/screenshot-mobile.png",
+      "sizes": "1408x768",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Jinka Market Mobile View"
+    }
+  ]
+}

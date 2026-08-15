@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <title>አሽከርካሪ መታወቂያ Generator (ከጀርባ Barcode Upload ጋር)</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; display: flex; gap: 30px; }
+        .form-container { background: white; padding: 20px; border-radius: 8px; width: 320px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 10px; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 3px; font-size: 13px; }
+        .form-group input { width: 100%; padding: 7px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .btn { background: #0284c7; color: white; border: none; padding: 10px; width: 100%; border-radius: 4px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        
+        /* CARD COMMON STYLES */
+        .card { width: 360px; height: 230px; background: white; border-radius: 10px; border: 1px solid #ccc; position: relative; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.15); margin-bottom: 20px; }
+        .stripe { height: 6px; background: linear-gradient(90deg, #000 20%, #ef4444 40%, #eab308 60%, #22c55e 80%, #2563eb 100%); }
+        
+        /* FRONT SIDE */
+        .header { background: #0284c7; color: #fde047; text-align: center; font-weight: bold; padding: 4px; font-size: 14px; }
+        .logo-header { background: #0369a1; padding: 4px 10px; display: flex; justify-content: space-between; align-items: center; }
+        .logo-box { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; }
+        .header-title-text { color: white; font-weight: bold; font-size: 13px; }
+        .code-tag { background: white; color: black; padding: 1px 6px; border-radius: 3px; font-size: 11px; font-weight: bold; }
+
+        .body-content { display: flex; padding: 8px 10px; gap: 10px; }
+        .photo-box { width: 80px; height: 96px; border: 2px solid #0284c7; background: #eee; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .photo-box img { width: 100%; height: 100%; object-fit: cover; }
+        .details { font-size: 12px; flex: 1; }
+        .row { display: flex; margin-bottom: 5px; }
+        .label { width: 85px; color: #0284c7; font-weight: bold; }
+        .val { flex: 1; border-bottom: 1px solid #0284c7; font-weight: bold; color: #333; }
+        .footer { position: absolute; bottom: 0; left: 0; right: 0; background: #0284c7; color: white; text-align: center; font-size: 11px; padding: 3px; font-weight: bold; }
+
+        /* BACK SIDE STYLES */
+        .magnetic-strip { height: 35px; background: #1e293b; margin-top: 5px; }
+        .back-body { padding: 10px 12px; font-size: 12px; color: #333; position: relative; height: 160px; }
+        .validity { text-align: right; font-weight: bold; margin-bottom: 8px; font-size: 11px; }
+        
+        .back-middle-container { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+        .notice-section { flex: 1; }
+        .notice-title { font-weight: bold; font-size: 12px; color: #0f172a; margin-bottom: 3px; }
+        .notice-text { font-size: 10px; color: #475569; line-height: 1.3; }
+        
+        /* Barcode / QR Box */
+        .barcode-box { width: 75px; height: 75px; border: 1px dashed #0284c7; background: #f8fafc; border-radius: 4px; display: flex; align-items: center; justify-content: center; overflow: hidden; text-align: center; }
+        .barcode-box img { width: 100%; height: 100%; object-fit: contain; }
+        .barcode-placeholder { font-size: 8px; color: #94a3b8; }
+
+        .signature-area { position: absolute; bottom: 8px; right: 12px; text-align: center; width: 100px; }
+        .sig-line { border-top: 1px solid #64748b; margin-top: 15px; font-size: 10px; color: #64748b; }
+
+        /* PRINT SETTINGS */
+        @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .form-container, h3 { display: none; }
+            body { background: white; padding: 0; display: block; }
+            .card { box-shadow: none; page-break-inside: avoid; }
+            .barcode-box { border: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. መረጃ መሙያ ፎርም -->
+    <div class="form-container">
+        <h3 style="margin-top: 0;">📝 መረጃ ያስገቡ</h3>
+        <div class="form-group">
+            <label>ኮድ (ID Code)</label>
+            <input type="text" id="inCode" oninput="run()" placeholder="JM-001">
+        </div>
+        <div class="form-group">
+            <label>ሙሉ ስም</label>
+            <input type="text" id="inName" oninput="run()" placeholder="አበበ ከበደ">
+        </div>
+        <div class="form-group">
+            <label>አገልግሎቱ</label>
+            <input type="text" id="inService" oninput="run()" placeholder="አሸከርካሪ / Delivery">
+        </div>
+        <div class="form-group">
+            <label>አድራሻ</label>
+            <input type="text" id="inAddress" oninput="run()" placeholder="ጂንካ">
+        </div>
+        <div class="form-group">
+            <label>ስልክ</label>
+            <input type="text" id="inPhone" oninput="run()" placeholder="0911223344">
+        </div>
+        <div class="form-group">
+            <label>ተርጋ ቁጥር</label>
+            <input type="text" id="inPlate" oninput="run()" placeholder="AA-C 12345">
+        </div>
+        <div class="form-group">
+            <label>የሰውየው ፎቶ (የፊት)</label>
+            <input type="file" accept="image/*" onchange="loadPhoto(event)">
+        </div>
+
+        <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
+
+        <div class="form-group">
+            <label>የሚያበቃበት ዓ.ም (የጀርባው)</label>
+            <input type="text" id="inExpire" oninput="run()" placeholder="2018">
+        </div>
+        <!-- አዲሱ የጀርባ Barcode/QR Upload መረጣ -->
+        <div class="form-group">
+            <label style="color: #0284c7;">📌 የጀርባ Barcode / QR ፎቶ</label>
+            <input type="file" accept="image/*" onchange="loadBarcode(event)">
+        </div>
+
+        <button class="btn" onclick="window.print()">🖨️ ፊት እና ጀርባ አትም (Print)</button>
+    </div>
+
+    <!-- 2. የመታወቂያ ካርዶች Preview -->
+    <div>
+        <!-- ፊት ገጽ (FRONT) -->
+        <h3>🎴 የፊት ገጽ (Front)</h3>
+        <div class="card">
+            <div class="stripe"></div>
+            <div class="header">የጂንካ ገበያ እቃ ማድረሻ (Delivery) አገልግሎት</div>
+            
+            <div class="logo-header">
+                <div class="logo-box">
+                    <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <clipPath id="circleClip">
+                          <circle cx="50" cy="50" r="48"/>
+                        </clipPath>
+                        <g clip-path="url(#circleClip)">
+                          <rect x="0" y="0" width="100" height="33.3" fill="#009A44"/>
+                          <rect x="0" y="33.3" width="100" height="33.3" fill="#FED100"/>
+                          <rect x="0" y="66.6" width="100" height="33.4" fill="#E4002B"/>
+                        </g>
+                        <circle cx="50" cy="50" r="46" fill="none" stroke="#FFFFFF" stroke-width="4"/>
+                        <path d="M 30 65 L 30 45 L 42 35 L 72 35 L 80 48 L 80 65 C 80 67, 78 68, 75 68 L 70 68 C 70 73, 62 73, 62 68 L 48 68 C 48 73, 40 73, 40 68 L 35 68 C 32 68, 30 67, 30 65 Z" fill="#FFFFFF" stroke="#000000" stroke-width="2"/>
+                        <polygon points="44,38 70,38 66,48 44,48" fill="#0284c7"/>
+                        <polygon points="34,48 41,48 41,58 34,58" fill="#0284c7"/>
+                        <circle cx="44" cy="68" r="5" fill="#1e293b"/>
+                        <circle cx="66" cy="68" r="5" fill="#1e293b"/>
+                    </svg>
+                </div>
+                <div class="header-title-text">የመታወቂያ ካርድ</div>
+                <div>ኮድ፦ <span class="code-tag" id="outCode">---</span></div>
+            </div>
+
+            <div class="body-content">
+                <div class="photo-box">
+                    <img id="outPhoto" src="" alt="Photo">
+                </div>
+                <div class="details">
+                    <div class="row"><span class="label">ሙሉ፤ ስም</span><span class="val" id="outName">---</span></div>
+                    <div class="row"><span class="label">አገልግሎቱ</span><span class="val" id="outService">---</span></div>
+                    <div class="row"><span class="label">አድራሻ</span><span class="val" id="outAddress">---</span></div>
+                    <div class="row"><span class="label">ስልክ</span><span class="val" id="outPhone">---</span></div>
+                    <div class="row"><span class="label">ተርጋ ቁጥር</span><span class="val" id="outPlate">---</span></div>
+                </div>
+            </div>
+            <div class="footer">የድርጅት ስልክ፦ 0945900829</div>
+        </div>
+
+        <!-- ጀርባ ገጽ (BACK) -->
+        <h3>🎴 የጀርባ ገጽ (Back)</h3>
+        <div class="card">
+            <div class="stripe"></div>
+            <div class="magnetic-strip"></div>
+            <div class="back-body">
+                <div class="validity">
+                    የካርዱ ዋጋ የሚያበቃው፦ <span id="outExpire" style="border-bottom: 1px solid #000; padding: 0 10px;">______</span> ዓ.ም.
+                </div>
+
+                <div class="back-middle-container">
+                    <!-- ማሳሰቢያ -->
+                    <div class="notice-section">
+                        <div class="notice-title">አስተዋጽኦ</div>
+                        <div class="notice-text">
+                            ይህ ካርድ የአገልግሎቱ መታወቂያ ነው።<br>
+                            ቢጠፋ በአድራሻው ይመልሱ።
+                        </div>
+                    </div>
+
+                    <!-- Barcode / QR Code የመቀበያ ሳጥን -->
+                    <div class="barcode-box">
+                        <img id="outBarcode" src="" alt="Barcode" style="display:none;">
+                        <span id="barcodeText" class="barcode-placeholder">BarCode / QR</span>
+                    </div>
+                </div>
+
+                <div class="signature-area">
+                    <div class="sig-line">Signature</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        function run() {
+            document.getElementById('outCode').innerText = document.getElementById('inCode').value || '---';
+            document.getElementById('outName').innerText = document.getElementById('inName').value || '---';
+            document.getElementById('outService').innerText = document.getElementById('inService').value || '---';
+            document.getElementById('outAddress').innerText = document.getElementById('inAddress').value || '---';
+            document.getElementById('outPhone').innerText = document.getElementById('inPhone').value || '---';
+            document.getElementById('outPlate').innerText = document.getElementById('inPlate').value || '---';
+            document.getElementById('outExpire').innerText = document.getElementById('inExpire').value || '______';
+        }
+
+        // የሰውየውን ፎቶ መጫኛ
+        function loadPhoto(e) {
+            var img = document.getElementById('outPhoto');
+            img.src = URL.createObjectURL(e.target.files[0]);
+        }
+
+        // የጀርባው Barcode/QR ፎቶ መጫኛ logic
+        function loadBarcode(e) {
+            var barcodeImg = document.getElementById('outBarcode');
+            var placeholder = document.getElementById('barcodeText');
+            
+            barcodeImg.src = URL.createObjectURL(e.target.files[0]);
+            barcodeImg.style.display = 'block';
+            placeholder.style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>

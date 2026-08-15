@@ -1,0 +1,2228 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ጂንካ ገበያ | Jinka Market - Online Shopping in Ethiopia</title>
+
+  <!-- FAVICON / LOGO INTEGRATION -->
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" type="image/png" sizes="32x32" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="በጂንካ ገበያ ጥራት ያላቸውን ምርቶች፣ የባህላዊ እና የአካባቢ እቃዎችን በጥራት ይግዙ እና ይሸጡ። የቴሌብር፣ ቻፓ እና የባንክ ክፍያዎችን ይደግፋል።">
+  <meta name="keywords" content="Jinka Market, ጂንካ ገበያ, Ethio E-commerce, Telebirr, Chapa, Ethiopian Online Shop, Jinka online shop">
+  <meta name="robots" content="index, follow">
+
+  <!-- PWA Manifest & Meta Tags -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#FF6600">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="ጂንካ ገበያ">
+  
+  <!-- Font Awesome Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HQZPPL8NMB"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HQZPPL8NMB');
+  </script>
+
+  <!-- PDF & Image Processing Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- Firebase Compatibility SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+  <style>
+    :root {
+      --primary: #FF6600;
+      --primary-hover: #e05500;
+      --bg-color: #f4f6f8;
+      --surface: #ffffff;
+      --text-main: #1f2937;
+      --text-muted: #6b7280;
+      --border-color: #e5e7eb;
+      --shadow: 0 4px 15px rgba(0,0,0,0.05);
+      --radius: 12px;
+      --telebirr-color: #0088cc;
+      --chapa-color: #10b981;
+    }
+
+    body.dark-mode {
+      --bg-color: #111827;
+      --surface: #1f2937;
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --border-color: #374151;
+      --shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 60px; transition: background-color 0.3s, color 0.3s; }
+
+    header { background: var(--surface); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+    .nav-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; gap: 15px; flex-wrap: wrap; }
+    .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); text-decoration: none; cursor: pointer; }
+    
+    .search-box { flex: 1; max-width: 400px; position: relative; min-width: 200px; }
+    .search-box input { width: 100%; padding: 10px 40px 10px 15px; border: 1px solid var(--border-color); border-radius: 20px; outline: none; font-size: 0.95rem; background: var(--surface); color: var(--text-main); }
+    .search-box i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+
+    .nav-icons { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .icon-btn { position: relative; background: none; border: none; font-size: 1.2rem; color: var(--text-main); cursor: pointer; }
+    .badge { position: absolute; top: -8px; right: -8px; background: var(--primary); color: white; font-size: 0.7rem; font-weight: bold; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    
+    .btn-auth { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: 600; cursor: pointer; }
+    .btn-dash { background: var(--border-color); color: var(--text-main); border: none; padding: 8px 14px; border-radius: 20px; font-weight: 600; cursor: pointer; }
+    .user-profile { display: none; align-items: center; gap: 10px; }
+
+    .main-container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+    .view-section { display: none; }
+    .view-section.active { display: block; }
+
+    .hero-slider { position: relative; width: 100%; height: 320px; border-radius: var(--radius); overflow: hidden; margin-bottom: 25px; box-shadow: var(--shadow); }
+    .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.8s ease-in-out; background-size: cover; background-position: center; display: flex; align-items: center; padding: 40px; }
+    .slide.active { opacity: 1; }
+    .slide-content { max-width: 500px; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.6); }
+    .slide-content h2 { font-size: 2rem; margin-bottom: 10px; }
+    .slide-content p { font-size: 1rem; margin-bottom: 20px; }
+    .slide-content button { padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 20px; font-weight: bold; cursor: pointer; }
+    .slider-dots { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; }
+    .dot { width: 12px; height: 12px; background: rgba(255,255,255,0.5); border-radius: 50%; cursor: pointer; }
+    .dot.active { background: var(--primary); width: 25px; border-radius: 10px; }
+
+    .category-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 25px; scrollbar-width: none; }
+    .category-scroll::-webkit-scrollbar { display: none; }
+    .cat-chip { padding: 8px 18px; background: var(--surface); border: 1px solid var(--border-color); border-radius: 20px; white-space: nowrap; cursor: pointer; font-weight: 500; color: var(--text-main); transition: 0.2s; }
+    .cat-chip.active, .cat-chip:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+    .product-card { background: var(--surface); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: transform 0.2s; position: relative; display: flex; flex-direction: column; cursor: pointer; }
+    .product-card:hover { transform: translateY(-4px); }
+    .card-img-wrapper { position: relative; width: 100%; padding-top: 100%; background: #f9f9f9; }
+    .card-img-wrapper img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+    .wishlist-btn { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.8); border: none; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #888; z-index: 2; }
+    .wishlist-btn.active { color: #e63946; background: white; }
+
+    .product-info { padding: 15px; display: flex; flex-direction: column; flex: 1; justify-content: space-between; }
+    .product-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 5px; }
+    .rating-row { display: flex; align-items: center; gap: 5px; font-size: 0.8rem; margin-bottom: 8px; color: #ffb703; }
+    .price-row { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
+    .price { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+    .add-cart-btn { background: var(--primary); color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+
+    /* REELS STYLES */
+    .reels-container { margin: 30px 0; }
+    .reels-scroll { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px; scroll-behavior: smooth; }
+    .reels-scroll::-webkit-scrollbar { height: 6px; }
+    .reels-scroll::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+    
+    .reel-card { min-width: 200px; width: 200px; height: 330px; border-radius: var(--radius); overflow: hidden; position: relative; background: black; flex-shrink: 0; box-shadow: var(--shadow); }
+    .reel-card video { width: 100%; height: 100%; object-fit: cover; }
+    .reel-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 12px; background: linear-gradient(transparent, rgba(0,0,0,0.85)); color: white; font-size: 0.8rem; }
+    .reel-title { font-weight: bold; margin-bottom: 8px; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+    
+    .reel-actions { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 6px; }
+    .reel-action-btn { background: rgba(255,255,255,0.25); backdrop-filter: blur(4px); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: 0.2s background; }
+    .reel-action-btn:hover { background: rgba(255,255,255,0.4); }
+
+    .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 30px; }
+    .stat-card { background: var(--surface); padding: 20px; border-radius: var(--radius); box-shadow: var(--shadow); border-left: 4px solid var(--primary); }
+    .stat-card h4 { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 10px; }
+    .stat-card .value { font-size: 1.8rem; font-weight: bold; color: var(--text-main); }
+
+    .panel-card { background: var(--surface); padding: 25px; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 25px; }
+    .panel-card h3 { margin-bottom: 15px; color: var(--text-main); }
+
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
+    th, td { padding: 12px; border-bottom: 1px solid var(--border-color); }
+    th { background: rgba(0,0,0,0.02); font-weight: 600; }
+    
+    .status-badge { padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; }
+    .status-paid { background: #e0f2fe; color: #0284c7; }
+    .status-completed { background: #dcfce7; color: #16a34a; }
+    .status-pending { background: #fef3c7; color: #d97706; }
+
+    .drawer { position: fixed; top: 0; right: -400px; width: 100%; max-width: 380px; height: 100%; background: var(--surface); box-shadow: -5px 0 25px rgba(0,0,0,0.15); z-index: 200; transition: right 0.3s ease; display: flex; flex-direction: column; }
+    .drawer.open { right: 0; }
+    .drawer-header { padding: 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+    .drawer-body { flex: 1; overflow-y: auto; padding: 20px; }
+    .drawer-footer { padding: 20px; border-top: 1px solid var(--border-color); }
+    .close-btn { background: none; border: none; font-size: 1.2rem; color: var(--text-main); cursor: pointer; }
+
+    .cart-item { display: flex; gap: 12px; margin-bottom: 15px; align-items: center; }
+    .cart-item img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; }
+    .cart-item-info { flex: 1; }
+
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 300; }
+    .modal-overlay.active { display: flex; }
+    .auth-card { background: var(--surface); padding: 30px; border-radius: var(--radius); width: 100%; max-width: 480px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); position: relative; max-height: 90vh; overflow-y: auto; }
+    .auth-card h2 { margin-bottom: 20px; color: var(--primary); text-align: center; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; margin-bottom: 5px; font-size: 0.85rem; font-weight: 600; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; outline: none; background: var(--surface); color: var(--text-main); }
+    .auth-btn { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+    .auth-toggle { text-align: center; margin-top: 15px; font-size: 0.85rem; }
+    .auth-toggle a { color: var(--primary); text-decoration: none; font-weight: bold; cursor: pointer; }
+    .close-modal { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.2rem; color: var(--text-main); cursor: pointer; }
+
+    .star-rating { display: flex; gap: 5px; color: #ffb703; font-size: 1.2rem; cursor: pointer; margin: 10px 0; }
+
+    .support-section { padding: 40px 15px; background-color: var(--surface); font-family: Arial, sans-serif; color: var(--text-main); margin-top: 40px; border-radius: var(--radius); }
+    .support-container { max-width: 900px; margin: 0 auto; }
+    .support-title { text-align: center; color: var(--primary); margin-bottom: 5px; }
+    .support-subtitle { text-align: center; color: var(--text-muted); margin-bottom: 30px; }
+    .support-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
+    .support-card { background: var(--bg-color); padding: 20px; border-radius: 12px; text-decoration: none; color: inherit; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; transition: transform 0.2s; display: flex; flex-direction: column; align-items: center; }
+    .support-card:hover { transform: translateY(-5px); }
+    .support-icon { font-size: 36px; margin-bottom: 10px; }
+    .support-card h3 { margin: 10px 0 5px; font-size: 18px; }
+    .support-card p { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
+    .support-link-text { font-weight: bold; color: var(--primary); word-break: break-all; }
+
+    footer { text-align: center; padding: 20px; background: var(--surface); margin-top: 40px; border-top: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.85rem; }
+    footer a { color: var(--primary); text-decoration: none; margin: 0 5px; }
+
+    @media (max-width: 600px) { .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } .hero-slider { height: 200px; } }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header>
+    <div class="nav-container">
+      <div class="logo" onclick="switchView('storeView')">ጂንካ ገበያ</div>
+      
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="ምርቶችን እዚህ ይፈልጉ..." onkeyup="filterProducts()">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </div>
+      
+      <div class="nav-icons">
+        <a href="./tourism.html" class="btn-dash" style="display: inline-flex !important; align-items: center; gap: 6px; background-color: #059669; color: white !important; text-decoration: none; padding: 6px 12px; border-radius: 6px; font-weight: bold;">
+          <i class="fa-solid fa-hotel"></i> ቱሪዝም እና ሆቴሎች
+        </a>
+
+        <a href="delivery.html" class="btn-dash" style="display: inline-flex !important; align-items: center; gap: 6px; background-color: #10b981; color: white !important; text-decoration: none; padding: 6px 12px; border-radius: 6px; font-weight: bold;">
+          <i class="fa-solid fa-truck-fast"></i> ዴሊቨሪ
+        </a>
+
+        <button class="btn-dash" onclick="openAboutModal()">
+          <i class="fa-solid fa-circle-info"></i> ስለ እኛ
+        </button>
+
+        <button class="icon-btn" onclick="toggleDarkMode()" title="Dark/Light Mode">
+          <i class="fa-solid fa-moon" id="themeIcon"></i>
+        </button>
+
+        <button class="icon-btn" onclick="toggleDrawer('wishlistDrawer')">
+          <i class="fa-regular fa-heart"></i>
+          <span class="badge" id="wishlistCount">0</span>
+        </button>
+        
+        <button class="icon-btn" onclick="toggleDrawer('cartDrawer')">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span class="badge" id="cartCount">0</span>
+        </button>
+
+        <div id="guestNav" style="display: inline-block;">
+          <button class="btn-auth" onclick="openAuthModal('login')">ሻጭ ከሆኑ ይመዝገቡ/ይግቡ</button>
+        </div>
+
+        <div id="userNav" class="user-profile" style="display: none;">
+          <button class="btn-dash" onclick="navigateToDashboard()">
+            <i class="fa-solid fa-gauge"></i> ዳሽቦርድ
+          </button>
+          <span id="userRoleBadge" style="font-size:0.75rem; background: var(--primary); color: white; padding: 3px 10px; border-radius: 10px;"></span>
+          <button class="btn-auth" style="background: #ef4444;" onclick="handleLogout()">ውጣ</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="main-container">
+    
+    <!-- 1. PUBLIC STORE CATALOG VIEW -->
+    <section id="storeView" class="view-section active">
+      <div class="hero-slider" id="heroSliderContainer">
+        <div class="slide active" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://picsum.photos/1200/400?random=1');">
+          <div class="slide-content">
+            <h2>ታላቅ የቅናሽ ሳምንት!</h2>
+            <p>በጂንካ ገበያ እስከ 30% ቅናሽ ያግኙ</p>
+            <button onclick="filterCategory('sale', event)">አሁኑኑ ይግዙ</button>
+          </div>
+        </div>
+        <div class="slider-dots" id="sliderDotsContainer">
+          <span class="dot active" onclick="setSlide(0)"></span>
+        </div>
+      </div>
+
+      <!-- LOCAL CULTURAL CATEGORY -->
+      <section id="culturalProductsSection" style="margin: 35px 0; padding: 20px; background: linear-gradient(135deg, #fff9f0 0%, #fff0dc 100%); border-radius: 16px; border: 1px solid #f3d1a8;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <h2 style="color: #8B4513; margin: 0; font-size: 1.5rem; display: flex; align-items: center; gap: 8px;">
+              <span>🇪🇹</span> የባህላዊ እና የአካባቢ ምርቶች
+            </h2>
+            <p style="color: #6e4726; margin: 5px 0 0 0; font-size: 0.9rem;">
+              የጂንካ እና የደቡብ ኦሞ ውብ ባህላዊ አልባሳት፣ የእጅ ጥበቦች እና የአካባቢ ምርቶች
+            </p>
+          </div>
+          
+          <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 5px;">
+            <button onclick="filterCulturalProducts('all', event)" class="cultural-filter-btn active" style="padding: 6px 14px; border-radius: 20px; border: 1px solid #8B4513; background: #8B4513; color: white; cursor: pointer; font-size: 0.85rem;">ሁሉም</button>
+            <button onclick="filterCulturalProducts('clothes', event)" class="cultural-filter-btn" style="padding: 6px 14px; border-radius: 20px; border: 1px solid #8B4513; background: transparent; color: #8B4513; cursor: pointer; font-size: 0.85rem;">ባህላዊ አልባሳት</button>
+            <button onclick="filterCulturalProducts('crafts', event)" class="cultural-filter-btn" style="padding: 6px 14px; border-radius: 20px; border: 1px solid #8B4513; background: transparent; color: #8B4513; cursor: pointer; font-size: 0.85rem;">የእጅ ጥበብ / ቅርስ</button>
+            <button onclick="filterCulturalProducts('food', event)" class="cultural-filter-btn" style="padding: 6px 14px; border-radius: 20px; border: 1px solid #8B4513; background: transparent; color: #8B4513; cursor: pointer; font-size: 0.85rem;">የአካባቢ እህሎች እና ቡና</button>
+          </div>
+        </div>
+
+        <div id="culturalProductsContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px;">
+          <p style="text-align: center; color: #888; grid-column: 1/-1;">የባህላዊ ምርቶች በመጫን ላይ ናቸው...</p>
+        </div>
+      </section>
+
+      <!-- Category Filter Pills -->
+      <div class="category-scroll" id="categoryList">
+        <button class="cat-chip active" onclick="filterCategory('all', event)">ሁሉም</button>
+        <button class="cat-chip" onclick="filterCategory('electronics', event)">ኤሌክትሮኒክስ</button>
+        <button class="cat-chip" onclick="filterCategory('fashion', event)">ልብሶችና ጫማዎች</button>
+        <button class="cat-chip" onclick="filterCategory('food', event)">ምግብና እህሎች</button>
+        <button class="cat-chip" onclick="filterCategory('home', event)">የቤት እቃዎች</button>
+        <button class="cat-chip" onclick="filterCategory('cultural_clothes', event)">ባህላዊ አልባሳት</button>
+        <button class="cat-chip" onclick="filterCategory('cultural_crafts', event)">የእጅ ጥበብ እና ቅርሶች</button>
+        <button class="cat-chip" onclick="filterCategory('cultural_food', event)">የአካባቢ ቡና እና ቅመማቅመም</button>
+        <button class="cat-chip" onclick="filterCategory('others', event)">ሌሎች</button>
+        <button class="cat-chip" onclick="filterCategory('sale', event)">ቅናሽ ምርቶች</button>
+        <button class="cat-chip" onclick="filterCategory('new', event)">አዲስ ምርቶች</button>
+        <button class="cat-chip" onclick="filterCategory('popular', event)">ታዋቂ ምርቶች</button>
+      </div>
+
+      <!-- Video Reels Section -->
+      <div class="reels-container">
+        <h3 style="margin-bottom: 15px; color: var(--primary);"><i class="fa-solid fa-circle-play"></i> የምርት ቪዲዮዎች (Video Reels)</h3>
+        <div class="reels-scroll" id="reelsScrollContainer">
+          <div class="reel-card" id="reel-demo-1">
+            <video src="https://cdn.imageurlgenerator.com/uploads/1c546d7c-5fd4-46d4-b64b-04eef88815f0.mp4" controls preload="metadata"></video>
+            <div class="reel-overlay">
+              <div class="reel-title">ስማርት ስልክ ማስተዋወቂያ</div>
+              <div class="reel-actions">
+                <button class="reel-action-btn" onclick="likeReel('demo-1')">
+                  <i class="fa-solid fa-thumbs-up"></i> <span id="like-count-demo-1">12</span>
+                </button>
+                <button class="reel-action-btn" onclick="dislikeReel('demo-1')">
+                  <i class="fa-solid fa-thumbs-down"></i> <span id="dislike-count-demo-1">1</span>
+                </button>
+                <button class="reel-action-btn" onclick="openReelCommentsModal('demo-1')">
+                  <i class="fa-solid fa-comment"></i> <span id="comment-count-demo-1">4</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="reel-card" id="reel-demo-2">
+            <video src="https://cdn.imageurlgenerator.com/uploads/f216a3fa-939a-4672-b40a-44ac6b9f0890.mp4" controls preload="metadata"></video>
+            <div class="reel-overlay">
+              <div class="reel-title">የእግር ጫማ አዳዲስ እቃዎች</div>
+              <div class="reel-actions">
+                <button class="reel-action-btn" onclick="likeReel('demo-2')">
+                  <i class="fa-solid fa-thumbs-up"></i> <span id="like-count-demo-2">24</span>
+                </button>
+                <button class="reel-action-btn" onclick="dislikeReel('demo-2')">
+                  <i class="fa-solid fa-thumbs-down"></i> <span id="dislike-count-demo-2">0</span>
+                </button>
+                <button class="reel-action-btn" onclick="openReelCommentsModal('demo-2')">
+                  <i class="fa-solid fa-comment"></i> <span id="comment-count-demo-2">8</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Products Grid -->
+      <h3 style="margin-bottom: 15px;">የተመረጡ ምርቶች</h3>
+      <div class="product-grid" id="productGrid">
+        <p style="grid-column: 1/-1; text-align:center; padding: 40px; color: var(--text-muted);">ምርቶች በመጫን ላይ ናቸው...</p>
+      </div>
+    </section>
+
+    <!-- 2. ADMIN DASHBOARD -->
+    <section id="adminDashboard" class="view-section">
+      <h2 style="margin-bottom: 20px; color: var(--primary);">የአድሚን ቁጥጥርና አናሊቲክስ (Admin Analytics Pro)</h2>
+      <div class="dashboard-grid">
+        <div class="stat-card" style="border-color: #10b981;">
+          <h4>ጠቅላላ ገቢ (Total Revenue)</h4>
+          <div class="value" id="adminTotalRevenue">0 ETB</div>
+        </div>
+        <div class="stat-card" style="border-color: #3b82f6;">
+          <h4>ጠቅላላ ትዕዛዞች</h4>
+          <div class="value" id="adminTotalOrders">0</div>
+        </div>
+        <div class="stat-card" style="border-color: #f59e0b;">
+          <h4>ተመዝጋቢዎች</h4>
+          <div class="value" id="adminTotalUsers">0</div>
+        </div>
+        <div class="stat-card" style="border-color: #8b5cf6;">
+          <h4>ጠቅላላ ምርቶች</h4>
+          <div class="value" id="adminTotalProducts">0</div>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <h3>የሻጮች ምርት ማፅደቂያ እና የቆይታ ጊዜ መወሰኛ (Product Approvals & Duration)</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>ምስል</th>
+              <th>ስም</th>
+              <th>ዋጋ</th>
+              <th>ሻጭ ID</th>
+              <th>ሁኔታ</th>
+              <th>የቆይታ ጊዜ እና እርምጃ</th>
+            </tr>
+          </thead>
+          <tbody id="adminProductsApprovalTable"></tbody>
+        </table>
+      </div>
+      
+      <!-- 💳 የክፍያ ዘዴዎች ማስተካከያ (Manage Payment Methods) -->
+      <div class="panel-card">
+        <h3>💳 የክፍያ ዘዴዎች ማስተካከያ (Manage Payment Methods)</h3>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
+          <input type="hidden" id="editPaymentId" value="">
+          <input type="text" id="paymentBankName" placeholder="የባንክ ወይም የክፍያ ስም (ምሳሌ፦ Dashen Bank)">
+          <input type="text" id="paymentAccountNumber" placeholder="የሂሳብ ቁጥር (ምሳሌ፦ 5081917396011)">
+          <input type="text" id="paymentAccountHolder" placeholder="የባለቤት ስም (ምሳሌ፦ Amanuel Tito)">
+          <select id="paymentType">
+            <option value="bank">ባንክ (Bank Transfer)</option>
+            <option value="telebirr">ቴሌብር (Telebirr)</option>
+            <option value="chapa">ቻፓ (Chapa)</option>
+            <option value="cod">ካሽ በመድረሻ (COD)</option>
+          </select>
+        </div>
+        
+        <button type="button" id="savePaymentBtn" onclick="savePaymentMethod()" class="auth-btn" style="width: auto; padding: 10px 20px; margin-bottom: 20px;">
+          የክፍያ ዘዴ መዝግብ / አስተካክል
+        </button>
+
+        <table>
+          <thead>
+            <tr>
+              <th>የክፍያ/ባንክ ስም</th>
+              <th>ሂሳብ ቁጥር</th>
+              <th>የባለቤት ስም</th>
+              <th>አይነት</th>
+              <th>እርምጃ</th>
+            </tr>
+          </thead>
+          <tbody id="adminPaymentMethodsTable">
+            <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">የክፍያ ዘዴዎች በመጫን ላይ ናቸው...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel-card">
+        <h3>የፕሮሞሽን ስላይደር ማኔጅመንት (Promos)</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
+          <input type="text" id="promoTitle" placeholder="ርዕስ (ምሳሌ: ታላቅ ቅናሽ)">
+          <input type="text" id="promoSubtitle" placeholder="ንኡስ ርዕስ">
+          <input type="url" id="promoImageUrl" placeholder="የምስል Link/URL ያስገቡ (https://...)">
+        </div>
+        <button type="button" id="submitPromoBtn" onclick="addPromoSlider()" class="auth-btn" style="width: auto; padding: 10px 20px;">
+          ስላይደር መዝግብ
+        </button>
+      </div>
+
+      <div class="panel-card">
+        <h3>የክፍያዎችና የትዕዛዞች ሁኔታ (System Orders)</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>ተጠቃሚ</th>
+              <th>መጠን (ETB)</th>
+              <th>የክፍያ ዘዴ</th>
+              <th>ሁኔታ (Status)</th>
+              <th>እርምጃ</th>
+            </tr>
+          </thead>
+          <tbody id="adminOrdersTable"></tbody>
+        </table>
+      </div>
+
+      <div class="panel-card">
+        <h3>የተላኩ የባንክና Telebirr ደረሰኞች</h3>
+        <div id="adminOrdersList">
+          <p style="color:var(--text-muted); font-size:0.9rem;">ደረሰኞች በመጫን ላይ ናቸው...</p>
+        </div>
+      </div>
+
+      <!-- Seller Dashboard Form with 360 Degree Preview & Contact Info -->
+      <div class="panel-card" style="margin-bottom: 25px;">
+        <h3>አዲስ ምርት መዝግብ (Add New Product - 360° Preview)</h3>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
+          <input type="text" id="sellerProdTitle" placeholder="የምርት ስም (ምሳሌ፦ አዲስ ስልክ)">
+          <input type="number" id="sellerProdPrice" placeholder="ዋጋ (በብር)">
+          <select id="sellerProdCategory">
+            <option value="electronics">ኤሌክትሮኒክስ</option>
+            <option value="fashion">ልብሶች እና ጫማዎች</option>
+            <option value="home">የቤት እቃዎች</option>
+            <option value="food">ምግብና እህሎች</option>
+            <optgroup label="🇪🇹 የባህላዊ እና የአካባቢ ምርቶች">
+              <option value="cultural_clothes">ባህላዊ አልባሳት</option>
+              <option value="cultural_crafts">የእጅ ጥበብ እና ቅርሶች</option>
+              <option value="cultural_food">የአካባቢ ቡና እና ቅመማቅመም</option>
+            </optgroup>
+            <option value="general">ሌሎች</option>
+          </select>
+        </div>
+
+        <!-- 360 Degree 4 Images Input Section -->
+        <div style="margin-bottom: 15px; background: var(--bg-color); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color);">
+          <label style="display: block; font-weight: bold; margin-bottom: 8px; font-size: 0.9rem; color: var(--primary);">
+            📷 360° የምርት ፎቶዎች (አራቱንም አቅጣጫዎች ማስገባት ግዴታ ነው)፦
+          </label>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 10px;">
+            <div>
+              <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px;">1. የፊት ፎቶ (Front Image URL) *</label>
+              <input type="url" id="sellerProdImgFront" placeholder="https://... (Front Photo)" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--surface);">
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px;">2. የጀርባ ፎቶ (Back Image URL) *</label>
+              <input type="url" id="sellerProdImgBack" placeholder="https://... (Back Photo)" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--surface);">
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px;">3. የግራ ፎቶ (Left Image URL) *</label>
+              <input type="url" id="sellerProdImgLeft" placeholder="https://... (Left Photo)" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--surface);">
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px;">4. የቀኝ ፎቶ (Right Image URL) *</label>
+              <input type="url" id="sellerProdImgRight" placeholder="https://... (Right Photo)" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--surface);">
+            </div>
+          </div>
+        </div>
+
+        <h4 style="margin: 15px 0 10px 0; color: #2c3e50; font-size: 0.95rem;">📱 የሻጭ ማገናኛ መረጃዎች (ገዢዎች እንዲያናግሩህ)፦</h4>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 15px;">
+          <input type="tel" id="sellerPhone" placeholder="📞 የስልክ ቁጥር (ምሳሌ፦ 0912345678)">
+          <input type="text" id="sellerTelegram" placeholder="✈️ Telegram Username (ምሳሌ፦ @myusername)">
+          <input type="tel" id="sellerWhatsapp" placeholder="💬 WhatsApp ቁጥር (ምሳሌ፦ 0912345678)">
+        </div>
+
+        <textarea id="sellerProdDesc" placeholder="ስለ ምርቱ አጭር መግለጫ..." style="width: 100%; margin-bottom: 15px; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color);"></textarea>
+        <button type="button" id="submitSellerProdBtn" class="auth-btn" onclick="addSellerProduct()" style="width: auto; padding: 10px 25px;">ምርት መዝግብ</button>
+      </div>
+
+      <div class="panel-card">
+        <h3>የተመዘገቡ ምርቶችህ</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>ምስል</th>
+              <th>ስም</th>
+              <th>ምድብ</th>
+              <th>ዋጋ</th>
+              <th>ሁኔታ</th>
+            </tr>
+          </thead>
+          <tbody id="sellerProductsTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 4. CUSTOMER DASHBOARD VIEW -->
+    <section id="customerDashboard" class="view-section">
+      <h2 style="margin-bottom: 20px; color: var(--primary);">የደንበኛ አካውንት (My Orders & Receipts)</h2>
+      <div class="panel-card">
+        <h3>የእኔ የትዕዛዝ ታሪክ</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>የክፍያ ዘዴ</th>
+              <th>ጠቅላላ ዋጋ</th>
+              <th>ሁኔታ (Status)</th>
+            </tr>
+          </thead>
+          <tbody id="customerOrdersTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 5. CHECKOUT SECTION -->
+    <div id="checkoutSection" class="panel-card" style="display: none; max-width: 600px; margin: 30px auto; padding: 25px; border-radius: 12px; box-shadow: var(--shadow);">
+      <h2 style="text-align: center; color: var(--primary); margin-bottom: 20px;">የክፍያ ዘዴ ይምረጡ</h2>
+      
+      <div style="background: var(--bg-color); padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center;">
+        <span style="font-size: 16px; color: var(--text-muted);">የሚከፈለዉ ጠቅላላ ዋጋ፦</span>
+        <h3 style="color: #10b981; margin: 5px 0 0 0; font-size: 24px;" id="checkoutTotalAmount">0 ETB</h3>
+      </div>
+
+      <div style="display: grid; gap: 10px; margin-bottom: 20px;">
+        <label style="display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer;">
+          <input type="radio" name="paymentMethodRadio" value="chapa" onclick="togglePaymentDetails('chapa')">
+          <span>💳 Chapa (Telebirr, CBE Birr, Cards)</span>
+        </label>
+        <label style="display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer;">
+          <input type="radio" name="paymentMethodRadio" value="telebirr" onclick="togglePaymentDetails('telebirr')">
+          <span>📱 Telebirr (በቀጥታ)</span>
+        </label>
+        <label style="display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer;">
+          <input type="radio" name="paymentMethodRadio" value="cod" onclick="togglePaymentDetails('cod')">
+          <span>💵 ካሽ በመድረሻ (Cash on Delivery)</span>
+        </label>
+        <label style="display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer;">
+          <input type="radio" name="paymentMethodRadio" value="bank" onclick="togglePaymentDetails('bank')">
+          <span>🏦 ባንክ ማስተላለፊያ (Bank Transfer)</span>
+        </label>
+      </div>
+
+      <!-- Chapa Form Box -->
+      <div id="chapaDetailsBox" style="display: none; background: #eef2ff; padding: 15px; border-radius: 8px; border-left: 5px solid #6366f1; margin-bottom: 20px; color:#333;">
+        <h4 style="margin-top: 0; color: #4338ca;">💳 በ Chapa ክፍያ መክፈያ፦</h4>
+        <p style="margin: 5px 0 15px 0; font-size: 0.9rem;">በ Telebirr፣ በ CBE Birr ወይም በቪዛ ካርድ መክፈል ይችላሉ።</p>
+
+        <form method="POST" action="https://api.chapa.co/v1/hosted/pay" id="chapaForm">
+          <input type="hidden" name="public_key" value="CHAPUBK_TEST-6KUQLYTP2VJt2kmEgTytIvLiurTRPCvy" />
+          <input type="hidden" name="tx_ref" id="chapa_tx_ref" value="" />
+          <input type="hidden" name="amount" id="chapa_amount" value="0" />
+          <input type="hidden" name="currency" value="ETB" />
+          <input type="hidden" name="email" id="chapa_email" value="customer@example.com" />
+          <input type="hidden" name="first_name" id="chapa_first_name" value="Guest" />
+          <input type="hidden" name="last_name" id="chapa_last_name" value="User" />
+          <input type="hidden" name="title" value="ጂንካ ገበያ" />
+          <input type="hidden" name="description" value="የእቃዎች ክፍያ" />
+          <input type="hidden" name="return_url" value="https://jinkamarkets/success.html" />
+
+          <button type="submit" onclick="prepareChapaForm()" style="width: 100%; padding: 12px 24px; background-color: #28a745; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+            በ Chapa አሁኑኑ ክፈል
+          </button>
+        </form>
+      </div>
+
+      <!-- Telebirr Details -->
+      <div id="telebirrDetailsBox" style="display: none; background: #e8f5e9; padding: 15px; border-radius: 8px; border-left: 5px solid #2ecc71; margin-bottom: 20px; color:#333;">
+        <h4 style="margin-top: 0; color: #27ae60;">📱 የ Telebirr ክፍያ መረጃ፦</h4>
+        <p style="margin: 5px 0;"><b>የ Telebirr ቁጥር፦</b> 0928664142 (Amanuel Tito Shelo)</p>
+        <p style="margin: 5px 0;"><b>የነጋዴ መለያ (Merchant ID)፦</b></p>
+        <p style="margin: 5px 0;">እባክዎን ከ Telebirr ክፍያዎ በኋላ የክፍያውን ደረሰኝ ወደ አድሚኑ ለማስተላለፊያ ይጨምሩ።</p>
+        <button type="button" class="auth-btn" style="margin-top: 15px; width: 100%; background: #27ae60;" onclick="showReceiptUploadForm()">የከፈሉበትን ደረሰኝ ለማስገባት እዝህ ጠቅ ያድርጉ!</button>
+      </div>
+
+      <!-- Bank Details -->
+      <div id="bankDetailsBox" style="display: none; background: #e8f5e9; padding: 15px; border-radius: 8px; border-left: 5px solid #2ecc71; margin-bottom: 20px; color:#333;">
+        <h4 style="margin-top: 0; color: #27ae60;">🏦 የባንክ ማስተላለፊያ መረጃ፦</h4>
+        <p style="margin: 5px 0;"><b>ባንክ ስም፦</b> Dashen Bank</p>
+        <p style="margin: 5px 0;"><b>የነጋዴ ሂሳብ ቁጥር፦</b> 5081917396011 (Amanuel Tito Shelo)</p>
+        <hr style="margin:10px 0; border:none; border-top:1px dashed #ccc;">
+        <p style="margin: 5px 0;"><b>ባንክ ስም፦</b> Commercial Bank Of Ethiopia</p>
+        <p style="margin: 5px 0;"><b>የነጋዴ ሂሳብ ቁጥር፦</b> 1000452765377 (Amanuel Tito Shelo)</p>
+        <button type="button" class="auth-btn" style="margin-top: 15px; width: 100%; background: #27ae60;" onclick="showReceiptUploadForm()">የከፈሉበትን ደረሰኝ ለማስገባት እዝህ ጠቅ ያድርጉ</button>
+      </div>
+
+      <!-- Cash on Delivery Details -->
+      <div id="codDetailsBox" style="display: none; background: #e8f5e9; padding: 15px; border-radius: 8px; border-left: 5px solid #2ecc71; margin-bottom: 20px; color:#333;">
+        <h4 style="margin-top: 0; color: #27ae60;">💵 ካሽ በመድረሻ መረጃ፦</h4>
+        <p style="margin: 5px 0;">እባክዎን የክፍያውን ጠቅላላ ዋጋ በእቃው መድረሻ ላይ ይከፍሉ።</p>
+        <button type="button" class="auth-btn" style="margin-top: 15px; width: 100%; background: #27ae60;" onclick="showReceiptUploadForm()">ትዕዛዝ አረጋግጥ</button>
+      </div>
+
+      <!-- Receipt Upload Form -->
+      <div id="receiptUploadBox" style="display: none; background: #fff3cd; padding: 15px; border-radius: 8px; border: 1px solid #ffeeba; margin-bottom: 20px; color:#333;">
+        <h4 style="margin-top: 0; color: #856404;">የከፈሉበትን ደረሰኝ/መረጃ ያስገቡ፦</h4>
+        <div style="margin-bottom: 12px; display: grid; gap: 8px;">
+          <input type="text" id="customerName" placeholder="የደንበኛ ስም">
+          <input type="text" id="customerPhone" placeholder="የደንበኛ ስልክ ቁጥር">
+          <input type="email" id="customerEmail" placeholder="የደንበኛ ኢሜይል (ካለ)">
+          <input type="text" id="customerAddress" placeholder="የደንበኛ አድራሻ">
+          <input type="text" id="customerNote" placeholder="ማስታወሻ...">
+        </div>
+
+        <div style="margin-bottom: 12px;" id="receiptUploadSection">
+          <label style="display: block; font-weight: bold; margin-bottom: 5px;">📄 የደረሰኝ ፋይል ይምረጡ (PDF ወይም ምስል)፦</label>
+          <input type="file" id="receiptFileInput" accept="image/*,application/pdf" onchange="handleFileUpload(event)" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"/>
+        </div>
+
+        <div style="text-align: center; margin: 8px 0; color: #777;">— ወይም —</div>
+
+        <div style="margin-bottom: 12px;">
+          <label style="display: block; font-weight: bold; margin-bottom: 5px;">🔗 የደረሰኝ የፎቶ Link/URL፦</label>
+          <input type="url" id="receiptImageUrl" placeholder="https://example.com/receipt.jpg" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"/>
+        </div>
+
+        <button type="button" id="sendToAdminBtn" class="auth-btn" style="width: 100%; background: #27ae60;" onclick="sendOrderToAdmin()">ለአድሚኑ ላክ</button>
+      </div>
+
+      <!-- Download Receipt Box -->
+      <div id="downloadReceiptBox" style="display: none; text-align: center; background: #d4edda; padding: 20px; border-radius: 8px; border: 1px solid #c3e6cb; color:#333;">
+        <h3 style="color: #155724; margin-top: 0;">🎉 ክፍያዎ ለአድሚን ተልኳል!</h3>
+        <button type="button" onclick="downloadPDFReceipt()" class="auth-btn" style="background: #2980b9; width: 100%; margin-top: 10px;">📄 ደረሰኝ በ PDF አውርድ</button>
+      </div>
+    </div>
+
+    <!-- Support Section -->
+    <section id="customer-support" class="support-section">
+      <div class="support-container">
+        <h2 class="support-title">🎧 የደንበኞች ድጋፍ እና እርዳታ</h2>
+        <p class="support-subtitle">ጥያቄ፣ አስተያየት ወይም ችግር ካጋጠመዎት በማንኛውም ጊዜ ያናግሩን!</p>
+
+        <div class="support-cards">
+          <a href="tel:0928664142" class="support-card">
+            <div class="support-icon">📞</div>
+            <h3>በስልክ ይደውሉልን</h3>
+            <p>ቀጥታ መስመር (Full Time)</p>
+            <span class="support-link-text">0928 664 142 / 0907 394 142</span>
+          </a>
+
+          <a href="https://t.me/jinka_market_bot" target="_blank" class="support-card telegram">
+            <div class="support-icon">💬</div>
+            <h3>በ Telegram ያናግሩን</h3>
+            <p>በፍጥነት መልስ ለማግኘት 24/7 ዝግጁ ነው</p>
+            <span class="support-link-text">@jinka_market_bot</span>
+          </a>
+
+          <a href="mailto:jinkamarket@gmail.com" class="support-card">
+            <div class="support-icon">✉️</div>
+            <h3>በኢሜይል ይጻፉልን</h3>
+            <p>ለበለጠ ዝርዝር ጥያቄዎች እና አስተያየቶች</p>
+            <span class="support-link-text">jinkamarket@gmail.com</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modals and Drawers -->
+  <div class="modal-overlay" id="reelCommentsModal">
+    <div class="auth-card">
+      <button class="close-modal" onclick="closeReelCommentsModal()"><i class="fa-solid fa-xmark"></i></button>
+      <h3 style="color:var(--primary); text-align:center; margin-bottom:15px;"><i class="fa-solid fa-comments"></i> የቪዲዮ አስተያየቶች</h3>
+      <div id="reelCommentsList" style="max-height:220px; overflow-y:auto; margin-bottom:15px; border-bottom:1px solid var(--border-color); padding-bottom:10px;">
+        <p style="font-size:0.85rem; color:var(--text-muted); text-align:center;">አስተያየቶች በመጫን ላይ ናቸው...</p>
+      </div>
+
+      <div class="form-group">
+        <label>አስተያየትዎን ያጋሩ</label>
+        <textarea id="reelCommentInput" rows="2" placeholder="ስለ ቪዲዮው አስተያየትዎን እዚህ ይጻፉ..."></textarea>
+        <button class="auth-btn" onclick="submitReelComment()"><i class="fa-solid fa-paper-plane"></i> አስተያየት ላክ</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="aboutModal">
+    <div class="auth-card">
+      <button class="close-modal" onclick="closeAboutModal()"><i class="fa-solid fa-xmark"></i></button>
+      <h2 style="color:var(--primary); text-align:center;">ስለ ጂንካ ገበያ (About Us)</h2>
+      <p style="margin-top:15px; line-height:1.6; color:var(--text-main);">
+        <strong>ጂንካ ገበያ (Jinka Market)</strong> ስለ ጂንካ ገበያ | About Jinka Market<br>
+        🎯 ራእያችንና ተልእኳችን (Our Mission & Vision)<br>
+        "የደቡብን ንግድ ከዘመናዊው የዲጂታል ዓለም ጋር ማገናኘት!"<br><br>
+        ጂንካ ገበያ (Jinka Market) በደቡብ ኢትዮጵያ እና በዙሪያዋ ያሉ የአካባቢው አምራቾች፣ ነጋዴዎች፣ ገበሬዎች እና አነስተኛ የንግድ ተቋማት ምርቶቻቸውን በቀላሉ ሙሉ ኢትዮጵያ ውስጥ ለሚገኙ ደንበኞች የሚያቀርቡበት ዘመናዊ የኤሌክትሮኒክስ ንግድ (E-commerce) መድረክ ነው።
+      </p>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="productDetailModal">
+    <div class="auth-card">
+      <button class="close-modal" onclick="closeProductDetailModal()"><i class="fa-solid fa-xmark"></i></button>
+      <div id="modalProductDetails"></div>
+      <hr style="margin:20px 0; border:none; border-top:1px solid var(--border-color);">
+      <h4>የደንበኞች አስተያየትና ደረጃ (Reviews & Ratings)</h4>
+      <div id="productReviewsList" style="margin: 15px 0; max-height:150px; overflow-y:auto;"></div>
+
+      <div class="form-group">
+        <label>አስተያየትዎን ያስቀምጡ</label>
+        <div class="star-rating" id="starInput">
+          <i class="fa-solid fa-star" onclick="setRating(1)"></i>
+          <i class="fa-solid fa-star" onclick="setRating(2)"></i>
+          <i class="fa-solid fa-star" onclick="setRating(3)"></i>
+          <i class="fa-solid fa-star" onclick="setRating(4)"></i>
+          <i class="fa-solid fa-star" onclick="setRating(5)"></i>
+        </div>
+        <textarea id="reviewCommentInput" rows="2" placeholder="ስለ ምርቱ ያሎትን አስተያየት እዚህ ይጻፉ..."></textarea>
+        <button class="auth-btn" onclick="submitReview()">አስተያየት ስጥ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Drawer -->
+  <div class="drawer" id="cartDrawer">
+    <div class="drawer-header">
+      <h3>የግዢ ጋሪ</h3>
+      <button class="close-btn" onclick="toggleDrawer('cartDrawer')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="drawer-body" id="cartItems"></div>
+    <div class="drawer-footer">
+      <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-weight:bold;">
+        <span>ጠቅላላ ዋጋ:</span>
+        <span id="cartTotal">0 ETB</span>
+      </div>
+      <button class="auth-btn" onclick="goToCheckout()">ወደ ክፍያ ቀጥል ➔</button>
+    </div>
+  </div>
+
+  <!-- Wishlist Drawer -->
+  <div class="drawer" id="wishlistDrawer">
+    <div class="drawer-header">
+      <h3>የምኞት ዝርዝር (Wishlist)</h3>
+      <button class="close-btn" onclick="toggleDrawer('wishlistDrawer')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="drawer-body" id="wishlistItems"></div>
+  </div>
+
+  <!-- Auth Modal -->
+  <div class="modal-overlay" id="authModal">
+    <div class="auth-card">
+      <button class="close-modal" onclick="closeAuthModal()"><i class="fa-solid fa-xmark"></i></button>
+
+      <div id="loginForm">
+        <h2>ወደ አካውንትዎ ይግቡ</h2>
+        <div class="form-group">
+          <label>ኢሜይል</label>
+          <input type="email" id="loginEmail" placeholder="example@gmail.com">
+        </div>
+        <div class="form-group">
+          <label>የይለፍ ቃል</label>
+          <input type="password" id="loginPassword" placeholder="******">
+        </div>
+        <button class="auth-btn" onclick="handleLogin()">ግባ</button>
+        <div class="auth-toggle">
+          አካውንት የሎትም? <a onclick="switchAuthView('signup')">አዲስ ይመዝገቡ</a>
+        </div>
+      </div>
+
+      <div id="signupForm" style="display: none;">
+        <h2>አዲስ አካውንት ይክፈቱ</h2>
+        <div class="form-group">
+          <label>ሙሉ ስም</label>
+          <input type="text" id="signupName" placeholder="እባክዎን ስምዎን ያስገቡ">
+        </div>
+        <div class="form-group">
+          <label>ስልክ ቁጥር</label>
+          <input type="tel" id="signupPhone" placeholder="09........">
+        </div>
+        <div class="form-group">
+          <label>ኢሜይል</label>
+          <input type="email" id="signupEmail" placeholder="example@gmail.com">
+        </div>
+        <div class="form-group">
+          <label>የይለፍ ቃል</label>
+          <input type="password" id="signupPassword" placeholder="******">
+        </div>
+        <div class="form-group">
+          <label>የአካውንት አይነት (Role)</label>
+          <select id="signupRole">
+            <option value="customer">ደንበኛ (Customer)</option>
+            <option value="seller">ሻጭ (Seller)</option>
+          </select>
+        </div>
+        <button class="auth-btn" onclick="handleSignup()">ተመዝገብ</button>
+        <div class="auth-toggle">
+          አካውንት አለዎት? <a onclick="switchAuthView('login')">ይግቡ</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-links">
+      <a href="terms.html">የአገልግሎት ውል (Terms)</a> | 
+      <a href="privacy.html">የመረጃ ጥበቃ (Privacy Policy)</a> | 
+      <a href="refund.html">የእቃ መመለሻ (Refund Policy)</a>
+    </div>
+    <p style="margin-top: 10px;">&copy; 2026 Jinka Market. All rights reserved.</p>
+  </footer>
+
+  <!-- JavaScript Core Logic -->
+  <script>
+    const Validator = {
+      isValidEthiopianPhone: (phone) => {
+        if (!phone) return false;
+        const phoneRegex = /^(?:\+251|0)?(9|7)\d{8}$/;
+        return phoneRegex.test(phone.trim());
+      },
+      isValidImageUrl: (url) => {
+        if (!url || url.trim() === "") return true;
+        try {
+          const parsedUrl = new URL(url);
+          return parsedUrl.protocol === "http:" || parsedUrl.protocol === "https:";
+        } catch (_) {
+          return false;
+        }
+      },
+      sanitizeInput: (str) => {
+        if (!str) return "";
+        const temp = document.createElement('div');
+        temp.textContent = str;
+        return temp.innerHTML;
+      }
+    };  
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCwAk45bie0KbuZtcp50zEkMkcY7RPwUp4",
+      authDomain: "jinka-market-8231a.firebaseapp.com",
+      projectId: "jinka-market-8231a",
+      storageBucket: "jinka-market-8231a.firebasestorage.app",
+      messagingSenderId: "711006866553",
+      appId: "1:711006866553:web:cf709c47bf126f96ecd8a8"
+    };
+
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    async function sendTelegramNotification(messageText) {
+      try {
+        const response = await fetch('https://us-central1-jinka-market-8231a.cloudfunctions.net/sendTelegram', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: messageText })
+        });
+        if (!response.ok) {
+          console.warn('Telegram cloud function responded with status:', response.status);
+        }
+      } catch (error) {
+        console.error('Telegram notification error:', error);
+      }
+    }
+
+    let products = [];
+    let cart = JSON.parse(localStorage.getItem('jinka_market_cart')) || [];
+    let lastOrderedItems = [];
+    let lastOrderTotal = 0;
+    let wishlist = [];
+    let activeCategory = 'all';
+    let culturalFilterType = 'all';
+    let currentUser = null;
+    let currentUserRole = 'customer';
+    let selectedProductId = null;
+    let selectedRating = 5;
+    let activeReelIdForComment = null;
+
+    let currentTxnRef = 'ያልተገለፀ';
+    let currentReceiptUrl = '';
+    let currentCustomerName = 'ያልተገለፀ';
+    let currentCustomerPhone = 'ያልተገለፀ';
+    let currentCustomerAddress = 'ያልተገለፀ';
+    let currentPaymentMethod = 'Chapa';
+
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchApprovedProducts();
+      fetchPromos();
+      fetchReels();
+      fetchCulturalProducts();
+      fetchPaymentMethods();
+      updateCartUI();
+      updateWishlistUI();
+
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          currentUser = user;
+          db.collection("users").doc(user.uid).get().then(doc => {
+            if (doc.exists) {
+              const userData = doc.data();
+              currentUserRole = userData.role || 'customer';
+              document.getElementById('userRoleBadge').innerText = currentUserRole === 'admin' ? 'አድሚን' : (currentUserRole === 'seller' ? 'ሻጭ' : 'ደንበኛ');
+            } else {
+              currentUserRole = 'customer';
+              document.getElementById('userRoleBadge').innerText = 'ደንበኛ';
+            }
+            document.getElementById('guestNav').style.display = 'none';
+            document.getElementById('userNav').style.display = 'inline-flex';
+          });
+        } else {
+          currentUser = null;
+          currentUserRole = 'customer';
+          document.getElementById('guestNav').style.display = 'inline-block';
+          document.getElementById('userNav').style.display = 'none';
+        }
+      });
+    });
+
+    function saveCartToStorage() {
+      localStorage.setItem('jinka_market_cart', JSON.stringify(cart));
+      updateCartUI(); 
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      const icon = document.getElementById('themeIcon');
+      if (document.body.classList.contains('dark-mode')) {
+        icon.classList.replace('fa-moon', 'fa-sun');
+      } else {
+        icon.classList.replace('fa-sun', 'fa-moon');
+      }
+    }
+
+    let currentSlide = 0;
+    function showSlide(index) {
+      const slides = document.querySelectorAll('.slide');
+      const dots = document.querySelectorAll('.dot');
+      if (slides.length === 0) return;
+      slides.forEach(s => s.classList.remove('active'));
+      dots.forEach(d => d.classList.remove('active'));
+      currentSlide = (index + slides.length) % slides.length;
+      slides[currentSlide].classList.add('active');
+      if (dots[currentSlide]) dots[currentSlide].classList.add('active');
+    }
+    function setSlide(index) { showSlide(index); }
+    setInterval(() => { showSlide(currentSlide + 1); }, 5000);
+
+    function fetchPromos() {
+      db.collection("promos").onSnapshot(snap => {
+        if(snap.empty) return;
+        const slider = document.getElementById('heroSliderContainer');
+        const dots = document.getElementById('sliderDotsContainer');
+        slider.innerHTML = '';
+        dots.innerHTML = '';
+        let idx = 0;
+        snap.forEach(doc => {
+          const p = doc.data();
+          slider.innerHTML += `
+            <div class="slide ${idx===0?'active':''}" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('${p.imageUrl}');">
+              <div class="slide-content">
+                <h2>${p.title}</h2>
+                <p>${p.subtitle || ''}</p>
+                <button onclick="filterCategory('sale', event)">አሁኑኑ ይግዙ</button>
+              </div>
+            </div>`;
+          dots.innerHTML += `<span class="dot ${idx===0?'active':''}" onclick="setSlide(${idx})"></span>`;
+          idx++;
+        });
+      });
+    }
+
+    function switchView(viewId) {
+      document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+      const sec = document.getElementById(viewId);
+      if(sec) sec.classList.add('active');
+    }
+
+    function navigateToDashboard() {
+      if (currentUserRole === 'admin') {
+        loadAdminData();
+        fetchOrdersForAdmin();
+        switchView('adminDashboard');
+      } else if (currentUserRole === 'seller') {
+        loadSellerProducts();
+        switchView('adminDashboard');
+      } else {
+        loadCustomerOrders();
+        switchView('customerDashboard');
+      }
+    }
+
+    function openAboutModal() { document.getElementById('aboutModal').classList.add('active'); }
+    function closeAboutModal() { document.getElementById('aboutModal').classList.remove('active'); }
+
+    function openAuthModal(mode) {
+      switchAuthView(mode);
+      document.getElementById('authModal').classList.add('active');
+    }
+
+    function closeAuthModal() {
+      document.getElementById('authModal').classList.remove('active');
+    }
+
+    function switchAuthView(mode) {
+      const loginForm = document.getElementById('loginForm');
+      const signupForm = document.getElementById('signupForm');
+      if (mode === 'login') {
+        loginForm.style.display = 'block';
+        signupForm.style.display = 'none';
+      } else {
+        loginForm.style.display = 'none';
+        signupForm.style.display = 'block';
+      }
+    }
+
+    function handleLogin() {
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      if (!email || !password) {
+        alert("እባክዎን ኢሜይል እና የይለፍ ቃል ያስገቡ!");
+        return;
+      }
+      auth.signInWithEmailAndPassword(email, password).then(() => {
+        alert("በተሳካ ሁኔታ ገብተዋል!");
+        closeAuthModal();
+      }).catch(err => {
+        alert("የግባ ስህተት፦ " + err.message);
+      });
+    }
+
+    function handleSignup() {
+      const name = document.getElementById('signupName').value.trim();
+      const phone = document.getElementById('signupPhone').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
+      const password = document.getElementById('signupPassword').value;
+      const role = document.getElementById('signupRole').value;
+
+      if (!name || !phone || !email || !password) {
+        alert("እባክዎን ሁሉንም መስኮች በትክክል ይሙሉ!");
+        return;
+      }
+      if (!Validator.isValidEthiopianPhone(phone)) {
+        alert("እባክዎን ትክክለኛ የኢትዮጵያ ስልክ ቁጥር ያስገቡ!");
+        return;
+      }
+
+      auth.createUserWithEmailAndPassword(email, password).then(cred => {
+        return db.collection("users").doc(cred.user.uid).set({
+          name: Validator.sanitizeInput(name),
+          phone: phone,
+          email: email,
+          role: role,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      }).then(() => {
+        alert("አካውንትዎ በተሳካ ሁኔታ ተመዝግቧል!");
+        closeAuthModal();
+      }).catch(err => {
+        alert("የምዝገባ ስህተት፦ " + err.message);
+      });
+    }
+
+    function handleLogout() {
+      auth.signOut().then(() => {
+        alert("ውጥተዋል!");
+        switchView('storeView');
+      });
+    }
+
+    function fetchApprovedProducts() {
+      db.collection("products").where("status", "==", "approved").onSnapshot((snapshot) => {
+        products = [];
+        const now = new Date();
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          if (data.expiresAt) {
+            const expDate = data.expiresAt.toDate ? data.expiresAt.toDate() : new Date(data.expiresAt);
+            if (expDate > now) {
+              products.push({ id: doc.id, ...data });
+            } else {
+              db.collection("products").doc(doc.id).update({ status: "expired" }).catch(() => {});
+            }
+          } else {
+            products.push({ id: doc.id, ...data });
+          }
+        });
+        filterProducts();
+      });
+    }
+
+    function fetchCulturalProducts() {
+      db.collection("products").where("status", "==", "approved").onSnapshot((snapshot) => {
+        let culturalItems = [];
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          if (data.category && data.category.startsWith('cultural_')) {
+            culturalItems.push({ id: doc.id, ...data });
+          }
+        });
+        renderCulturalProducts(culturalItems);
+      });
+    }
+
+    function renderCulturalProducts(items) {
+      const container = document.getElementById('culturalProductsContainer');
+      if (!container) return;
+      container.innerHTML = '';
+      
+      const filtered = items.filter(item => {
+        if (culturalFilterType === 'all') return true;
+        if (culturalFilterType === 'clothes' && item.category === 'cultural_clothes') return true;
+        if (culturalFilterType === 'crafts' && item.category === 'cultural_crafts') return true;
+        if (culturalFilterType === 'food' && item.category === 'cultural_food') return true;
+        return false;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<p style="text-align: center; color: #888; grid-column: 1/-1;">ምንም የባህላዊ ምርት አልተገኘም።</p>`;
+        return;
+      }
+
+      filtered.forEach(prod => {
+        const frontImage = prod.imageUrlFront || prod.imageUrl || prod.image || 'https://via.placeholder.com/300';
+        container.innerHTML += `
+          <div class="product-card" onclick="openProductDetailModal('${prod.id}')">
+            <div class="card-img-wrapper">
+              <img src="${frontImage}" alt="${prod.title}" loading="lazy">
+            </div>
+            <div class="product-info">
+              <div>
+                <div class="product-title">${prod.title}</div>
+                <div class="rating-row"><i class="fa-solid fa-star"></i><span>${prod.rating || 5.0}</span></div>
+              </div>
+              <div class="price-row">
+                <div class="price">${prod.price} ETB</div>
+                <button class="add-cart-btn" onclick="event.stopPropagation(); addToCart('${prod.id}')"><i class="fa-solid fa-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function filterCulturalProducts(type, e) {
+      culturalFilterType = type;
+      document.querySelectorAll('.cultural-filter-btn').forEach(btn => {
+        btn.style.background = 'transparent';
+        btn.style.color = '#8B4513';
+        btn.classList.remove('active');
+      });
+      if (e && e.target) {
+        e.target.style.background = '#8B4513';
+        e.target.style.color = 'white';
+        e.target.classList.add('active');
+      }
+      fetchCulturalProducts();
+    }
+
+    function renderProducts(items) {
+      const grid = document.getElementById('productGrid');
+      grid.innerHTML = '';
+      if (items.length === 0) {
+        grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding: 40px; color: var(--text-muted);">ምንም አይነት ተቀባይነት ያገኘ ምርት አልተገኘም!</p>`;
+        return;
+      }
+      items.forEach(prod => {
+        const isWish = wishlist.includes(prod.id);
+        const frontImage = prod.imageUrlFront || prod.imageUrl || prod.image || 'https://via.placeholder.com/300';
+        grid.innerHTML += `
+          <div class="product-card" onclick="openProductDetailModal('${prod.id}')">
+            <div class="card-img-wrapper">
+              <img src="${frontImage}" alt="${prod.title}" loading="lazy">
+              <button class="wishlist-btn ${isWish ? 'active' : ''}" onclick="event.stopPropagation(); toggleWishlist('${prod.id}')">
+                <i class="fa-${isWish ? 'solid' : 'regular'} fa-heart"></i>
+              </button>
+            </div>
+            <div class="product-info">
+              <div>
+                <div class="product-title">${prod.title}</div>
+                <div class="rating-row"><i class="fa-solid fa-star"></i><span>${prod.rating || 5.0}</span></div>
+              </div>
+              <div class="price-row">
+                <div class="price">${prod.price} ETB</div>
+                <button class="add-cart-btn" onclick="event.stopPropagation(); addToCart('${prod.id}')"><i class="fa-solid fa-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function filterProducts() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = products.filter(p => (activeCategory === 'all' || p.category === activeCategory) && (p.title && p.title.toLowerCase().includes(query)));
+      renderProducts(filtered);
+    }
+
+    function filterCategory(cat, e) {
+      activeCategory = cat;
+      document.querySelectorAll('.cat-chip').forEach(btn => btn.classList.remove('active'));
+      if (e && e.target) e.target.classList.add('active');
+      filterProducts();
+    }
+
+    function openProductDetailModal(id) {
+      selectedProductId = id;
+      const prod = products.find(p => p.id === id);
+      if (!prod) return;
+
+      const fImg = prod.imageUrlFront || prod.imageUrl || prod.image || 'https://via.placeholder.com/300';
+      const bImg = prod.imageUrlBack || fImg;
+      const lImg = prod.imageUrlLeft || fImg;
+      const rImg = prod.imageUrlRight || fImg;
+
+      const phone = prod.sellerPhone || '0928664142';
+      const telegram = (prod.sellerTelegram || 'jinka_market_bot').replace('@','');
+      const whatsapp = prod.sellerWhatsapp || '251928664142';
+
+      document.getElementById('modalProductDetails').innerHTML = `
+        <div style="text-align: center; margin-bottom: 15px;">
+          <img id="previewModalMainImg" src="${fImg}" style="width:100%; height:220px; object-fit:cover; border-radius:8px; border: 1px solid var(--border-color);">
+          <div style="display: flex; gap: 6px; justify-content: center; margin-top: 10px;">
+            <button onclick="setPreviewImage('${fImg}')" style="padding: 5px 10px; background: var(--primary); color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: bold;">ፊት (Front)</button>
+            <button onclick="setPreviewImage('${bImg}')" style="padding: 5px 10px; background: var(--border-color); color: var(--text-main); border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: bold;">ጀርባ (Back)</button>
+            <button onclick="setPreviewImage('${lImg}')" style="padding: 5px 10px; background: var(--border-color); color: var(--text-main); border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: bold;">ግራ (Left)</button>
+            <button onclick="setPreviewImage('${rImg}')" style="padding: 5px 10px; background: var(--border-color); color: var(--text-main); border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: bold;">ቀኝ (Right)</button>
+          </div>
+        </div>
+
+        <h3>${prod.title}</h3>
+        <p style="color:var(--primary); font-size:1.3rem; font-weight:bold; margin: 5px 0;">${prod.price} ETB</p>
+        <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom: 15px;">${prod.description || 'ምንም ማብራሪያ አልተሰጠም።'}</p>
+
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px;">
+          <button onclick="addToCart('${prod.id}'); closeProductDetailModal(); goToCheckout();" style="display: flex; align-items: center; justify-content: center; gap: 6px; background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+            🛒 ግዛ (Buy)
+          </button>
+          <a href="tel:${phone}" style="display: flex; align-items: center; justify-content: center; gap: 6px; background: #27ae60; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; text-decoration: none;">
+            📞 ደውል
+          </a>
+          <a href="https://t.me/${telegram}" target="_blank" style="display: flex; align-items: center; justify-content: center; gap: 6px; background: #0088cc; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; text-decoration: none;">
+            ✈️ ቴሌግራም
+          </a>
+          <a href="https://wa.me/${whatsapp}" target="_blank" style="display: flex; align-items: center; justify-content: center; gap: 6px; background: #25D366; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; text-decoration: none;">
+            💬 WhatsApp
+          </a>
+        </div>
+      `;
+
+      loadProductReviews(id);
+      document.getElementById('productDetailModal').classList.add('active');
+    }
+
+    function setPreviewImage(url) {
+      const img = document.getElementById('previewModalMainImg');
+      if(img) img.src = url;
+    }
+
+    function closeProductDetailModal() {
+      document.getElementById('productDetailModal').classList.remove('active');
+    }
+
+    function setRating(r) {
+      selectedRating = r;
+      const stars = document.querySelectorAll('#starInput i');
+      stars.forEach((s, idx) => {
+        if (idx < r) s.classList.replace('fa-regular', 'fa-solid');
+        else s.classList.replace('fa-solid', 'fa-regular');
+      });
+    }
+
+    function submitReview() {
+      if (!currentUser) return alert("አስተያየት ለመስጠት እባክዎን አስቀድመው ይግቡ!");
+      const comment = document.getElementById('reviewCommentInput').value;
+      if (!comment) return alert("እባክዎን አስተያየትዎን ይፃፉ!");
+
+      db.collection("products").doc(selectedProductId).collection("reviews").add({
+        userEmail: currentUser.email,
+        rating: selectedRating,
+        comment: Validator.sanitizeInput(comment),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => {
+        alert("አስተያየትዎ ተመዝግቧል!");
+        document.getElementById('reviewCommentInput').value = '';
+        loadProductReviews(selectedProductId);
+      });
+    }
+
+    function loadProductReviews(prodId) {
+      db.collection("products").doc(prodId).collection("reviews").get().then(snap => {
+        const container = document.getElementById('productReviewsList');
+        container.innerHTML = '';
+        if (snap.empty) {
+          container.innerHTML = `<p style="font-size:0.8rem; color:var(--text-muted);">እስካሁን ምንም አስተያየት አልተሰጠም።</p>`;
+          return;
+        }
+        snap.forEach(doc => {
+          const r = doc.data();
+          container.innerHTML += `
+            <div style="border-bottom: 1px solid var(--border-color); padding: 5px 0; font-size:0.85rem;">
+              <strong>${r.userEmail}</strong> - <span style="color:#ffb703;">★ ${r.rating}</span>
+              <p style="color:var(--text-muted);">${r.comment}</p>
+            </div>`;
+        });
+      });
+    }
+
+    function addToCart(id) {
+      const exist = cart.find(item => item.id === id);
+      if (exist) exist.qty += 1;
+      else cart.push({ id, qty: 1 });
+      saveCartToStorage();
+    }
+
+    function updateCartUI() {
+      const cartContainer = document.getElementById('cartItems');
+      if(!cartContainer) return;
+      cartContainer.innerHTML = '';
+      let total = 0, count = 0;
+      cart.forEach(item => {
+        const prod = products.find(p => p.id === item.id);
+        if (prod) {
+          total += prod.price * item.qty;
+          count += item.qty;
+          const frontImg = prod.imageUrlFront || prod.imageUrl || prod.image || 'https://via.placeholder.com/300';
+          cartContainer.innerHTML += `
+            <div class="cart-item">
+              <img src="${frontImg}">
+              <div class="cart-item-info">
+                <div style="font-size:0.85rem; font-weight:600;">${prod.title}</div>
+                <div style="font-size:0.85rem; color:var(--primary); font-weight:bold;">${prod.price * item.qty} ETB (x${item.qty})</div>
+              </div>
+            </div>`;
+        }
+      });
+      document.getElementById('cartCount').innerText = count;
+      document.getElementById('cartTotal').innerText = `${total} ETB`;
+    }
+
+    function toggleWishlist(id) {
+      const idx = wishlist.indexOf(id);
+      if (idx > -1) wishlist.splice(idx, 1);
+      else wishlist.push(id);
+      document.getElementById('wishlistCount').innerText = wishlist.length;
+      updateWishlistUI();
+      filterProducts();
+    }
+
+    function updateWishlistUI() {
+      const container = document.getElementById('wishlistItems');
+      if(!container) return;
+      container.innerHTML = '';
+      wishlist.forEach(id => {
+        const prod = products.find(p => p.id === id);
+        if (prod) {
+          const frontImg = prod.imageUrlFront || prod.imageUrl || prod.image || 'https://via.placeholder.com/300';
+          container.innerHTML += `
+            <div class="cart-item">
+              <img src="${frontImg}">
+              <div class="cart-item-info">
+                <div style="font-size:0.85rem; font-weight:600;">${prod.title}</div>
+                <div style="font-size:0.85rem; color:var(--primary); font-weight:bold;">${prod.price} ETB</div>
+              </div>
+              <button class="add-cart-btn" onclick="addToCart('${prod.id}')"><i class="fa-solid fa-cart-plus"></i></button>
+            </div>`;
+        }
+      });
+    }
+
+    function toggleDrawer(id) { document.getElementById(id).classList.toggle('open'); }
+
+    function goToCheckout() {
+      const cartDrawer = document.getElementById('cartDrawer');
+      if (cartDrawer && cartDrawer.classList.contains('open')) {
+        toggleDrawer('cartDrawer');
+      }
+      const checkoutTotalEl = document.getElementById('checkoutTotalAmount');
+      const cartTotalEl = document.getElementById('cartTotal');
+
+      if (cartTotalEl && checkoutTotalEl) {
+        checkoutTotalEl.innerText = cartTotalEl.innerText;
+      }
+
+      const checkoutSec = document.getElementById('checkoutSection');
+      if (checkoutSec) {
+        checkoutSec.style.display = 'block';
+        checkoutSec.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function togglePaymentDetails(method) {
+      currentPaymentMethod = method.toUpperCase();
+      const chapaBox = document.getElementById('chapaDetailsBox');
+      const bankBox = document.getElementById('bankDetailsBox');
+      const telebirrBox = document.getElementById('telebirrDetailsBox');
+      const codBox = document.getElementById('codDetailsBox');
+      const uploadBox = document.getElementById('receiptUploadBox');
+      const downloadBox = document.getElementById('downloadReceiptBox');
+
+      if(chapaBox) chapaBox.style.display = 'none';
+      if(bankBox) bankBox.style.display = 'none';
+      if(telebirrBox) telebirrBox.style.display = 'none';
+      if(codBox) codBox.style.display = 'none';
+      if(uploadBox) uploadBox.style.display = 'none';
+      if(downloadBox) downloadBox.style.display = 'none';
+
+      if (method === 'chapa') {
+        if(chapaBox) chapaBox.style.display = 'block';
+      } else if (method === 'bank') {
+        if(bankBox) bankBox.style.display = 'block';
+      } else if (method === 'telebirr') {
+        if(telebirrBox) telebirrBox.style.display = 'block';
+      } else if (method === 'cod') {
+        if(codBox) codBox.style.display = 'block';
+      }
+    }
+
+    function prepareChapaForm() {
+      const totalAmount = getCartTotal();
+      document.getElementById('chapa_amount').value = totalAmount;
+      document.getElementById('chapa_tx_ref').value = 'jinka-tx-' + Date.now();
+      
+      if(currentUser) {
+        document.getElementById('chapa_email').value = currentUser.email || 'customer@example.com';
+      }
+    }
+
+    function showReceiptUploadForm() {
+      document.getElementById('receiptUploadBox').style.display = 'block';
+      document.getElementById('chapaDetailsBox').style.display = 'none';
+      document.getElementById('bankDetailsBox').style.display = 'none';
+      document.getElementById('telebirrDetailsBox').style.display = 'none';
+      document.getElementById('codDetailsBox').style.display = 'none';
+    }
+
+    function getCartTotal() {
+      return cart.reduce((total, item) => {
+        const prod = products.find(p => p.id === item.id);
+        return total + (prod ? prod.price * item.qty : 0);
+      }, 0);
+    }
+
+    function handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        currentReceiptUrl = e.target.result;
+        alert("ፋይሉ በተሳካ ሁኔታ ተያይዟል!");
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function sendOrderToAdmin() {
+      const nameInput = document.getElementById('customerName');
+      const phoneInput = document.getElementById('customerPhone');
+      const emailInput = document.getElementById('customerEmail');
+      const addressInput = document.getElementById('customerAddress');
+      const noteInput = document.getElementById('customerNote');
+      const urlInput = document.getElementById('receiptImageUrl');
+
+      const name = nameInput ? nameInput.value.trim() : "";
+      const phone = phoneInput ? phoneInput.value.trim() : "";
+      const email = emailInput ? emailInput.value.trim() : "";
+      const address = addressInput ? addressInput.value.trim() : "";
+      const note = noteInput ? noteInput.value.trim() : "";
+      const imageUrl = urlInput ? urlInput.value.trim() : "";
+
+      if (!name || !phone) {
+        alert("እባክዎን ስምዎን እና ስልክ ቁጥርዎን ያስገቡ!");
+        return;
+      }
+
+      if(!Validator.isValidEthiopianPhone(phone)) {
+        alert("እባክዎን ትክክለኛ የኢትዮጵያ ስልክ ቁጥር ያስገቡ!");
+        return;
+      }
+
+      if (cart.length === 0) {
+        alert("የግዢ ጋሪዎ ባዶ ነው! እባክዎን አስቀድመው ምርት ይምረጡ።");
+        return;
+      }
+
+      const sendBtn = document.getElementById('sendToAdminBtn');
+      if (sendBtn) {
+        sendBtn.disabled = true;
+        sendBtn.innerText = "እየተላከ ነው...";
+      }
+
+      currentCustomerName = name;
+      currentCustomerPhone = phone;
+      currentCustomerAddress = address || 'ጂንካ';
+      currentTxnRef = 'JINKA-' + Date.now().toString().slice(-6);
+
+      const finalReceiptUrl = currentReceiptUrl || imageUrl || 'ምንም ደረሰኝ አልተያያዘም';
+
+      let orderedProductsList = [];
+      let cartSummaryTextForTelegram = "";
+
+      cart.forEach((item, index) => {
+        const prod = products.find(p => p.id === item.id);
+        if (prod) {
+          const itemTotal = prod.price * item.qty;
+          orderedProductsList.push({
+            productId: prod.id,
+            title: prod.title,
+            price: prod.price,
+            quantity: item.qty,
+            subTotal: itemTotal
+          });
+
+          cartSummaryTextForTelegram += `\n   ${index + 1}. ${prod.title} - ${item.qty} x ${prod.price} = ${itemTotal} ETB`;
+        }
+      });
+
+      const totalOrderPrice = getCartTotal();
+      
+      lastOrderedItems = [...cart];
+      lastOrderTotal = totalOrderPrice;
+
+      try {
+        await db.collection("orders").add({
+          transactionRef: currentTxnRef,
+          customerName: Validator.sanitizeInput(name),
+          customerPhone: phone,
+          customerEmail: email || (currentUser ? currentUser.email : 'Guest'),
+          customerAddress: Validator.sanitizeInput(currentCustomerAddress),
+          note: Validator.sanitizeInput(note),
+          paymentMethod: currentPaymentMethod,
+          totalAmount: totalOrderPrice,
+          cartItems: orderedProductsList,
+          receiptUrl: finalReceiptUrl,
+          userId: currentUser ? currentUser.uid : 'guest',
+          status: 'Pending',
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        const telegramMessage = 
+`🛍️ **አዲስ የተሟላ ትዕዛዝ ደርሷል!**
+
+👤 **የደንበኛ ስም:** ${name}
+📞 **ስልክ ቁጥር:** ${phone}
+📍 **አድራሻ:** ${currentCustomerAddress}
+✉️ **ኢሜይል:** ${email || 'አልተጠቀሰም'}
+📝 **ማስታወሻ:** ${note || 'የለም'}
+
+📦 **የተገዙ ምርቶች ጋሪ ዝርዝር:**${cartSummaryTextForTelegram}
+
+💰 **ጠቅላላ የተከፈለው ዋጋ:** ${totalOrderPrice} ETB
+💳 **የክፍያ ዘዴ:** ${currentPaymentMethod}
+📄 **የደረሰኝ ሊንክ/ፋይል:** ${finalReceiptUrl}`;
+
+        await sendTelegramNotification(telegramMessage);
+
+        alert("🎉 ትዕዛዝዎ እና የጋሪዎ መረጃ ለአድሚኑ በተሳካ ሁኔታ ተልኳል!");
+        document.getElementById('receiptUploadBox').style.display = 'none';
+        document.getElementById('downloadReceiptBox').style.display = 'block';
+
+        cart = [];
+        saveCartToStorage();
+
+      } catch (err) {
+        console.error("Order error:", err);
+        alert("❌ ትዕዛዙን ሲላክ ስህተት አጋጥሟል፦ " + err.message);
+      } finally {
+        if (sendBtn) {
+          sendBtn.disabled = false;
+          sendBtn.innerText = "ለአድሚኑ ላክ";
+        }
+      }
+    }
+
+    function downloadPDFReceipt() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(20);
+      doc.setTextColor(255, 102, 0);
+      doc.text("JINKA MARKET (ጂንካ ገበያ)", 20, 20);
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(12);
+      doc.setTextColor(31, 41, 55);
+
+      doc.text(`Transaction Ref: ${currentTxnRef}`, 20, 35);
+      doc.text(`Customer Name: ${currentCustomerName}`, 20, 45);
+      doc.text(`Phone Number: ${currentCustomerPhone}`, 20, 55);
+      doc.text(`Delivery Address: ${currentCustomerAddress}`, 20, 65);
+      doc.text(`Payment Method: ${currentPaymentMethod}`, 20, 75);
+      doc.text(`Date: ${new Date().toLocaleString()}`, 20, 85);
+
+      doc.setLineWidth(0.5);
+      doc.line(20, 92, 190, 92);
+
+      let y = 102;
+      doc.setFont("helvetica", "bold");
+      doc.text("Item Description", 20, y);
+      doc.text("Qty", 120, y);
+      doc.text("Price", 160, y);
+      y += 8;
+
+      doc.setFont("helvetica", "normal");
+      lastOrderedItems.forEach((item) => {
+        const prod = products.find(p => p.id === item.id);
+        if (prod) {
+          doc.text(prod.title.substring(0, 30), 20, y);
+          doc.text(item.qty.toString(), 120, y);
+          doc.text(`${prod.price * item.qty} ETB`, 160, y);
+          y += 8;
+        }
+      });
+
+      doc.line(20, y + 2, 190, y + 2);
+      y += 12;
+
+      doc.setFont("helvetica", "bold");
+      doc.text(`Total Amount: ${lastOrderTotal} ETB`, 20, y);
+
+      doc.save(`Jinka_Market_Receipt_${currentTxnRef}.pdf`);
+    }
+
+    async function addSellerProduct() {
+      const title = document.getElementById('sellerProdTitle').value.trim();
+      const price = parseFloat(document.getElementById('sellerProdPrice').value);
+      const category = document.getElementById('sellerProdCategory').value;
+      
+      const imgFront = document.getElementById('sellerProdImgFront').value.trim();
+      const imgBack = document.getElementById('sellerProdImgBack').value.trim();
+      const imgLeft = document.getElementById('sellerProdImgLeft').value.trim();
+      const imgRight = document.getElementById('sellerProdImgRight').value.trim();
+
+      const phone = document.getElementById('sellerPhone').value.trim();
+      const telegram = document.getElementById('sellerTelegram').value.trim();
+      const whatsapp = document.getElementById('sellerWhatsapp').value.trim();
+      const desc = document.getElementById('sellerProdDesc').value.trim();
+
+      if (!title || isNaN(price) || price <= 0) {
+        alert("እባክዎን የምርቱን ስም እና ትክክለኛ ዋጋ ያስገቡ!");
+        return;
+      }
+
+      if (!imgFront || !imgBack || !imgLeft || !imgRight) {
+        alert("እባክዎን የሁሉም አቅጣጫዎች (የፊት፣ የጀርባ፣ የግራ እና የቀኝ) ፎቶ ዩአርኤል (URL) በትክክል ያስገቡ!");
+        return;
+      }
+
+      const btn = document.getElementById('submitSellerProdBtn');
+      btn.disabled = true;
+      btn.innerText = "እየተመዘገበ ነው...";
+
+      try {
+        await db.collection("products").add({
+          title: Validator.sanitizeInput(title),
+          price: price,
+          category: category,
+          imageUrlFront: imgFront,
+          imageUrlBack: imgBack,
+          imageUrlLeft: imgLeft,
+          imageUrlRight: imgRight,
+          imageUrl: imgFront,
+          sellerPhone: phone,
+          sellerTelegram: telegram,
+          sellerWhatsapp: whatsapp,
+          description: Validator.sanitizeInput(desc),
+          sellerId: currentUser ? currentUser.uid : 'anonymous',
+          status: 'pending',
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        alert("🎉 ምርትዎ በተሳካ ሁኔታ ተመዝግቧል! አድሚኑ እስኪያጸድቀው ድረስ በPending ሁነታ ላይ ይቆያል።");
+        
+        document.getElementById('sellerProdTitle').value = '';
+        document.getElementById('sellerProdPrice').value = '';
+        document.getElementById('sellerProdImgFront').value = '';
+        document.getElementById('sellerProdImgBack').value = '';
+        document.getElementById('sellerProdImgLeft').value = '';
+        document.getElementById('sellerProdImgRight').value = '';
+        document.getElementById('sellerPhone').value = '';
+        document.getElementById('sellerTelegram').value = '';
+        document.getElementById('sellerWhatsapp').value = '';
+        document.getElementById('sellerProdDesc').value = '';
+
+        navigateToDashboard();
+
+      } catch (err) {
+        console.error("Add product error:", err);
+        alert("❌ ስህተት አጋጥሟል፦ " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "ምርት መዝግብ";
+      }
+    }
+
+    async function savePaymentMethod() {
+      const id = document.getElementById('editPaymentId').value;
+      const bankName = document.getElementById('paymentBankName').value.trim();
+      const accountNumber = document.getElementById('paymentAccountNumber').value.trim();
+      const accountHolder = document.getElementById('paymentAccountHolder').value.trim();
+      const type = document.getElementById('paymentType').value;
+
+      if (!bankName || !accountNumber || !accountHolder) {
+        alert("እባክዎን ሁሉንም የክፍያ ዝርዝር መረጃዎች ይሙሉ!");
+        return;
+      }
+
+      const paymentData = {
+        bankName: Validator.sanitizeInput(bankName),
+        accountNumber: Validator.sanitizeInput(accountNumber),
+        accountHolder: Validator.sanitizeInput(accountHolder),
+        type: type,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      try {
+        if (id) {
+          await db.collection("payment_methods").doc(id).update(paymentData);
+          alert("የክፍያ ዘዴው ተሻሽሏል!");
+        } else {
+          paymentData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+          await db.collection("payment_methods").add(paymentData);
+          alert("አዲስ የክፍያ ዘዴ ተመዝግቧል!");
+        }
+        document.getElementById('editPaymentId').value = '';
+        document.getElementById('paymentBankName').value = '';
+        document.getElementById('paymentAccountNumber').value = '';
+        document.getElementById('paymentAccountHolder').value = '';
+        fetchPaymentMethods();
+      } catch (err) {
+        alert("ስህተት አጋጥሟል፦ " + err.message);
+      }
+    }
+
+    function fetchPaymentMethods() {
+      db.collection("payment_methods").onSnapshot(snapshot => {
+        const table = document.getElementById('adminPaymentMethodsTable');
+        if (!table) return;
+        table.innerHTML = '';
+        if (snapshot.empty) {
+          table.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">ምንም የተመዘገበ የክፍያ ዘዴ የለም።</td></tr>`;
+          return;
+        }
+        snapshot.forEach(doc => {
+          const p = doc.data();
+          table.innerHTML = `
+            <tr>
+              <td>${p.bankName}</td>
+              <td>${p.accountNumber}</td>
+              <td>${p.accountHolder}</td>
+              <td>${p.type}</td>
+              <td>
+                <button onclick="editPaymentMethod('${doc.id}', '${p.bankName}', '${p.accountNumber}', '${p.accountHolder}', '${p.type}')" style="padding: 4px 8px; font-size:0.75rem; background:#3b82f6; color:white; border:none; border-radius:4px; cursor:pointer;">አስተካክል</button>
+                <button onclick="deletePaymentMethod('${doc.id}')" style="padding: 4px 8px; font-size:0.75rem; background:#ef4444; color:white; border:none; border-radius:4px; cursor:pointer;">ሰርዝ</button>
+              </td>
+            </tr>
+          `;
+        });
+      });
+    }
+
+    function editPaymentMethod(id, name, accNum, holder, type) {
+      document.getElementById('editPaymentId').value = id;
+      document.getElementById('paymentBankName').value = name;
+      document.getElementById('paymentAccountNumber').value = accNum;
+      document.getElementById('paymentAccountHolder').value = holder;
+      document.getElementById('paymentType').value = type;
+    }
+
+    async function deletePaymentMethod(id) {
+      if (confirm("እርግጠኛ ኖት ይህንን የክፍያ ዘዴ መሰረዝ ይፈልጋሉ?")) {
+        await db.collection("payment_methods").doc(id).delete();
+        alert("ተሰርዟል!");
+        fetchPaymentMethods();
+      }
+    }
+
+    async function addPromoSlider() {
+      const title = document.getElementById('promoTitle').value.trim();
+      const subtitle = document.getElementById('promoSubtitle').value.trim();
+      const imageUrl = document.getElementById('promoImageUrl').value.trim();
+
+      if (!title || !imageUrl) {
+        alert("እባክዎን ርዕስ እና የምስል ዩአርኤል (URL) ያስገቡ!");
+        return;
+      }
+
+      try {
+        await db.collection("promos").add({
+          title: Validator.sanitizeInput(title),
+          subtitle: Validator.sanitizeInput(subtitle),
+          imageUrl: imageUrl,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        alert("ስላይደር በተሳካ ሁኔታ ተመዝግቧል!");
+        document.getElementById('promoTitle').value = '';
+        document.getElementById('promoSubtitle').value = '';
+        document.getElementById('promoImageUrl').value = '';
+      } catch (err) {
+        alert("ስህተት አጋጥሟል፦ " + err.message);
+      }
+    }
+
+    function loadAdminData() {
+      db.collection("orders").get().then(snap => {
+        let totalRevenue = 0, totalOrders = snap.size;
+        const table = document.getElementById('adminOrdersTable');
+        if(!table) return;
+        table.innerHTML = '';
+        snap.forEach(doc => {
+          const data = doc.data();
+          if (data.status === 'Paid' || data.status === 'Completed') totalRevenue += (parseFloat(data.totalAmount) || 0);
+          table.innerHTML += `
+            <tr>
+              <td>${doc.id.substring(0, 8)}...</td>
+              <td>${data.userEmail || data.customerEmail || 'N/A'}</td>
+              <td>${data.totalAmount || 0} ETB</td>
+              <td>${data.paymentMethod || 'N/A'}</td>
+              <td><span class="status-badge ${data.status === 'Paid' ? 'status-paid' : 'status-completed'}">${data.status}</span></td>
+              <td><button onclick="markAsCompleted('${doc.id}')" style="padding: 4px 8px; font-size:0.75rem; cursor:pointer;">ጨርስ</button></td>
+            </tr>`;
+        });
+        document.getElementById('adminTotalRevenue').innerText = `${totalRevenue} ETB`;
+        document.getElementById('adminTotalOrders').innerText = totalOrders;
+      });
+
+      db.collection("products").get().then(snap => {
+        document.getElementById('adminTotalProducts').innerText = snap.size;
+        const appTable = document.getElementById('adminProductsApprovalTable');
+        if(!appTable) return;
+        appTable.innerHTML = '';
+        snap.forEach(doc => {
+          const p = doc.data();
+          const img = p.imageUrlFront || p.imageUrl || p.image || 'https://via.placeholder.com/40';
+          
+          let expiryInfo = '';
+          if (p.expiresAt) {
+            const expDateStr = p.expiresAt.toDate ? p.expiresAt.toDate().toLocaleDateString() : new Date(p.expiresAt).toLocaleDateString();
+            expiryInfo = `<br><small style="color:var(--text-muted);">የሚያበቃበት: ${expDateStr} (${p.durationMonths || 1} ወር)</small>`;
+          }
+
+          appTable.innerHTML += `
+            <tr>
+              <td><img src="${img}" style="width:40px; height:40px; border-radius:6px; object-fit:cover;"></td>
+              <td>${p.title}</td>
+              <td>${p.price} ETB</td>
+              <td>${p.sellerId ? p.sellerId.substring(0, 6) : 'N/A'}...</td>
+              <td><span class="status-badge ${p.status==='approved'?'status-completed':'status-pending'}">${p.status || 'pending'}</span></td>
+              <td>
+                ${p.status !== 'approved' ? `
+                  <div style="display:flex; flex-direction:column; gap:6px;">
+                    <select id="duration-${doc.id}" style="padding:4px; font-size:0.8rem; border-radius:4px; border:1px solid var(--border-color); background:var(--surface); color:var(--text-main);">
+                      <option value="1">1 ወር (30 ቀናት)</option>
+                      <option value="2">2 ወር (60 ቀናት)</option>
+                      <option value="3">3 ወር (90 ቀናት)</option>
+                      <option value="6">6 ወር (180 ቀናት)</option>
+                    </select>
+                    <button onclick="approveProductWithDuration('${doc.id}')" style="padding: 6px 10px; background:#10b981; color:white; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">አጽድቅ (Approve)</button>
+                  </div>
+                ` : `ጸድቋል ${expiryInfo}`}
+              </td>
+            </tr>`;
+        });
+      });
+
+      db.collection("users").get().then(snap => document.getElementById('adminTotalUsers').innerText = snap.size);
+    }
+
+    function approveProductWithDuration(prodId) {
+      const durationSelect = document.getElementById(`duration-${prodId}`);
+      const months = durationSelect ? parseInt(durationSelect.value) : 1;
+      const expiryDate = new Date();
+      expiryDate.setMonth(expiryDate.getMonth() + months);
+
+      db.collection("products").doc(prodId).update({
+        status: "approved",
+        durationMonths: months,
+        approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        expiresAt: firebase.firestore.Timestamp.fromDate(expiryDate)
+      }).then(() => {
+        alert(`ምርቱ ለ ${months} ወር እንዲቆይ ሆኖ ጸድቋል!`);
+        loadAdminData();
+        fetchApprovedProducts();
+      }).catch(err => {
+        alert("ስህተት አጋጥሟል፦ " + err.message);
+      });
+    }
+
+    function fetchOrdersForAdmin() {
+      db.collection("orders").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
+        let html = "";
+        snapshot.forEach((doc) => {
+          const order = doc.data();
+          let itemsHtml = "";
+          if (order.cartItems && Array.isArray(order.cartItems)) {
+            itemsHtml = "<ul>" + order.cartItems.map(item => 
+              `<li><b>${item.title}</b> - ${item.quantity} ፒስ (x ${item.price} ብር) = ${item.subTotal} ETB</li>`
+            ).join('') + "</ul>";
+          }
+
+          html += `
+            <div style="border: 1px solid var(--border-color); padding: 15px; margin-bottom: 12px; border-radius: 8px; background: var(--surface);">
+              <p><b>ትራንዛክሽን ቁጥር፦</b> ${order.transactionRef || 'N/A'}</p>
+              <p><b>👤 ደንበኛ፦</b> ${order.customerName} | <b>📞 ስልክ፦</b> <a href="tel:${order.customerPhone}">${order.customerPhone}</a></p>
+              <p><b>📍 አድራሻ፦</b> ${order.customerAddress || 'N/A'}</p>
+              <p><b>💳 ክፍያ ዘዴ፦</b> ${order.paymentMethod}</p>
+              <div style="background: var(--bg-color); padding: 8px; border-radius: 6px; margin: 8px 0;">
+                <b>🛒 የተገዙ ምርቶች ጋሪ፦</b>
+                ${itemsHtml || '<p>ምንም ዝርዝር አልተገኘም</p>'}
+              </div>
+              <p><b>💰 ጠቅላላ ዋጋ፦</b> <span style="color:#10b981; font-weight:bold;">${order.totalAmount || 0} ETB</span></p>
+              <p><b>ሁኔታ፦</b> <span class="status-badge status-pending">${order.status || 'Pending'}</span></p>
+              ${order.receiptUrl ? `<p><b>📄 ደረሰኝ፦</b> <a href="${order.receiptUrl}" target="_blank" style="color:var(--primary); font-weight:bold;">ደረሰኙን/ፎቶውን ለመመልከት እዚህ ይጫኑ</a></p>` : ''}
+            </div>
+          `;
+        });
+        
+        const ordersContainer = document.getElementById("adminOrdersList");
+        if(ordersContainer) ordersContainer.innerHTML = html || "<p>ምንም ደረሰኝ አልተገኘም።</p>";
+      });
+    }
+
+    function markAsCompleted(orderId) {
+      db.collection("orders").doc(orderId).update({ status: "Completed" }).then(() => {
+        alert("ትዕዛዙ ሙሉ በሙሉ ተጠናቋል!");
+        loadAdminData();
+      });
+    }
+
+    function loadSellerProducts() {
+      const tableBody = document.getElementById("sellerProductsTable");
+      if (!tableBody) return;
+
+      db.collection("products").get().then((querySnapshot) => {
+        tableBody.innerHTML = "";
+        if (querySnapshot.empty) {
+          tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #777; padding: 15px;">ምንም የተመዘገበ ምርት የለም።</td></tr>`;
+          return;
+        }
+
+        let productsList = [];
+        querySnapshot.forEach((doc) => {
+          productsList.push({ id: doc.id, ...doc.data() });
+        });
+
+        productsList.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+
+        productsList.forEach((product) => {
+          let rawImg = product.imageUrlFront || product.imageUrl || product.image;
+          const fallbackImg = "https://via.placeholder.com/150?text=No+Image";
+          const finalImgUrl = (rawImg && rawImg.trim() !== "") ? rawImg : fallbackImg;
+
+          let statusBadge = product.status === "approved" 
+            ? `<span style="background: #27ae60; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; display: inline-block;">የጸደቀ</span>`
+            : `<span style="background: #f39c12; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; display: inline-block;">የሚጠበቅ (Pending)</span>`;
+
+          tableBody.innerHTML += `
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 8px; width: 70px; text-align: center;">
+                <img src="${finalImgUrl}" alt="${product.title || 'ምርት'}" onerror="this.onerror=null; this.src='${fallbackImg}';" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border-color); display: block; margin: 0 auto;"/>
+              </td>
+              <td style="padding: 8px; font-weight: bold;">${product.title || product.name || '-'}</td>
+              <td style="padding: 8px;">${product.category || 'ጠቅላላ'}</td>
+              <td style="padding: 8px; color: #27ae60; font-weight: bold;">${product.price} ብር</td>
+              <td style="padding: 8px;">${statusBadge}</td>
+            </tr>
+          `;
+        });
+      }).catch((error) => {
+        console.error("Error loading products: ", error);
+        tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: red; padding: 15px;">ምርቶችን ማምጣት አልተቻለም!</td></tr>`;
+      });
+    }
+
+    function loadCustomerOrders() {
+      if (!currentUser) return;
+      db.collection("orders").where("userId", "==", currentUser.uid).get().then(snapshot => {
+        const table = document.getElementById('customerOrdersTable');
+        if(!table) return;
+        table.innerHTML = '';
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          table.innerHTML += `
+            <tr>
+              <td>${doc.id.substring(0, 8)}...</td>
+              <td>${data.paymentMethod || 'Chapa/Telebirr'}</td>
+              <td>${data.totalAmount || 0} ETB</td>
+              <td><span class="status-badge status-pending">${data.status || 'Pending'}</span></td>
+            </tr>`;
+        });
+      });
+    }
+
+    function fetchReels() {
+      db.collection("reels").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
+        const reelsContainer = document.getElementById('reelsScrollContainer');
+        if (snapshot.empty || !reelsContainer) return;
+
+        reelsContainer.innerHTML = '';
+        snapshot.forEach((doc) => {
+          const reel = doc.data();
+          const reelId = doc.id;
+          const likes = reel.likes || 0;
+          const dislikes = reel.dislikes || 0;
+          const commentsCount = reel.commentsCount || 0;
+
+          reelsContainer.innerHTML += `
+            <div class="reel-card" id="reel-${reelId}">
+              <video src="${reel.videoUrl}" controls preload="metadata" playsinline></video>
+              <div class="reel-overlay">
+                <div class="reel-title">${reel.title || 'የምርት ቪዲዮ'}</div>
+                <div class="reel-actions">
+                  <button class="reel-action-btn" onclick="likeReel('${reelId}')">
+                    <i class="fa-solid fa-thumbs-up"></i> <span id="like-count-${reelId}">${likes}</span>
+                  </button>
+                  <button class="reel-action-btn" onclick="dislikeReel('${reelId}')">
+                    <i class="fa-solid fa-thumbs-down"></i> <span id="dislike-count-${reelId}">${dislikes}</span>
+                  </button>
+                  <button class="reel-action-btn" onclick="openReelCommentsModal('${reelId}')">
+                    <i class="fa-solid fa-comment"></i> <span id="comment-count-${reelId}">${commentsCount}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+      }, (error) => console.error("Reels Error: ", error));
+    }
+
+    function likeReel(reelId) {
+      const userActionKey = `reel_action_${reelId}`;
+      const previousAction = localStorage.getItem(userActionKey);
+
+      if (previousAction === 'liked') {
+        alert("ቀደም ብለው ላይክ አድርገዋል!");
+        return;
+      }
+
+      const likeCountEl = document.getElementById(`like-count-${reelId}`);
+      const dislikeCountEl = document.getElementById(`dislike-count-${reelId}`);
+
+      if (previousAction === 'disliked') {
+        if (dislikeCountEl) {
+          let dCount = Math.max(0, (parseInt(dislikeCountEl.innerText) || 0) - 1);
+          dislikeCountEl.innerText = dCount;
+        }
+        if (!reelId.startsWith('demo-')) {
+          db.collection("reels").doc(reelId).update({
+            dislikes: firebase.firestore.FieldValue.increment(-1)
+          }).catch(err => console.error(err));
+        }
+      }
+
+      if (likeCountEl) {
+        let lCount = (parseInt(likeCountEl.innerText) || 0) + 1;
+        likeCountEl.innerText = lCount;
+      }
+
+      localStorage.setItem(userActionKey, 'liked');
+
+      if (!reelId.startsWith('demo-')) {
+        db.collection("reels").doc(reelId).update({
+          likes: firebase.firestore.FieldValue.increment(1)
+        }).catch(err => console.error(err));
+      }
+    }
+
+    function dislikeReel(reelId) {
+      const userActionKey = `reel_action_${reelId}`;
+      const previousAction = localStorage.getItem(userActionKey);
+
+      if (previousAction === 'disliked') {
+        alert("ቀደም ብለው ዲዝላይክ አድርገዋል!");
+        return;
+      }
+
+      const likeCountEl = document.getElementById(`like-count-${reelId}`);
+      const dislikeCountEl = document.getElementById(`dislike-count-${reelId}`);
+
+      if (previousAction === 'liked') {
+        if (likeCountEl) {
+          let lCount = Math.max(0, (parseInt(likeCountEl.innerText) || 0) - 1);
+          likeCountEl.innerText = lCount;
+        }
+        if (!reelId.startsWith('demo-')) {
+          db.collection("reels").doc(reelId).update({
+            likes: firebase.firestore.FieldValue.increment(-1)
+          }).catch(err => console.error(err));
+        }
+      }
+
+      if (dislikeCountEl) {
+        let dCount = (parseInt(dislikeCountEl.innerText) || 0) + 1;
+        dislikeCountEl.innerText = dCount;
+      }
+
+      localStorage.setItem(userActionKey, 'disliked');
+
+      if (!reelId.startsWith('demo-')) {
+        db.collection("reels").doc(reelId).update({
+          dislikes: firebase.firestore.FieldValue.increment(1)
+        }).catch(err => console.error(err));
+      }
+    }
+
+    function openReelCommentsModal(reelId) {
+      activeReelIdForComment = reelId;
+      document.getElementById('reelCommentsModal').classList.add('active');
+      loadReelComments(reelId);
+    }
+
+    function closeReelCommentsModal() {
+      document.getElementById('reelCommentsModal').classList.remove('active');
+      activeReelIdForComment = null;
+    }
+
+    function loadReelComments(reelId) {
+      const container = document.getElementById('reelCommentsList');
+      if (!container) return;
+      container.innerHTML = `<p style="font-size:0.85rem; color:var(--text-muted); text-align:center;">አስተያየቶች በመጫን ላይ ናቸው...</p>`;
+
+      if (reelId.startsWith('demo-')) {
+        container.innerHTML = `
+          <div style="border-bottom: 1px solid var(--border-color); padding: 6px 0; font-size:0.85rem;">
+            <strong>አማኑኤል ቲቶ</strong>
+            <p style="color:var(--text-muted); margin-top:2px;">በጣም አሪፍ ምርት ነው!</p>
+          </div>
+          <div style="border-bottom: 1px solid var(--border-color); padding: 6px 0; font-size:0.85rem;">
+            <strong>ሄለን ከበደ</strong>
+            <p style="color:var(--text-muted); margin-top:2px;">እንዴት ነው የምንረክበው?</p>
+          </div>
+        `;
+        return;
+      }
+
+      db.collection("reels").doc(reelId).collection("comments").orderBy("createdAt", "desc").get().then(snap => {
+        container.innerHTML = '';
+        if (snap.empty) {
+          container.innerHTML = `<p style="font-size:0.85rem; color:var(--text-muted); text-align:center;">እስካሁን ምንም አስተያየት አልተሰጠም።</p>`;
+          return;
+        }
+        snap.forEach(doc => {
+          const c = doc.data();
+          container.innerHTML += `
+            <div style="border-bottom: 1px solid var(--border-color); padding: 6px 0; font-size:0.85rem;">
+              <strong>${c.userEmail || 'እንግዳ'}</strong>
+              <p style="color:var(--text-muted); margin-top:2px;">${c.comment}</p>
+            </div>
+          `;
+        });
+      });
+    }
+
+    function submitReelComment() {
+      const input = document.getElementById('reelCommentInput');
+      const commentText = input.value.trim();
+      if (!commentText) {
+        alert("እባክዎን አስተያየትዎን ይጻፉ!");
+        return;
+      }
+      if (!activeReelIdForComment) return;
+
+      const userEmail = currentUser ? currentUser.email : 'እንግዳ ተጠቃሚ';
+
+      if (activeReelIdForComment.startsWith('demo-')) {
+        alert("ለዲሞ ቪዲዮዎች አስተያየት በጊዜያዊነት ተመዝግቧል!");
+        input.value = '';
+        closeReelCommentsModal();
+        return;
+      }
+
+      db.collection("reels").doc(activeReelIdForComment).collection("comments").add({
+        userEmail: userEmail,
+        comment: Validator.sanitizeInput(commentText),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => {
+        return db.collection("reels").doc(activeReelIdForComment).update({
+          commentsCount: firebase.firestore.FieldValue.increment(1)
+        });
+      }).then(() => {
+        alert("አስተያየትዎ ተልኳል!");
+        input.value = '';
+        loadReelComments(activeReelIdForComment);
+      }).catch(err => {
+        alert("ስህተት አጋጥሟል፦ " + err.message);
+      });
+    }
+  </script>
+</body>
+</html>

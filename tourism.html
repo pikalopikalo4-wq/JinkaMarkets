@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="am" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ጂንካ ቱሪዝም እና ሆቴሎች -Jinka Markets</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Inter & Caveat -->
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            cursive: ['Caveat', 'cursive'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans antialiased">
+
+  <!-- ================= 1. HEADER / NAVIGATION ================= -->
+  <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent py-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+      
+      <!-- Left: Logo -->
+      <a href="index.html" class="flex items-center gap-2.5 group">
+        <div class="w-10 h-10 bg-[#ffb703] text-slate-900 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition">
+          <i class="fas fa-umbrella-beach text-lg"></i>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-lg font-extrabold tracking-tight text-white leading-none">ጂንካ ቱሪዝም</span>
+          <span class="text-[10px] font-bold text-[#ffb703] tracking-widest uppercase mt-0.5">Jinka Markets</span>
+        </div>
+      </a>
+
+      <!-- Center Nav (Desktop) -->
+      <nav class="hidden lg:flex items-center gap-8 font-medium text-sm text-white/90">
+        <a href="index.html" class="text-[#ffb703] font-semibold transition">ዋና ገጽ</a>
+        <a href="#destinations" class="hover:text-[#ffb703] transition">መዳረሻዎች</a>
+        <a href="#experiences" class="hover:text-[#ffb703] transition">ልዩ ልምዶች</a>
+        <a href="#deals" class="hover:text-[#ffb703] transition">ቅናሾች</a>
+        <a href="admin.html" class="hover:text-[#ffb703] transition">አድሚን ዳሽቦርድ</a>
+      </nav>
+
+      <!-- Right: Book Now / Action Button -->
+      <div class="hidden md:flex items-center gap-3">
+        <a href="admin.html" class="bg-[#ffb703] hover:bg-[#f59e0b] text-slate-900 font-bold px-6 py-2.5 rounded-xl text-sm transition shadow-lg shadow-amber-500/20 active:scale-95">
+          አድሚን ግባ
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button id="menuBtn" type="button" class="lg:hidden text-white focus:outline-none p-2" aria-label="Toggle Menu">
+        <i class="fas fa-bars text-2xl"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Nav Menu Dropdown -->
+    <div id="mobileMenu" class="hidden lg:hidden bg-[#0f172a]/95 backdrop-blur-xl border-b border-slate-800 px-6 py-6 space-y-4 shadow-2xl">
+      <a href="index.html" class="block text-[#ffb703] font-semibold text-sm">ዋና ገጽ</a>
+      <a href="#destinations" class="block text-slate-200 hover:text-[#ffb703] text-sm font-medium">መዳረሻዎች</a>
+      <a href="#experiences" class="block text-slate-200 hover:text-[#ffb703] text-sm font-medium">ልዩ ልምዶች</a>
+      <a href="#deals" class="block text-slate-200 hover:text-[#ffb703] text-sm font-medium">ቅናሾች</a>
+      <a href="admin.html" class="block text-slate-200 hover:text-[#ffb703] text-sm font-medium">አድሚን ዳሽቦርድ</a>
+      <div class="pt-4 border-t border-slate-800">
+        <a href="admin.html" class="block w-full text-center bg-[#ffb703] text-slate-900 font-bold py-3 rounded-xl text-sm shadow-md">አድሚን ግባ</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= 2. HERO SECTION ================= -->
+  <section class="relative min-h-[92vh] bg-[#0f172a] text-white flex flex-col justify-between pt-32 pb-16 overflow-hidden">
+    <!-- Background Image with Gradient Overlay -->
+    <div class="absolute inset-0 z-0">
+      <img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=1920&q=80" alt="Jinka Nature & Tourism" class="w-full h-full object-cover object-center brightness-[0.75] contrast-[1.05]">
+      <div class="absolute inset-0 bg-gradient-to-r from-[#0f172a]/90 via-[#0f172a]/50 to-transparent"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-black/30"></div>
+    </div>
+
+    <!-- Hero Content & Search Widget Wrapper -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full my-auto">
+      <div class="max-w-3xl mb-12">
+        <span class="font-['Caveat'] text-[#ffb703] text-3xl sm:text-4xl font-bold tracking-wide drop-shadow-md block mb-1">
+          ጂንካን እና የኦሞ ቫሌይን ያስሱ
+        </span>
+        <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight uppercase leading-[1.1] mb-4 drop-shadow-lg">
+          የተፈጥሮ ድንቅ <span class="text-[#ffb703]">ጉዞዎች</span>
+        </h1>
+        <p class="text-slate-200 text-base sm:text-lg max-w-xl font-normal leading-relaxed drop-shadow">
+          በአስደናቂ የባህል መዳረሻዎች፣ ጥራት ያላቸው ሆቴሎች እና የማይረሱ ትዝታዎች ከኛ ጋር ይጓዙ።
+        </p>
+      </div>
+
+      <!-- Booking / Search Widget (Floating Pill) -->
+      <div class="bg-white rounded-3xl md:rounded-full p-3 sm:p-4 shadow-2xl text-slate-800 max-w-5xl mx-auto border border-slate-100">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-3 items-center">
+          
+          <!-- Input 1: Destination -->
+          <div class="px-4 py-3 md:border-r border-slate-200">
+            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">መዳረሻ (Destination)</label>
+            <div class="flex items-center gap-2">
+              <i class="fas fa-map-marker-alt text-[#ffb703] text-sm"></i>
+              <input type="text" placeholder="የት መሄድ ይፈልጋሉ?" class="w-full bg-transparent focus:outline-none text-sm font-semibold text-slate-900 placeholder:text-slate-400">
+            </div>
+          </div>
+
+          <!-- Input 2: Check In -->
+          <div class="px-4 py-3 md:border-r border-slate-200">
+            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">የመግቢያ ቀን</label>
+            <div class="flex items-center gap-2">
+              <i class="far fa-calendar text-[#ffb703] text-sm"></i>
+              <input type="text" placeholder="ቀን ይምረጡ" class="w-full bg-transparent focus:outline-none text-sm font-semibold text-slate-900 placeholder:text-slate-400">
+            </div>
+          </div>
+
+          <!-- Input 3: Check Out -->
+          <div class="px-4 py-3 md:border-r border-slate-200">
+            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">የመውጫ ቀን</label>
+            <div class="flex items-center gap-2">
+              <i class="far fa-calendar text-[#ffb703] text-sm"></i>
+              <input type="text" placeholder="ቀን ይምረጡ" class="w-full bg-transparent focus:outline-none text-sm font-semibold text-slate-900 placeholder:text-slate-400">
+            </div>
+          </div>
+
+          <!-- Input 4: Travelers -->
+          <div class="px-4 py-3">
+            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">ተጓዦች</label>
+            <div class="flex items-center gap-2">
+              <i class="fas fa-user-friends text-[#ffb703] text-sm"></i>
+              <input type="text" value="2 ተጓዦች" class="w-full bg-transparent focus:outline-none text-sm font-semibold text-slate-900">
+            </div>
+          </div>
+
+          <!-- Search Button -->
+          <div>
+            <button class="w-full bg-[#ffb703] hover:bg-[#f59e0b] text-slate-900 font-bold py-4 md:py-3.5 rounded-2xl md:rounded-full transition shadow-lg shadow-amber-500/25 flex items-center justify-center gap-2 text-sm uppercase tracking-wider active:scale-95">
+              <i class="fas fa-search text-xs"></i>
+              <span>ፈልግ</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Trust Badges (Below Search Widget) -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full mt-12 pt-8 border-t border-white/10">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center md:text-left">
+        
+        <div class="flex items-center justify-center md:justify-start gap-3">
+          <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-[#ffb703] shrink-0">
+            <i class="fas fa-shield-alt text-sm"></i>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-white tracking-wide">እጅግ ተመጣጣኝ ዋጋ</h4>
+            <p class="text-[11px] text-slate-300">የተረጋገጠ ዋጋ ማስተካከያ</p>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-center md:justify-start gap-3">
+          <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-[#ffb703] shrink-0">
+            <i class="fas fa-hotel text-sm"></i>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-white tracking-wide">ምርጥ ሆቴሎች</h4>
+            <p class="text-[11px] text-slate-300">ጥራታቸው የተጠበቁ መኖሪያዎች</p>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-center md:justify-start gap-3">
+          <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-[#ffb703] shrink-0">
+            <i class="fas fa-headset text-sm"></i>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-white tracking-wide">24/7 የድጋፍ አገልግሎት</h4>
+            <p class="text-[11px] text-slate-300">ሁልጊዜም ከጎንዎ ነን</p>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-center md:justify-start gap-3">
+          <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-[#ffb703] shrink-0">
+            <i class="fas fa-camera-retro text-sm"></i>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-white tracking-wide">ልዩ የጉዞ ልምድ</h4>
+            <p class="text-[11px] text-slate-300">የማረሱ ትዝታዎች</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 3. FIREBASE DYNAMIC PROMOTION SLIDER ================= -->
+  <div class="max-w-7xl mx-auto my-12 px-4 sm:px-6 lg:px-8">
+    <div class="relative w-full overflow-hidden rounded-3xl shadow-2xl bg-slate-900 h-64 md:h-96 border border-slate-800">
+      
+      <!-- ምስሎቹ ከፋየርቤስ የሚጫኑበት ቦታ -->
+      <div id="sliderWrapper" class="flex transition-transform duration-700 ease-in-out h-full">
+        <div class="w-full h-full flex items-center justify-center text-slate-400 text-sm">
+          <i class="fas fa-spinner fa-spin text-[#ffb703] mr-2"></i> ማስታወቂያዎች በመጫን ላይ ናቸው...
+        </div>
+      </div>
+
+      <!-- ቀስቶች (Navigation Buttons) -->
+      <button id="prevSlide" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-[#ffb703] hover:text-slate-900 text-white p-3 rounded-full transition hidden shadow-lg">
+        <i class="fas fa-chevron-left text-sm"></i>
+      </button>
+      <button id="nextSlide" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-[#ffb703] hover:text-slate-900 text-white p-3 rounded-full transition hidden shadow-lg">
+        <i class="fas fa-chevron-right text-sm"></i>
+      </button>
+
+      <!-- ነጥቦች (Indicators) -->
+      <div id="sliderDots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20"></div>
+    </div>
+  </div>
+
+  <!-- ================= 4. POPULAR DESTINATIONS / SERVICES SECTION (FIREBASE) ================= -->
+  <section id="destinations" class="py-16 bg-gradient-to-b from-slate-900 to-[#0f172a]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+        <div>
+          <span class="text-[#ffb703] font-bold text-xs uppercase tracking-widest block mb-2">የተመረጡ መዳረሻዎች እና ሆቴሎች</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">ታዋቂ መዳረሻዎች</h2>
+          <p class="text-slate-400 text-sm mt-1">በአድሚን የተረጋገጡ እና ለእርስዎ የተዘጋጁ አገልግሎቶች</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <span id="totalCount" class="text-xs font-bold text-[#ffb703] bg-amber-500/10 px-4 py-2 rounded-xl border border-amber-500/20">መረጃዎች በመጫን ላይ...</span>
+        </div>
+      </div>
+
+      <!-- DYNAMIC GRID CONTAINER (From Firebase) -->
+      <div id="tourismContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="col-span-full py-16 text-center text-slate-400 text-base">
+          <i class="fas fa-spinner fa-spin text-[#ffb703] text-2xl mr-2"></i> መረጃዎች ከ Firebase እየተጫኑ ነው...
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= 5. FOOTER ================= -->
+  <footer id="contact" class="bg-slate-950 text-slate-400 py-16 border-t border-slate-800 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+        <div>
+          <div class="flex items-center gap-2.5 mb-4">
+            <div class="w-8 h-8 bg-[#ffb703] text-slate-900 rounded-lg flex items-center justify-center font-bold">
+              <i class="fas fa-umbrella-beach text-sm"></i>
+            </div>
+            <span class="text-base font-extrabold text-white tracking-tight">ጂንካ ቱሪዝም</span>
+          </div>
+          <p class="text-slate-400 leading-relaxed mb-6">
+            ለጂንካ ቱሪዝም፣ ሆቴሎች፣ መኪና ኪራዮች እና የገበያ ማዕከል አገልግሎቶች አስተማማኝ መድረክ።
+          </p>
+          <div class="flex gap-3 text-sm">
+            <a href="#" class="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center text-slate-300 hover:text-slate-900 hover:bg-[#ffb703] transition"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center text-slate-300 hover:text-slate-900 hover:bg-[#ffb703] transition"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center text-slate-300 hover:text-slate-900 hover:bg-[#ffb703] transition"><i class="fab fa-telegram-plane"></i></a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-white text-sm mb-4 tracking-wide">ፈጣን አገናኞች</h4>
+          <ul class="space-y-2.5">
+            <li><a href="index.html" class="hover:text-[#ffb703] transition">ዋና ገጽ</a></li>
+            <li><a href="#destinations" class="hover:text-[#ffb703] transition">መዳረሻዎች</a></li>
+            <li><a href="#experiences" class="hover:text-[#ffb703] transition">ልዩ ልምዶች</a></li>
+            <li><a href="admin.html" class="hover:text-[#ffb703] transition">አድሚን ዳሽቦርድ</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-white text-sm mb-4 tracking-wide">ድጋፍ እና እርዳታ</h4>
+          <ul class="space-y-2.5">
+            <li><a href="#" class="hover:text-[#ffb703] transition">የደንበኞች አገልግሎት</a></li>
+            <li><a href="#" class="hover:text-[#ffb703] transition">የግላዊነት ፖሊሲ</a></li>
+            <li><a href="#" class="hover:text-[#ffb703] transition">ደንቦች እና ሁኔታዎች</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-white text-sm mb-4 tracking-wide">ያግኙን</h4>
+          <ul class="space-y-3">
+            <li class="flex items-start gap-2.5">
+              <i class="fas fa-map-marker-alt text-[#ffb703] mt-0.5"></i>
+              <span>ጂንካ, ደቡብ ኢትዮጵያ</span>
+            </li>
+            <li class="flex items-center gap-2.5">
+              <i class="fas fa-phone-alt text-[#ffb703]"></i>
+              <a href="tel:+251928664142" class="hover:text-white transition">+251 928 664 142</a>
+            </li>
+            <li class="flex items-center gap-2.5">
+              <i class="fas fa-envelope text-[#ffb703]"></i>
+              <a href="mailto:info@jinkamarkets.et" class="hover:text-white transition">info@jinkamarkets.et</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-slate-900 pt-8 text-center">
+        <p>© 2026 ጂንካ ቱሪዝም (Jinka Markets) - መብቱ በሕግ የተጠበቀ ነው።</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= FIREBASE & INTERACTIVITY SCRIPT ================= -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, query, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCwAk45bie0KbuZtcp50zEkMkcY7RPwUp4",
+      authDomain: "jinka-market-8231a.firebaseapp.com",
+      projectId: "jinka-market-8231a",
+      storageBucket: "jinka-market-8231a.firebasestorage.app",
+      messagingSenderId: "711006866553",
+      appId: "1:711006866553:web:cf709c47bf126f96ecd8a8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Navbar Scroll Effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) {
+        navbar.classList.add('bg-[#0f172a]/95', 'backdrop-blur-md', 'shadow-lg', 'py-3');
+        navbar.classList.remove('py-4', 'bg-transparent');
+      } else {
+        navbar.classList.remove('bg-[#0f172a]/95', 'backdrop-blur-md', 'shadow-lg', 'py-3');
+        navbar.classList.add('py-4', 'bg-transparent');
+      }
+    });
+
+    // Mobile Menu Toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+    });
+
+    // ==================== 1. PROMOTION SLIDER LOGIC ====================
+    const sliderWrapper = document.getElementById('sliderWrapper');
+    const sliderDots = document.getElementById('sliderDots');
+    const prevBtn = document.getElementById('prevSlide');
+    const nextBtn = document.getElementById('nextSlide');
+
+    let currentIndex = 0;
+    let totalSlides = 0;
+    let slideInterval;
+
+    const promoQuery = query(collection(db, "promotions"));
+
+    onSnapshot(promoQuery, (snapshot) => {
+      sliderWrapper.innerHTML = "";
+      sliderDots.innerHTML = "";
+
+      const activeDocs = snapshot.docs.filter(doc => doc.data().active !== false);
+
+      if (activeDocs.length === 0) {
+        sliderWrapper.innerHTML = `
+          <div class="w-full h-full flex items-center justify-center text-slate-400 text-sm">
+            ምንም የሚታይ ማስተዋወቂያ የለም። በአድሚን ዳሽቦርድ ማስተካከል ይቻላል።
+          </div>`;
+        prevBtn.classList.add('hidden');
+        nextBtn.classList.add('hidden');
+        return;
+      }
+
+      totalSlides = activeDocs.length;
+
+      activeDocs.forEach((docSnap, index) => {
+        const data = docSnap.data();
+
+        const slide = document.createElement('a');
+        slide.href = data.linkUrl || "#";
+        slide.target = data.linkUrl && data.linkUrl !== "#" ? "_blank" : "_self";
+        slide.className = "min-w-full h-full relative block flex-shrink-0 cursor-pointer group";
+        slide.innerHTML = `
+          <img src="${data.imageUrl}" alt="${data.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent flex items-end p-6 md:p-8">
+            <div>
+              <span class="bg-[#ffb703] text-slate-900 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full mb-2 inline-block shadow">ልዩ ማስታወቂያ</span>
+              <h3 class="text-white text-xl md:text-3xl font-extrabold tracking-tight">${data.title}</h3>
+            </div>
+          </div>
+        `;
+        sliderWrapper.appendChild(slide);
+
+        const dot = document.createElement('button');
+        dot.className = `w-2.5 h-2.5 rounded-full transition ${index === 0 ? 'bg-[#ffb703] w-6' : 'bg-white/50'}`;
+        dot.addEventListener('click', () => goToSlide(index));
+        sliderDots.appendChild(dot);
+      });
+
+      if (totalSlides > 1) {
+        prevBtn.classList.remove('hidden');
+        nextBtn.classList.remove('hidden');
+        startAutoSlide();
+      } else {
+        prevBtn.classList.add('hidden');
+        nextBtn.classList.add('hidden');
+      }
+    }, (error) => {
+      console.error("Slider Fetch Error:", error);
+      sliderWrapper.innerHTML = `<div class="w-full h-full flex items-center justify-center text-red-400 text-sm">ስላይደሩን መጫን አልተቻለም!</div>`;
+    });
+
+    function updateSlider() {
+      sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+      const dots = sliderDots.children;
+      Array.from(dots).forEach((dot, idx) => {
+        dot.className = idx === currentIndex ? "w-6 h-2.5 rounded-full bg-[#ffb703] transition" : "w-2.5 h-2.5 rounded-full bg-white/50 transition";
+      });
+    }
+
+    function goToSlide(index) {
+      currentIndex = index;
+      updateSlider();
+      startAutoSlide();
+    }
+
+    function nextSlide() {
+      currentIndex = (currentIndex + 1) % totalSlides;
+      updateSlider();
+    }
+
+    function prevSlide() {
+      currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+      updateSlider();
+    }
+
+    function startAutoSlide() {
+      clearInterval(slideInterval);
+      slideInterval = setInterval(nextSlide, 5000);
+    }
+
+    if(nextBtn && prevBtn) {
+      nextBtn.addEventListener('click', () => { nextSlide(); startAutoSlide(); });
+      prevBtn.addEventListener('click', () => { prevSlide(); startAutoSlide(); });
+    }
+
+    // ==================== 2. TOURISM DATA FETCH LOGIC ====================
+    const tourismContainer = document.getElementById('tourismContainer');
+    const totalCount = document.getElementById('totalCount');
+
+    const tourismQuery = query(collection(db, "tourism_products"));
+
+    onSnapshot(tourismQuery, (snapshot) => {
+      tourismContainer.innerHTML = "";
+
+      if (snapshot.empty) {
+        tourismContainer.innerHTML = `
+          <div class="col-span-full py-16 text-center bg-slate-800/50 rounded-2xl border border-slate-800">
+            <p class="text-slate-400 text-base">ምንም የተመዘገበ የቱሪዝም ወይም የሆቴል መረጃ አልተገኘም።</p>
+          </div>`;
+        totalCount.textContent = "ጠቅላላ፦ 0 መዳረሻዎች";
+        return;
+      }
+
+      totalCount.textContent = `ጠቅላላ፦ ${snapshot.docs.length} መዳረሻዎች`;
+
+      snapshot.forEach((docSnap) => {
+        const item = docSnap.data();
+
+        const card = document.createElement('div');
+        card.className = "group relative rounded-2xl overflow-hidden shadow-xl h-96 flex flex-col justify-end p-5 bg-slate-900 cursor-pointer border border-slate-800 hover:border-amber-500/50 transition duration-300";
+        card.innerHTML = `
+          <img src="${item.imageUrl || 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=600&q=80'}" alt="${item.title || item.providerName}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500">
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/30 to-transparent"></div>
+          
+          <span class="absolute top-3 right-3 bg-[#ffb703] text-slate-900 text-[10px] font-extrabold px-3 py-1 rounded-full shadow z-10">
+            ${item.category || 'ቱሪዝም'}
+          </span>
+
+          <div class="relative z-10">
+            <h3 class="text-xl font-extrabold text-white leading-tight mb-0.5">${item.title || item.providerName}</h3>
+            <p class="text-xs text-slate-300 font-medium mb-3 flex items-center gap-1">
+              <i class="fas fa-map-marker-alt text-[#ffb703]"></i> ${item.location || 'ጂንካ'}
+            </p>
+            <div class="flex items-center justify-between pt-2 border-t border-white/10">
+              <div class="flex items-center text-[#ffb703] text-xs gap-1">
+                <i class="fas fa-star"></i>
+                <span class="text-white font-bold ml-1">4.9</span>
+              </div>
+              <span class="text-sm text-[#ffb703] font-extrabold">${item.price ? item.price + ' ETB' : 'ዋጋ አልተጠቀሰም'}</span>
+            </div>
+            
+            <div class="flex gap-2 mt-3 pt-2">
+              ${item.phone ? `<a href="tel:${item.phone}" class="flex-1 bg-white/10 hover:bg-[#ffb703] hover:text-slate-900 text-white text-xs font-bold py-2 rounded-xl text-center transition flex items-center justify-center gap-1"><i class="fas fa-phone"></i> ደውል</a>` : ''}
+              ${item.telegram ? `<a href="${item.telegram}" target="_blank" class="flex-1 bg-white/10 hover:bg-[#ffb703] hover:text-slate-900 text-white text-xs font-bold py-2 rounded-xl text-center transition flex items-center justify-center gap-1"><i class="fab fa-telegram-plane"></i> ቴሌግራም</a>` : ''}
+              ${item.website ? `<a href="${item.website}" target="_blank" class="flex-1 bg-white/10 hover:bg-[#ffb703] hover:text-slate-900 text-white text-xs font-bold py-2 rounded-xl text-center transition flex items-center justify-center gap-1"><i class="fas fa-globe"></i> ድህረገፅ</a>` : ''}
+              ${item.whatsapp ? `<a href="https://wa.me/${item.whatsapp}" target="_blank" class="flex-1 bg-white/10 hover:bg-[#ffb703] hover:text-slate-900 text-white text-xs font-bold py-2 rounded-xl text-center transition flex items-center justify-center gap-1"><i class="fab fa-whatsapp"></i> ዋትሳፕ</a>` : ''}            
+              </div>
+          </div>
+        `;
+        tourismContainer.appendChild(card);
+      });
+    }, (error) => {
+      console.error("Tourism Fetch Error:", error);
+      tourismContainer.innerHTML = `
+        <div class="col-span-full py-16 text-center bg-red-950/30 rounded-2xl border border-red-900/50">
+          <p class="text-red-400 text-sm">መረጃዎችን መጫን አልተቻለም! እባክዎን የኢንተርኔት ግንኙነትዎን ያረጋግጡ።</p>
+        </div>`;
+    });
+  </script>
+
+</body>
+</html>
