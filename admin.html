@@ -884,6 +884,38 @@
         placeholder.style.display = 'none';
       }
     }
+    <script>
+  function navigateToDashboard() {
+    if (!currentUser) {
+      alert("እባክዎን በመጀመሪያ ይግቡ!");
+      openAuthModal('login');
+      return;
+    }
+
+    db.collection("users").doc(currentUser.uid).get().then(doc => {
+      if (!doc.exists) {
+        alert("አካውንትዎ አልተገኘም!");
+        return;
+      }
+      
+      const role = doc.data().role;
+
+      if (role === 'admin') {
+        loadAdminData();
+        fetchOrdersForAdmin();
+        switchView('adminDashboard');
+      } else if (role === 'seller') {
+        loadSellerProducts();
+        switchView('adminDashboard');
+      } else {
+        loadCustomerOrders();
+        switchView('customerDashboard');
+      }
+    }).catch(err => {
+      console.error("Authorization check error:", err);
+    });
+  }
+</script>
   </script>
 </body>
 </html>
