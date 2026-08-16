@@ -360,6 +360,20 @@
     </section>
 
     <!-- 2. ADMIN DASHBOARD -->
+     <section id="adminView" class="view-section">
+      <h1 style="margin-bottom: 20px; color: var(--primary);">የአድሚን ዳሽቦርድ (Admin Dashboard)</h1>
+      <p style="margin-bottom: 30px; color: var(--text-muted);">እንኳን ወደ ዳሽቦርድ በደህና መጡ። እባክዎ በትክክል መጠቀም እና መረጃዎችን በጥንቃቄ መምረጥ ይጠቀሙ።</p>
+      
+      <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 25px;">
+        <button class="btn-dash" onclick="switchAdminSection('adminDashboard')">📊 የአድሚን ቁጥጥርና አናሊቲክስ</button>
+        <button class="btn-dash" onclick="switchAdminSection('adminOrdersSection')">🛒 የትዕዛዝ አስተካከያ</button>
+        <button class="btn-dash" onclick="switchAdminSection('adminProductsApprovalSection')">✅ የምርት ፈተና</button>
+        <button class="btn-dash" onclick="switchAdminSection('adminPaymentMethodsSection')">💳 የክፍያ መንገዶች</button>
+      </div>
+
+      <!-- Admin Sections -->
+      <div id="adminSectionsContainer">
+        
     <section id="adminDashboard" class="view-section">
       <h2 style="margin-bottom: 20px; color: var(--primary);">የአድሚን ቁጥጥርና አናሊቲክስ (Admin Analytics Pro)</h2>
       <div class="dashboard-grid">
@@ -380,7 +394,8 @@
           <div class="value" id="adminTotalProducts">0</div>
         </div>
       </div>
-
+    </section>
+<section id="adminOrdersSection" style="margin-top: 25px;">
       <div class="panel-card" id="adminOrdersSection">
         <h3>የትዕዛዝ አስተካከያ እና ሁኔታ (Order Management & Status)</h3>
         <table>
@@ -396,7 +411,9 @@
           </thead>
           <tbody id="adminOrdersTable">
       </div>
-      
+    </section>
+
+      <section id="adminProductsApprovalSection" style="margin-top: 25px;">
       <div class="panel-card" id="adminProductsApprovalSection">
         <h3>የሻጮች ምርት ማፅደቂያ እና የቆይታ ጊዜ መወሰኛ (Product Approvals & Duration)</h3>
         <table>
@@ -412,8 +429,11 @@
           </thead>
           <tbody id="adminProductsApprovalTable">
       </div>
+    </section>
 
       <!-- 💳 የክፍያ ዘዴዎች ማስተካከያ (Manage Payment Methods) -->
+       <section id="adminPaymentMethodsSection" style="margin-top: 25px;">
+
       <div class="panel-card" id="adminPaymentMethodsSection">
         <h3>💳 የክፍያ ዘዴዎች ማስተካከያ (Manage Payment Methods)</h3>
         
@@ -447,8 +467,10 @@
           </thead>
           <tbody id="adminPaymentMethodsTable">
         </table>
-      </div> 
- 
+      </div>
+    </section> 
+
+ <section id="adminPromoSliderSection" style="margin-top: 25px;">
       <div class="panel-card" id="adminPromoSliderSection">
         <h3>የፕሮሞሽን ስላይደር ማኔጅመንት (Promos)</h3>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
@@ -461,7 +483,9 @@
         </button>
         <tbody id="adminPromoSliderTable">
       </div>
+    </section>
 
+      <section id="adminOrdersSection" style="margin-top: 25px;">
       <div class="panel-card" id="adminOrdersSection">
         <h3>የክፍያዎችና የትዕዛዞች ሁኔታ (System Orders)</h3>
         <table>
@@ -478,6 +502,9 @@
           <tbody id="adminOrdersTable"></tbody>
         </table>
       </div>
+      </section>  
+
+      <section id="adminPaymentReceiptsSection" style="margin-top: 25px;">
       <div class="panel-card" id="adminPaymentReceiptsSection">
         <h3>የተላኩ የባንክና Telebirr ደረሰኞች</h3>
         <div id="adminOrdersList">
@@ -490,6 +517,7 @@
     
 
       <!-- Seller Dashboard Form with 360 Degree Preview & Contact Info -->
+       <section id="adminSellerProductsSection" style="margin-top: 25px;">
       <div class="panel-card" id="adminSellerProductsSection" style="margin-bottom: 25px;">
         <h3>አዲስ ምርት መዝግብ (Add New Product - 360° Preview)</h3>
         
@@ -547,6 +575,7 @@
         <button type="button" id="submitSellerProdBtn" class="auth-btn" onclick="addSellerProduct()" style="width: auto; padding: 10px 25px;">ምርት መዝግብ</button>
       </div>
 
+     <section id="adminProductsSection" class="view-section">
       <div class="panel-card" id="adminProductsSection">
         <h3>የተመዘገቡ ምርቶችህ</h3>
         <table>
@@ -560,6 +589,8 @@
             </tr>
           </thead>
           <tbody id="adminProductsTable">
+          </tbody>
+        </table>
       </div>
     </section>
 
