@@ -381,7 +381,7 @@
         </div>
       </div>
 
-      <div class="panel-card">
+      <div class="panel-card"> id="adminPaymentMethodsSection">
         <h3>የሻጮች ምርት ማፅደቂያ እና የቆይታ ጊዜ መወሰኛ (Product Approvals & Duration)</h3>
         <table>
           <thead>
@@ -397,44 +397,43 @@
           <tbody id="adminProductsApprovalTable"></tbody>
         </table>
       </div>
+      <!-- 💳 የክፍያ ዘዴዎች ማስተካከያ (Manage Payment Methods) - ለአድሚን ብቻ የሚታይ -->
+<div class="panel-card" id="adminPaymentMethodsSection">
+  <h3>💳 የክፍያ ዘዴዎች ማስተካከያ (Manage Payment Methods)</h3>
+  
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
+    <input type="hidden" id="editPaymentId" value="">
+    <input type="text" id="paymentBankName" placeholder="የባንክ ወይም የክፍያ ስም (ምሳሌ፦ Dashen Bank)">
+    <input type="text" id="paymentAccountNumber" placeholder="የሂሳብ ቁጥር (ምሳሌ፦ 5081917396011)">
+    <input type="text" id="paymentAccountHolder" placeholder="የባለቤት ስም (ምሳሌ፦ Amanuel Tito)">
+    <select id="paymentType">
+      <option value="bank">ባንክ (Bank Transfer)</option>
+      <option value="telebirr">ቴሌብር (Telebirr)</option>
+      <option value="chapa">ቻፓ (Chapa)</option>
+      <option value="cod">ካሽ በመድረሻ (COD)</option>
+    </select>
+  </div>
+  
+  <button type="button" id="savePaymentBtn" onclick="savePaymentMethod()" class="auth-btn" style="width: auto; padding: 10px 20px; margin-bottom: 20px;">
+    የክፍያ ዘዴ መዝግብ / አስተካክል
+  </button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>የክፍያ/ባንክ ስም</th>
+        <th>ሂሳብ ቁጥር</th>
+        <th>የባለቤት ስም</th>
+        <th>አይነት</th>
+        <th>እርምጃ</th>
+      </tr>
+    </thead>
+    <tbody id="adminPaymentMethodsTable">
+      <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">የክፍያ ዘዴዎች በመጫን ላይ ናቸው...</td></tr>
+    </tbody>
+  </table>
+</div>
       
-      <!-- 💳 የክፍያ ዘዴዎች ማስተካከያ (Manage Payment Methods) -->
-      <div class="panel-card">
-        <h3>💳 የክፍያ ዘዴዎች ማስተካከያ (Manage Payment Methods)</h3>
-        
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
-          <input type="hidden" id="editPaymentId" value="">
-          <input type="text" id="paymentBankName" placeholder="የባንክ ወይም የክፍያ ስም (ምሳሌ፦ Dashen Bank)">
-          <input type="text" id="paymentAccountNumber" placeholder="የሂሳብ ቁጥር (ምሳሌ፦ 5081917396011)">
-          <input type="text" id="paymentAccountHolder" placeholder="የባለቤት ስም (ምሳሌ፦ Amanuel Tito)">
-          <select id="paymentType">
-            <option value="bank">ባንክ (Bank Transfer)</option>
-            <option value="telebirr">ቴሌብር (Telebirr)</option>
-            <option value="chapa">ቻፓ (Chapa)</option>
-            <option value="cod">ካሽ በመድረሻ (COD)</option>
-          </select>
-        </div>
-        
-        <button type="button" id="savePaymentBtn" onclick="savePaymentMethod()" class="auth-btn" style="width: auto; padding: 10px 20px; margin-bottom: 20px;">
-          የክፍያ ዘዴ መዝግብ / አስተካክል
-        </button>
-
-        <table>
-          <thead>
-            <tr>
-              <th>የክፍያ/ባንክ ስም</th>
-              <th>ሂሳብ ቁጥር</th>
-              <th>የባለቤት ስም</th>
-              <th>አይነት</th>
-              <th>እርምጃ</th>
-            </tr>
-          </thead>
-          <tbody id="adminPaymentMethodsTable">
-            <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">የክፍያ ዘዴዎች በመጫን ላይ ናቸው...</td></tr>
-          </tbody>
-        </table>
-      </div>
-
       <div class="panel-card">
         <h3>የፕሮሞሽን ስላይደር ማኔጅመንት (Promos)</h3>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
