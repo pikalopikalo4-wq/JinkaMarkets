@@ -394,8 +394,7 @@
               <th>እርምጃ</th>
             </tr>
           </thead>
-          <tbody id="adminOrdersTable"></tbody>
-        </table>
+          <tbody id="adminOrdersTable">
       </div>
       
       <div class="panel-card" id="adminProductsApprovalSection">
@@ -411,8 +410,7 @@
               <th>የቆይታ ጊዜ እና እርምጃ</th>
             </tr>
           </thead>
-          <tbody id="adminProductsApprovalTable"></tbody>
-        </table>
+          <tbody id="adminProductsApprovalTable">
       </div>
 
       <!-- 💳 የክፍያ ዘዴዎች ማስተካከያ (Manage Payment Methods) -->
@@ -430,12 +428,12 @@
             <option value="chapa">ቻፓ (Chapa)</option>
             <option value="cod">ካሽ በመድረሻ (COD)</option>
           </select>
-        </div>
+          <tbody id="adminPaymentMethodsTable">
+         </div>
         
         <button type="button" id="savePaymentBtn" onclick="savePaymentMethod()" class="auth-btn" style="width: auto; padding: 10px 20px; margin-bottom: 20px;">
           የክፍያ ዘዴ መዝግብ / አስተካክል
         </button>
-
 
         <table>
           <thead>
@@ -448,8 +446,6 @@
             </tr>
           </thead>
           <tbody id="adminPaymentMethodsTable">
-            <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">የክፍያ ዘዴዎች በመጫን ላይ ናቸው...</td></tr>
-          </tbody>
         </table>
       </div> 
  
@@ -463,6 +459,7 @@
         <button type="button" id="submitPromoBtn" onclick="addPromoSlider()" class="auth-btn" style="width: auto; padding: 10px 20px;">
           ስላይደር መዝግብ
         </button>
+        <tbody id="adminPromoSliderTable">
       </div>
 
       <div class="panel-card" id="adminOrdersSection">
@@ -481,18 +478,19 @@
           <tbody id="adminOrdersTable"></tbody>
         </table>
       </div>
-
       <div class="panel-card" id="adminPaymentReceiptsSection">
         <h3>የተላኩ የባንክና Telebirr ደረሰኞች</h3>
         <div id="adminOrdersList">
           <p style="color:var(--text-muted); font-size:0.9rem;">ደረሰኞች በመጫን ላይ ናቸው...</p>
         </div>
         </select>
+        <tbody id="adminPaymentReceiptsTable">
       </div>
-      </section>
+    </section>
+    
 
       <!-- Seller Dashboard Form with 360 Degree Preview & Contact Info -->
-      <div class="panel-card" style="margin-bottom: 25px;">
+      <div class="panel-card" id="adminSellerProductsSection" style="margin-bottom: 25px;">
         <h3>አዲስ ምርት መዝግብ (Add New Product - 360° Preview)</h3>
         
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
@@ -510,6 +508,7 @@
             </optgroup>
             <option value="general">ሌሎች</option>
           </select>
+          <tbody id="adminSellerProductsTable">
         </div>
 
         <!-- 360 Degree 4 Images Input Section -->
@@ -548,7 +547,7 @@
         <button type="button" id="submitSellerProdBtn" class="auth-btn" onclick="addSellerProduct()" style="width: auto; padding: 10px 25px;">ምርት መዝግብ</button>
       </div>
 
-      <div class="panel-card">
+      <div class="panel-card" id="adminProductsSection">
         <h3>የተመዘገቡ ምርቶችህ</h3>
         <table>
           <thead>
@@ -560,8 +559,7 @@
               <th>ሁኔታ</th>
             </tr>
           </thead>
-          <tbody id="sellerProductsTable"></tbody>
-        </table>
+          <tbody id="adminProductsTable">
       </div>
     </section>
 
@@ -754,6 +752,21 @@
         🎯 ራእያችንና ተልእኳችን (Our Mission & Vision)<br>
         "የደቡብን ንግድ ከዘመናዊው የዲጂታል ዓለም ጋር ማገናኘት!"<br><br>
         ጂንካ ገበያ (Jinka Market) በደቡብ ኢትዮጵያ እና በዙሪያዋ ያሉ የአካባቢው አምራቾች፣ ነጋዴዎች፣ ገበሬዎች እና አነስተኛ የንግድ ተቋማት ምርቶቻቸውን በቀላሉ ሙሉ ኢትዮጵያ ውስጥ ለሚገኙ ደንበኞች የሚያቀርቡበት ዘመናዊ የኤሌክትሮኒክስ ንግድ (E-commerce) መድረክ ነው።
+      ስለ ጂንካ ገበያ (www.jinkamarkets.et)
+ጂንካ ገበያ ገዢዎችን እና ሻጮችን በአንድ ላይ የሚያገናኝ ዘመናዊ እና አስተማማኝ የኢኮሜርስ (E-commerce) መድረክ ነው። መድረኩ ግብይትን እጅግ ቀላል፣ ፈጣን እና ማራኪ ለማድረግ የተነደፈ ሲሆን፣ ለተጠቃሚዎች ምቹ የሆኑ በርካታ አገልግሎቶችን ያካትታል።
+
+ዋና ዋና አገልግሎቶችና ገጽታዎች፡
+የሻጮች ማስተዳደሪያ ፖርታል (Seller Administration Panel)፡ ሻጮች የራሳቸውን ምርቶች 𝉠ቀላሉ 𝉠መጫን፣ 𝋨ምርት 𝈛ጽደቅ workflows 𝉠መጠቀም 𝊥ና 𝈘ደብራቸውን 𝉠ማስተዳደር 𝊕ግድ ዎን 𝈛ሳደግ 𝋭ችላሉ።
+
+የቪዲዮ ሪልስ (Video Reels)፡ ምርቶችን በምስል ብቻ ሳይሆን ማራኪ በሆኑ አጫጭር ቪዲዮዎች በመታገዝ ማየትና መገበያየት ያስችላል።
+
+ዘመናዊ የክፍያ አማራጮች (Payment Gateways)፡ እንደ ቴሌብር (Telebirr)፣ ቻፓ (Chapa) እና ቀጥተኛ የባንክ ማስተላለፍ (Bank Transfer) ያሉ ደህንነታቸው የተጠበቁ የክፍያ መንገዶችን ይዟል።
+
+ፈጣን ዲጂታል ደረሰኞች፡ ግብይት ሲፈጸም የሚረዱ የፒዲኤፍ ደረሰኞች (PDF Receipts) ማመንጨት ያስችላል።
+
+መድረኩን ለመጎብኘት፣ ግብይት ለመጀመር ወይም የራስዎን ምርቶች ለመሸጥ የሚከተለውን ሊንክ ይጠቀሙ፦
+
+🔗 www.jinkamarkets.et
       </p>
     </div>
   </div>
