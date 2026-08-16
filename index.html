@@ -381,7 +381,7 @@
         </div>
       </div>
 
-      <div class="panel-card"> id="adminPaymentMethodsSection">
+      <div class="panel-card">
         <h3>የሻጮች ምርት ማፅደቂያ እና የቆይታ ጊዜ መወሰኛ (Product Approvals & Duration)</h3>
         <table>
           <thead>
@@ -397,43 +397,44 @@
           <tbody id="adminProductsApprovalTable"></tbody>
         </table>
       </div>
-      <!-- 💳 የክፍያ ዘዴዎች ማስተካከያ (Manage Payment Methods) - ለአድሚን ብቻ የሚታይ -->
-<div class="panel-card" id="adminPaymentMethodsSection">
-  <h3>💳 የክፍያ ዘዴዎች ማስተካከያ (Manage Payment Methods)</h3>
-  
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
-    <input type="hidden" id="editPaymentId" value="">
-    <input type="text" id="paymentBankName" placeholder="የባንክ ወይም የክፍያ ስም (ምሳሌ፦ Dashen Bank)">
-    <input type="text" id="paymentAccountNumber" placeholder="የሂሳብ ቁጥር (ምሳሌ፦ 5081917396011)">
-    <input type="text" id="paymentAccountHolder" placeholder="የባለቤት ስም (ምሳሌ፦ Amanuel Tito)">
-    <select id="paymentType">
-      <option value="bank">ባንክ (Bank Transfer)</option>
-      <option value="telebirr">ቴሌብር (Telebirr)</option>
-      <option value="chapa">ቻፓ (Chapa)</option>
-      <option value="cod">ካሽ በመድረሻ (COD)</option>
-    </select>
-  </div>
-  
-  <button type="button" id="savePaymentBtn" onclick="savePaymentMethod()" class="auth-btn" style="width: auto; padding: 10px 20px; margin-bottom: 20px;">
-    የክፍያ ዘዴ መዝግብ / አስተካክል
-  </button>
 
-  <table>
-    <thead>
-      <tr>
-        <th>የክፍያ/ባንክ ስም</th>
-        <th>ሂሳብ ቁጥር</th>
-        <th>የባለቤት ስም</th>
-        <th>አይነት</th>
-        <th>እርምጃ</th>
-      </tr>
-    </thead>
-    <tbody id="adminPaymentMethodsTable">
-      <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">የክፍያ ዘዴዎች በመጫን ላይ ናቸው...</td></tr>
-    </tbody>
-  </table>
-</div>
-      
+      <!-- 💳 የክፍያ ዘዴዎች ማስተካከያ (Manage Payment Methods) -->
+      <div class="panel-card" id="adminPaymentMethodsSection">
+        <h3>💳 የክፍያ ዘዴዎች ማስተካከያ (Manage Payment Methods)</h3>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
+          <input type="hidden" id="editPaymentId" value="">
+          <input type="text" id="paymentBankName" placeholder="የባንክ ወይም የክፍያ ስም (ምሳሌ፦ Dashen Bank)">
+          <input type="text" id="paymentAccountNumber" placeholder="የሂሳብ ቁጥር (ምሳሌ፦ 5081917396011)">
+          <input type="text" id="paymentAccountHolder" placeholder="የባለቤት ስም (ምሳሌ፦ Amanuel Tito)">
+          <select id="paymentType">
+            <option value="bank">ባንክ (Bank Transfer)</option>
+            <option value="telebirr">ቴሌብር (Telebirr)</option>
+            <option value="chapa">ቻፓ (Chapa)</option>
+            <option value="cod">ካሽ በመድረሻ (COD)</option>
+          </select>
+        </div>
+        
+        <button type="button" id="savePaymentBtn" onclick="savePaymentMethod()" class="auth-btn" style="width: auto; padding: 10px 20px; margin-bottom: 20px;">
+          የክፍያ ዘዴ መዝግብ / አስተካክል
+        </button>
+
+        <table>
+          <thead>
+            <tr>
+              <th>የክፍያ/ባንክ ስም</th>
+              <th>ሂሳብ ቁጥር</th>
+              <th>የባለቤት ስም</th>
+              <th>አይነት</th>
+              <th>እርምጃ</th>
+            </tr>
+          </thead>
+          <tbody id="adminPaymentMethodsTable">
+            <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">የክፍያ ዘዴዎች በመጫን ላይ ናቸው...</td></tr>
+          </tbody>
+        </table>
+      </div> 
+
       <div class="panel-card">
         <h3>የፕሮሞሽን ስላይደር ማኔጅመንት (Promos)</h3>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
@@ -1780,7 +1781,7 @@
         }
         snapshot.forEach(doc => {
           const p = doc.data();
-          table.innerHTML = `
+          table.innerHTML += `
             <tr>
               <td>${p.bankName}</td>
               <td>${p.accountNumber}</td>
@@ -1863,364 +1864,206 @@
 
       db.collection("products").get().then(snap => {
         document.getElementById('adminTotalProducts').innerText = snap.size;
-        const appTable = document.getElementById('adminProductsApprovalTable');
-        if(!appTable) return;
-        appTable.innerHTML = '';
-        snap.forEach(doc => {
-          const p = doc.data();
-          const img = p.imageUrlFront || p.imageUrl || p.image || 'https://via.placeholder.com/40';
-          
-          let expiryInfo = '';
-          if (p.expiresAt) {
-            const expDateStr = p.expiresAt.toDate ? p.expiresAt.toDate().toLocaleDateString() : new Date(p.expiresAt).toLocaleDateString();
-            expiryInfo = `<br><small style="color:var(--text-muted);">የሚያበቃበት: ${expDateStr} (${p.durationMonths || 1} ወር)</small>`;
-          }
-
-          appTable.innerHTML += `
-            <tr>
-              <td><img src="${img}" style="width:40px; height:40px; border-radius:6px; object-fit:cover;"></td>
-              <td>${p.title}</td>
-              <td>${p.price} ETB</td>
-              <td>${p.sellerId ? p.sellerId.substring(0, 6) : 'N/A'}...</td>
-              <td><span class="status-badge ${p.status==='approved'?'status-completed':'status-pending'}">${p.status || 'pending'}</span></td>
-              <td>
-                ${p.status !== 'approved' ? `
-                  <div style="display:flex; flex-direction:column; gap:6px;">
-                    <select id="duration-${doc.id}" style="padding:4px; font-size:0.8rem; border-radius:4px; border:1px solid var(--border-color); background:var(--surface); color:var(--text-main);">
-                      <option value="1">1 ወር (30 ቀናት)</option>
-                      <option value="2">2 ወር (60 ቀናት)</option>
-                      <option value="3">3 ወር (90 ቀናት)</option>
-                      <option value="6">6 ወር (180 ቀናት)</option>
-                    </select>
-                    <button onclick="approveProductWithDuration('${doc.id}')" style="padding: 6px 10px; background:#10b981; color:white; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">አጽድቅ (Approve)</button>
-                  </div>
-                ` : `ጸድቋል ${expiryInfo}`}
-              </td>
-            </tr>`;
-        });
       });
 
-      db.collection("users").get().then(snap => document.getElementById('adminTotalUsers').innerText = snap.size);
-    }
-
-    function approveProductWithDuration(prodId) {
-      const durationSelect = document.getElementById(`duration-${prodId}`);
-      const months = durationSelect ? parseInt(durationSelect.value) : 1;
-      const expiryDate = new Date();
-      expiryDate.setMonth(expiryDate.getMonth() + months);
-
-      db.collection("products").doc(prodId).update({
-        status: "approved",
-        durationMonths: months,
-        approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        expiresAt: firebase.firestore.Timestamp.fromDate(expiryDate)
-      }).then(() => {
-        alert(`ምርቱ ለ ${months} ወር እንዲቆይ ሆኖ ጸድቋል!`);
-        loadAdminData();
-        fetchApprovedProducts();
-      }).catch(err => {
-        alert("ስህተት አጋጥሟል፦ " + err.message);
+      db.collection("users").get().then(snap => {
+        document.getElementById('adminTotalUsers').innerText = snap.size;
       });
-    }
 
-    function fetchOrdersForAdmin() {
-      db.collection("orders").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
-        let html = "";
-        snapshot.forEach((doc) => {
-          const order = doc.data();
-          let itemsHtml = "";
-          if (order.cartItems && Array.isArray(order.cartItems)) {
-            itemsHtml = "<ul>" + order.cartItems.map(item => 
-              `<li><b>${item.title}</b> - ${item.quantity} ፒስ (x ${item.price} ብር) = ${item.subTotal} ETB</li>`
-            ).join('') + "</ul>";
-          }
-
-          html += `
-            <div style="border: 1px solid var(--border-color); padding: 15px; margin-bottom: 12px; border-radius: 8px; background: var(--surface);">
-              <p><b>ትራንዛክሽን ቁጥር፦</b> ${order.transactionRef || 'N/A'}</p>
-              <p><b>👤 ደንበኛ፦</b> ${order.customerName} | <b>📞 ስልክ፦</b> <a href="tel:${order.customerPhone}">${order.customerPhone}</a></p>
-              <p><b>📍 አድራሻ፦</b> ${order.customerAddress || 'N/A'}</p>
-              <p><b>💳 ክፍያ ዘዴ፦</b> ${order.paymentMethod}</p>
-              <div style="background: var(--bg-color); padding: 8px; border-radius: 6px; margin: 8px 0;">
-                <b>🛒 የተገዙ ምርቶች ጋሪ፦</b>
-                ${itemsHtml || '<p>ምንም ዝርዝር አልተገኘም</p>'}
-              </div>
-              <p><b>💰 ጠቅላላ ዋጋ፦</b> <span style="color:#10b981; font-weight:bold;">${order.totalAmount || 0} ETB</span></p>
-              <p><b>ሁኔታ፦</b> <span class="status-badge status-pending">${order.status || 'Pending'}</span></p>
-              ${order.receiptUrl ? `<p><b>📄 ደረሰኝ፦</b> <a href="${order.receiptUrl}" target="_blank" style="color:var(--primary); font-weight:bold;">ደረሰኙን/ፎቶውን ለመመልከት እዚህ ይጫኑ</a></p>` : ''}
-            </div>
-          `;
-        });
-        
-        const ordersContainer = document.getElementById("adminOrdersList");
-        if(ordersContainer) ordersContainer.innerHTML = html || "<p>ምንም ደረሰኝ አልተገኘም።</p>";
-      });
-    }
-
-    function markAsCompleted(orderId) {
-      db.collection("orders").doc(orderId).update({ status: "Completed" }).then(() => {
-        alert("ትዕዛዙ ሙሉ በሙሉ ተጠናቋል!");
-        loadAdminData();
-      });
-    }
-
-    function loadSellerProducts() {
-      const tableBody = document.getElementById("sellerProductsTable");
-      if (!tableBody) return;
-
-      db.collection("products").get().then((querySnapshot) => {
-        tableBody.innerHTML = "";
-        if (querySnapshot.empty) {
-          tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #777; padding: 15px;">ምንም የተመዘገበ ምርት የለም።</td></tr>`;
+      db.collection("products").onSnapshot(snap => {
+        const table = document.getElementById('adminProductsApprovalTable');
+        if (!table) return;
+        table.innerHTML = '';
+        if (snap.empty) {
+          table.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">ምንም ምርት አልተገኘም።</td></tr>`;
           return;
         }
-
-        let productsList = [];
-        querySnapshot.forEach((doc) => {
-          productsList.push({ id: doc.id, ...doc.data() });
-        });
-
-        productsList.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
-
-        productsList.forEach((product) => {
-          let rawImg = product.imageUrlFront || product.imageUrl || product.image;
-          const fallbackImg = "https://via.placeholder.com/150?text=No+Image";
-          const finalImgUrl = (rawImg && rawImg.trim() !== "") ? rawImg : fallbackImg;
-
-          let statusBadge = product.status === "approved" 
-            ? `<span style="background: #27ae60; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; display: inline-block;">የጸደቀ</span>`
-            : `<span style="background: #f39c12; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; display: inline-block;">የሚጠበቅ (Pending)</span>`;
-
-          tableBody.innerHTML += `
-            <tr style="border-bottom: 1px solid var(--border-color);">
-              <td style="padding: 8px; width: 70px; text-align: center;">
-                <img src="${finalImgUrl}" alt="${product.title || 'ምርት'}" onerror="this.onerror=null; this.src='${fallbackImg}';" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border-color); display: block; margin: 0 auto;"/>
+        snap.forEach(doc => {
+          const p = doc.data();
+          const img = p.imageUrlFront || p.imageUrl || 'https://via.placeholder.com/50';
+          const statusBadge = p.status === 'approved' ? '<span class="status-badge status-completed">ተቀባይነት አግኝቷል</span>' : (p.status === 'expired' ? '<span class="status-badge" style="background:#fee2e2; color:#dc2626;">ጊዜው አልፎበታል</span>' : '<span class="status-badge status-pending">በመጠባበቅ ላይ</span>');
+          
+          table.innerHTML += `
+            <tr>
+              <td><img src="${img}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;"></td>
+              <td>${p.title}</td>
+              <td>${p.price} ETB</td>
+              <td>${p.sellerId ? p.sellerId.substring(0,6) + '...' : 'N/A'}</td>
+              <td>${statusBadge}</td>
+              <td>
+                <select id="duration-${doc.id}" style="padding:4px; font-size:0.75rem; border-radius:4px; margin-right:5px;">
+                  <option value="7">7 ቀናት</option>
+                  <option value="15">15 ቀናት</option>
+                  <option value="30" selected>30 ቀናት</option>
+                  <option value="90">90 ቀናት</option>
+                </select>
+                <button onclick="approveProduct('${doc.id}')" style="padding:4px 8px; font-size:0.75rem; background:#10b981; color:white; border:none; border-radius:4px; cursor:pointer;">አጽድቅ</button>
+                <button onclick="rejectProduct('${doc.id}')" style="padding:4px 8px; font-size:0.75rem; background:#ef4444; color:white; border:none; border-radius:4px; cursor:pointer; margin-left:4px;">አጥፋ</button>
               </td>
-              <td style="padding: 8px; font-weight: bold;">${product.title || product.name || '-'}</td>
-              <td style="padding: 8px;">${product.category || 'ጠቅላላ'}</td>
-              <td style="padding: 8px; color: #27ae60; font-weight: bold;">${product.price} ብር</td>
-              <td style="padding: 8px;">${statusBadge}</td>
             </tr>
           `;
         });
-      }).catch((error) => {
-        console.error("Error loading products: ", error);
-        tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: red; padding: 15px;">ምርቶችን ማምጣት አልተቻለም!</td></tr>`;
+      });
+    }
+
+    async function approveProduct(id) {
+      const days = parseInt(document.getElementById(`duration-${id}`).value) || 30;
+      const expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + days);
+      await db.collection("products").doc(id).update({
+        status: 'approved',
+        expiresAt: firebase.firestore.Timestamp.fromDate(expiresAt)
+      });
+      alert("ምርቱ ጸድቋል!");
+    }
+
+    async function rejectProduct(id) {
+      if (confirm("እርግጠኛ ኖት ይህንን ምርት መሰረዝ ይፈልጋሉ?")) {
+        await db.collection("products").doc(id).delete();
+        alert("ተሰርዟል!");
+      }
+    }
+
+    function fetchOrdersForAdmin() {
+      db.collection("orders").onSnapshot(snap => {
+        const list = document.getElementById('adminOrdersList');
+        if (!list) return;
+        list.innerHTML = '';
+        if (snap.empty) {
+          list.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">ምንም ደረሰኝ ወይም ትዕዛዝ የለም።</p>`;
+          return;
+        }
+        snap.forEach(doc => {
+          const o = doc.data();
+          const receiptDisplay = o.receiptUrl && o.receiptUrl.startsWith('data:image') ? `<img src="${o.receiptUrl}" style="max-width:150px; border-radius:6px; margin-top:5px;">` : `<a href="${o.receiptUrl}" target="_blank" style="color:var(--primary);">${o.receiptUrl}</a>`;
+          list.innerHTML += `
+            <div style="background:var(--bg-color); padding:15px; border-radius:8px; margin-bottom:10px; border:1px solid var(--border-color);">
+              <p><b>የትዕዛዝ ቁጥር (Ref):</b> ${o.transactionRef}</p>
+              <p><b>ደንበኛ:</b> ${o.customerName} (${o.customerPhone})</p>
+              <p><b>ጠቅላላ ዋጋ:</b> ${o.totalAmount} ETB | <b>ዘዴ:</b> ${o.paymentMethod}</p>
+              <p><b>ሁኔታ:</b> ${o.status}</p>
+              <div style="margin-top:8px;"><b>ደረሰኝ/ፋይል:</b><br>${receiptDisplay}</div>
+            </div>
+          `;
+        });
+      });
+    }
+
+    async function markAsCompleted(id) {
+      await db.collection("orders").doc(id).update({ status: 'Completed' });
+      alert("ትዕዛዙ እንደተጠናቀቀ ተዘምኗል!");
+    }
+
+    function loadSellerProducts() {
+      if (!currentUser) return;
+      db.collection("products").where("sellerId", "==", currentUser.uid).onSnapshot(snap => {
+        const table = document.getElementById('sellerProductsTable');
+        if (!table) return;
+        table.innerHTML = '';
+        if (snap.empty) {
+          table.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">እስካሁን ምንም ምርት አልመዝገቡም።</td></tr>`;
+          return;
+        }
+        snap.forEach(doc => {
+          const p = doc.data();
+          const img = p.imageUrlFront || p.imageUrl || 'https://via.placeholder.com/50';
+          table.innerHTML += `
+            <tr>
+              <td><img src="${img}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;"></td>
+              <td>${p.title}</td>
+              <td>${p.category}</td>
+              <td>${p.price} ETB</td>
+              <td><span class="status-badge ${p.status === 'approved' ? 'status-completed' : 'status-pending'}">${p.status}</span></td>
+            </tr>
+          `;
+        });
       });
     }
 
     function loadCustomerOrders() {
       if (!currentUser) return;
-      db.collection("orders").where("userId", "==", currentUser.uid).get().then(snapshot => {
+      db.collection("orders").where("userId", "==", currentUser.uid).onSnapshot(snap => {
         const table = document.getElementById('customerOrdersTable');
-        if(!table) return;
+        if (!table) return;
         table.innerHTML = '';
-        snapshot.forEach(doc => {
-          const data = doc.data();
+        if (snap.empty) {
+          table.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--text-muted);">እስካሁን ምንም የግዢ ታሪክ የሎትም።</td></tr>`;
+          return;
+        }
+        snap.forEach(doc => {
+          const o = doc.data();
           table.innerHTML += `
             <tr>
-              <td>${doc.id.substring(0, 8)}...</td>
-              <td>${data.paymentMethod || 'Chapa/Telebirr'}</td>
-              <td>${data.totalAmount || 0} ETB</td>
-              <td><span class="status-badge status-pending">${data.status || 'Pending'}</span></td>
-            </tr>`;
+              <td>${o.transactionRef}</td>
+              <td>${o.paymentMethod}</td>
+              <td>${o.totalAmount} ETB</td>
+              <td><span class="status-badge ${o.status === 'Completed' ? 'status-completed' : 'status-pending'}">${o.status}</span></td>
+            </tr>
+          `;
         });
       });
     }
 
     function fetchReels() {
-      db.collection("reels").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
-        const reelsContainer = document.getElementById('reelsScrollContainer');
-        if (snapshot.empty || !reelsContainer) return;
-
-        reelsContainer.innerHTML = '';
-        snapshot.forEach((doc) => {
-          const reel = doc.data();
-          const reelId = doc.id;
-          const likes = reel.likes || 0;
-          const dislikes = reel.dislikes || 0;
-          const commentsCount = reel.commentsCount || 0;
-
-          reelsContainer.innerHTML += `
-            <div class="reel-card" id="reel-${reelId}">
-              <video src="${reel.videoUrl}" controls preload="metadata" playsinline></video>
-              <div class="reel-overlay">
-                <div class="reel-title">${reel.title || 'የምርት ቪዲዮ'}</div>
-                <div class="reel-actions">
-                  <button class="reel-action-btn" onclick="likeReel('${reelId}')">
-                    <i class="fa-solid fa-thumbs-up"></i> <span id="like-count-${reelId}">${likes}</span>
-                  </button>
-                  <button class="reel-action-btn" onclick="dislikeReel('${reelId}')">
-                    <i class="fa-solid fa-thumbs-down"></i> <span id="dislike-count-${reelId}">${dislikes}</span>
-                  </button>
-                  <button class="reel-action-btn" onclick="openReelCommentsModal('${reelId}')">
-                    <i class="fa-solid fa-comment"></i> <span id="comment-count-${reelId}">${commentsCount}</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          `;
-        });
-      }, (error) => console.error("Reels Error: ", error));
+      db.collection("reels").onSnapshot(snap => {
+        if (snap.empty) return;
+        const container = document.getElementById('reelsScrollContainer');
+        if (!container) return;
+      });
     }
 
-    function likeReel(reelId) {
-      const userActionKey = `reel_action_${reelId}`;
-      const previousAction = localStorage.getItem(userActionKey);
-
-      if (previousAction === 'liked') {
-        alert("ቀደም ብለው ላይክ አድርገዋል!");
-        return;
-      }
-
-      const likeCountEl = document.getElementById(`like-count-${reelId}`);
-      const dislikeCountEl = document.getElementById(`dislike-count-${reelId}`);
-
-      if (previousAction === 'disliked') {
-        if (dislikeCountEl) {
-          let dCount = Math.max(0, (parseInt(dislikeCountEl.innerText) || 0) - 1);
-          dislikeCountEl.innerText = dCount;
-        }
-        if (!reelId.startsWith('demo-')) {
-          db.collection("reels").doc(reelId).update({
-            dislikes: firebase.firestore.FieldValue.increment(-1)
-          }).catch(err => console.error(err));
-        }
-      }
-
-      if (likeCountEl) {
-        let lCount = (parseInt(likeCountEl.innerText) || 0) + 1;
-        likeCountEl.innerText = lCount;
-      }
-
-      localStorage.setItem(userActionKey, 'liked');
-
-      if (!reelId.startsWith('demo-')) {
-        db.collection("reels").doc(reelId).update({
-          likes: firebase.firestore.FieldValue.increment(1)
-        }).catch(err => console.error(err));
+    function likeReel(id) {
+      const el = document.getElementById(`like-count-${id}`);
+      if (el) {
+        let count = parseInt(el.innerText) || 0;
+        el.innerText = count + 1;
       }
     }
 
-    function dislikeReel(reelId) {
-      const userActionKey = `reel_action_${reelId}`;
-      const previousAction = localStorage.getItem(userActionKey);
-
-      if (previousAction === 'disliked') {
-        alert("ቀደም ብለው ዲዝላይክ አድርገዋል!");
-        return;
-      }
-
-      const likeCountEl = document.getElementById(`like-count-${reelId}`);
-      const dislikeCountEl = document.getElementById(`dislike-count-${reelId}`);
-
-      if (previousAction === 'liked') {
-        if (likeCountEl) {
-          let lCount = Math.max(0, (parseInt(likeCountEl.innerText) || 0) - 1);
-          likeCountEl.innerText = lCount;
-        }
-        if (!reelId.startsWith('demo-')) {
-          db.collection("reels").doc(reelId).update({
-            likes: firebase.firestore.FieldValue.increment(-1)
-          }).catch(err => console.error(err));
-        }
-      }
-
-      if (dislikeCountEl) {
-        let dCount = (parseInt(dislikeCountEl.innerText) || 0) + 1;
-        dislikeCountEl.innerText = dCount;
-      }
-
-      localStorage.setItem(userActionKey, 'disliked');
-
-      if (!reelId.startsWith('demo-')) {
-        db.collection("reels").doc(reelId).update({
-          dislikes: firebase.firestore.FieldValue.increment(1)
-        }).catch(err => console.error(err));
+    function dislikeReel(id) {
+      const el = document.getElementById(`dislike-count-${id}`);
+      if (el) {
+        let count = parseInt(el.innerText) || 0;
+        el.innerText = count + 1;
       }
     }
 
-    function openReelCommentsModal(reelId) {
-      activeReelIdForComment = reelId;
+    function openReelCommentsModal(id) {
+      activeReelIdForComment = id;
       document.getElementById('reelCommentsModal').classList.add('active');
-      loadReelComments(reelId);
+      loadReelComments(id);
     }
 
     function closeReelCommentsModal() {
       document.getElementById('reelCommentsModal').classList.remove('active');
-      activeReelIdForComment = null;
     }
 
-    function loadReelComments(reelId) {
-      const container = document.getElementById('reelCommentsList');
-      if (!container) return;
-      container.innerHTML = `<p style="font-size:0.85rem; color:var(--text-muted); text-align:center;">አስተያየቶች በመጫን ላይ ናቸው...</p>`;
-
-      if (reelId.startsWith('demo-')) {
-        container.innerHTML = `
-          <div style="border-bottom: 1px solid var(--border-color); padding: 6px 0; font-size:0.85rem;">
-            <strong>አማኑኤል ቲቶ</strong>
-            <p style="color:var(--text-muted); margin-top:2px;">በጣም አሪፍ ምርት ነው!</p>
-          </div>
-          <div style="border-bottom: 1px solid var(--border-color); padding: 6px 0; font-size:0.85rem;">
-            <strong>ሄለን ከበደ</strong>
-            <p style="color:var(--text-muted); margin-top:2px;">እንዴት ነው የምንረክበው?</p>
-          </div>
-        `;
-        return;
-      }
-
-      db.collection("reels").doc(reelId).collection("comments").orderBy("createdAt", "desc").get().then(snap => {
-        container.innerHTML = '';
+    function loadReelComments(id) {
+      db.collection("reels").doc(id).collection("comments").onSnapshot(snap => {
+        const list = document.getElementById('reelCommentsList');
+        if (!list) return;
+        list.innerHTML = '';
         if (snap.empty) {
-          container.innerHTML = `<p style="font-size:0.85rem; color:var(--text-muted); text-align:center;">እስካሁን ምንም አስተያየት አልተሰጠም።</p>`;
+          list.innerHTML = `<p style="font-size:0.85rem; color:var(--text-muted); text-align:center;">እስካሁን ምንም አስተያየት የለም።</p>`;
           return;
         }
         snap.forEach(doc => {
           const c = doc.data();
-          container.innerHTML += `
-            <div style="border-bottom: 1px solid var(--border-color); padding: 6px 0; font-size:0.85rem;">
-              <strong>${c.userEmail || 'እንግዳ'}</strong>
-              <p style="color:var(--text-muted); margin-top:2px;">${c.comment}</p>
-            </div>
-          `;
+          list.innerHTML += `<div style="padding:6px 0; border-bottom:1px solid var(--border-color); font-size:0.85rem;"><p>${c.comment}</p></div>`;
         });
       });
     }
 
-    function submitReelComment() {
+    async function submitReelComment() {
       const input = document.getElementById('reelCommentInput');
-      const commentText = input.value.trim();
-      if (!commentText) {
-        alert("እባክዎን አስተያየትዎን ይጻፉ!");
-        return;
-      }
-      if (!activeReelIdForComment) return;
+      const text = input.value.trim();
+      if (!text || !activeReelIdForComment) return;
 
-      const userEmail = currentUser ? currentUser.email : 'እንግዳ ተጠቃሚ';
-
-      if (activeReelIdForComment.startsWith('demo-')) {
-        alert("ለዲሞ ቪዲዮዎች አስተያየት በጊዜያዊነት ተመዝግቧል!");
-        input.value = '';
-        closeReelCommentsModal();
-        return;
-      }
-
-      db.collection("reels").doc(activeReelIdForComment).collection("comments").add({
-        userEmail: userEmail,
-        comment: Validator.sanitizeInput(commentText),
+      await db.collection("reels").doc(activeReelIdForComment).collection("comments").add({
+        comment: Validator.sanitizeInput(text),
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      }).then(() => {
-        return db.collection("reels").doc(activeReelIdForComment).update({
-          commentsCount: firebase.firestore.FieldValue.increment(1)
-        });
-      }).then(() => {
-        alert("አስተያየትዎ ተልኳል!");
-        input.value = '';
-        loadReelComments(activeReelIdForComment);
-      }).catch(err => {
-        alert("ስህተት አጋጥሟል፦ " + err.message);
       });
+      input.value = '';
     }
   </script>
 </body>
