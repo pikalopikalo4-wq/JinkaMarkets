@@ -1838,6 +1838,35 @@
       fetchApprovedProducts();
       fetchPromos();
       updateCartUI();
+      async function loadVideoReels() {
+    const container = document.getElementById('reelsScrollContainer');
+    
+    try {
+        // ከዳታቤዝ መረጃን በመጥራት ላይ (ምሳሌ፦ Firestore)
+        const snapshot = await db.collection('reels').get();
+        
+        if (snapshot.empty) {
+            container.innerHTML = '<p style="color:var(--text-muted);">ምንም የምርት ቪዲዮዎች አልተገኙም</p>';
+            return;
+        }
+
+        container.innerHTML = ''; // የሎዲንግ ጽሁፉን እናጠፋለን
+        snapshot.forEach(doc => {
+            const reel = doc.data();
+            container.innerHTML += `
+                <div class="reel-card">
+                    <video src="${reel.videoUrl}" controls></video>
+                </div>
+            `;
+        });
+    } catch (error) {
+        console.error("ቪዲዮዎችን በመጫን ላይ ስህተት ተፈጥሯል:", error);
+        container.innerHTML = '<p style="color:var(--text-muted);">ቪዲዮዎችን መጫን አልተቻለም።</p>';
+    }
+}
+
+// ፉንክሽኑን መጥራት
+loadVideoReels();
     });
   </script>
 </body>
