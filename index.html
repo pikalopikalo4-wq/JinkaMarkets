@@ -198,6 +198,45 @@
   </style>
 </head>
 <body>
+<!-- WELCOME VOICE GREETING BANNER -->
+<div id="welcomeAudioBanner" class="bg-emerald-900 text-white px-4 py-2 text-xs flex items-center justify-between shadow-inner">
+  <div class="flex items-center gap-2">
+    <span class="animate-bounce">👋</span>
+    <span><strong>እንኳን ደህና መጡ!</strong> (Welcome to Jinka Market)</span>
+  </div>
+  <button onclick="playWelcomeAudio()" id="audioTriggerBtn" class="bg-emerald-700 hover:bg-emerald-600 text-amber-300 font-bold px-3 py-1 rounded-xl transition flex items-center gap-1 shadow">
+    🔊 ድምፅ አጫወት (Listen)
+  </button>
+</div>
+
+<!-- HTML5 Audio Element (Using a hosted sample or your recorded Amharic audio file link) -->
+<audio id="welcomeAudio" preload="auto">
+  <!-- እዚህ ጋ የራስዎን የድምፅ ፋይል ሊንክ (mp3) ማስገባት ይችላሉ -->
+  <source src="https://cdn.imageurlgenerator.com/uploads/f4422e03-59a5-4597-b0ae-3b162068d6a6.mp3" type="audio/mp3">
+</audio>
+
+<script>
+  function playWelcomeAudio() {
+    const audio = document.getElementById('welcomeAudio');
+    const btn = document.getElementById('audioTriggerBtn');
+    
+    audio.play().then(() => {
+      btn.textContent = "🔊 እየተጫወተ ነው...";
+      btn.classList.add('bg-emerald-600');
+      setTimeout(() => {
+        btn.textContent = "ድጋሚ አጫወት (Replay)";
+      }, 4000);
+    }).catch(error => {
+      console.log("Audio play blocked or error:", error);
+      alert("እባክዎ ድምፁን ለማጫወት የድምፅ ማጫወቻውን ይጫኑ።");
+    });
+  }
+
+  // ገጹ ሲከፈት በራስ-ሰር የሰላምታ ማሳሰቢያውን ለማሳየት (ከተፈለገ)
+  window.addEventListener('DOMContentLoaded', () => {
+    // ተጠቃሚው የመጀመሪያውን ክሊክ ሲያደርግ ድምፁ በራሱ እንዲጀምር ማድረግ ከፈለጉ ይህንን መጠቀም ይቻላል
+  });
+</script>
 
   <!-- Navigation Bar -->
   <header>
