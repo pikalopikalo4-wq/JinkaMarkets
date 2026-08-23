@@ -959,6 +959,80 @@
         alert(currentLang === 'am' ? 'ክፍያውን ሲላክ ስህተት አጋጥሟል!' : 'Error submitting payment verification!');
       }
     });
+    // ከ Firebase Firestore ሆቴሎችን በዲናሚክ ማምጣት እና በ index.html/delivery_3.html ላይ መጫን
+async function fetchAndRenderHotels() {
+  const hotelGrid = document.getElementById('hotelGrid');
+  if (!hotelGrid) return;
+
+  // ሲጫን የሚታይ የሎዲንግ መልዕክት
+  hotelGrid.innerHTML = '<p class="text-center col-span-3 text-slate-500 py-8">ሆቴሎችን በመጫን ላይ... / Loading hotels...</p>';
+
+  try {
+    // ከ Firestore 'hotels' ኮሌክሽን ዳታውን መቀበል 
+    // (db የሚለው ከእርስዎ የፋየርቤዝ ኢኒሻላይዜሽን ኮድ ጋር የተገናኘ መሆን አለበት)
+    const querySnapshot = await getDocs(collection(db, "hotels"));
+    
+    hotelGrid.innerHTML = ""; // ሎዲንግ ማጥፋት
+
+    if (querySnapshot.empty) {
+      hotelGrid.innerHTML = '<p class="text-center col-span-3 text-slate-500 py-8">ምንም ሆቴሎች አልተገኙም</p>';
+      return;
+    }
+
+    querySnapshot.forEach((doc) => {
+      const hotel = doc.data();
+      
+      // የአገልግሎቶች (Amenities) ሊስት መፍጠር
+      let amenitiesHTML = '';
+      if (hotel.amenities && Array.isArray(hotel.amenities)) {
+        amenitiesHTML = hotel.amenities.map(amenity => 
+          `<span class="bg-slate-100 px-2 py-1 rounded-md">${amenity}</span>`
+        ).join('');
+      }
+
+      // የሆቴል ካርድ ኤችቲኤምኤል መዋቅር
+      const cardHTML = `
+        <div class="hotel-card bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-lg transition duration-300" data-category="${hotel.category || 'hotel'}">
+          <div class="relative h-48">
+            <img src="${hotel.imageUrl || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80'}" alt="${hotel.name}" class="w-full h-full object-cover"/>
+            <span class="absolute top-3 left-3 bg-emerald-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider">Verified</span>
+            <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-rose-500 hover:bg-white transition">❤️</button>
+          </div>
+          <div class="p-5">
+            <div class="flex justify-between items-start">
+              <div>
+                <h4 class="font-bold text-slate-900 text-base">${hotel.name}</h4>
+                <p class="text-xs text-slate-500 flex items-center gap-1 mt-0.5">📍 ${hotel.location}</p>
+              </div>
+              <div class="bg-emerald-50 text-emerald-800 text-xs font-extrabold px-2 py-1 rounded-lg border border-emerald-100">⭐ ${hotel.rating || '9.0'}</div>
+            </div>
+            <div class="mt-4 flex items-center gap-2 text-[11px] text-slate-500 flex-wrap">
+              ${amenitiesHTML}
+            </div>
+            <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
+              <div>
+                <span class="text-lg font-extrabold text-emerald-700">${hotel.price}</span>
+                <span class="text-[11px] text-slate-400"> / night</span>
+              </div>
+              <button onclick="openHotelModal('${hotel.name}', '${hotel.price}')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-sm">Book Room</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      hotelGrid.insertAdjacentHTML('beforeend', cardHTML);
+    });
+
+  } catch (error) {
+    console.error("Error fetching hotels: ", error);
+    hotelGrid.innerHTML = '<p class="text-center col-span-3 text-rose-500 py-8">ሆቴሎችን መጫን አልተቻለም። እባክዎ እንደገና ይሞክሩ።</p>';
+  }
+}
+
+// ገጹ ሲከፈት ተግባራዊ እንዲሆን ማድረግ
+document.addEventListener("DOMContentLoaded", () => {
+  fetchAndRenderHotels();
+});
   </script>
 </body>
 </html>
