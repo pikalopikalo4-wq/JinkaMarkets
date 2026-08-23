@@ -1,226 +1,803 @@
 <!doctype html>
-<html lang="am">
+<html lang="en" id="htmlRoot">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ጂንካ ገበያ — የዴሊቨሪ እና ትራንስፖርት አገልግሎት</title>
-  <meta name="description" content="ጂንካ ገበያ Delivery — ባጀጅ, ሞተር, ታክሲ በጂንካ እና አካባቢው"/>
+  <title data-i18n="meta_title">Jinka — Ride, Delivery & Hotel Booking</title>
+  <meta name="description" content="Jinka Market — Ride Booking, Goods Delivery & Premium Hotel Reservations in Jinka."/>
   
-  <!-- Tailwind CDN -->
+  <!-- PWA Web App Manifest -->
+  <link rel="manifest" href='data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Jinka%20Market%20%26%20Hotels%22%2C%22short_name%22%3A%22JinkaApp%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f8fafc%22%2C%22theme_color%22%3A%22%23059669%22%7D'>
+
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- AOS (scroll animations) -->
+  <!-- AOS (Scroll Animations) -->
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 
   <style>
-    .glass { backdrop-filter: blur(6px); }
+    .glass { backdrop-filter: blur(8px); }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
-<body class="bg-blue-50 text-gray-900 antialiased">
+<body class="bg-slate-50 text-slate-900 antialiased selection:bg-emerald-500 selection:text-white">
 
-  <!-- NAV / TOPBAR -->
-  <header class="sticky top-0 z-50 glass bg-white/80 border-b">
-    <div class="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
+  <!-- TOP NAV BAR -->
+  <header class="sticky top-0 z-50 glass bg-white/90 border-b border-slate-200/80 shadow-sm">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
       <a href="#home" class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-2xl">🚖</div>
+        <div class="w-10 h-10 rounded-2xl bg-emerald-600 flex items-center justify-center text-xl text-white font-bold shadow-md shadow-emerald-200">
+          📍
+        </div>
         <div>
-          <div class="font-bold text-emerald-800">ጂንካ ገበያ Delivery</div>
-          <div class="text-xs text-emerald-600">በጂንካ እና አካባቢው ፈጣን እቃ ማድረስ</div>
+          <div class="font-extrabold text-emerald-900 text-base leading-tight" data-i18n="brand_title">Jinka & Hotels</div>
+          <div class="text-xs text-emerald-600 font-medium" data-i18n="brand_subtitle">Ride, Delivery & Stay</div>
         </div>
       </a>
 
-      <nav class="hidden md:flex gap-3 text-sm font-medium">
-        <a href="#services" class="px-3 py-2 rounded-full hover:bg-gray-100">አገልግሎቶች</a>
-        <a href="#estimate" class="px-3 py-2 rounded-full hover:bg-gray-100">የዴሊቨሪ ታሪፍ</a>
-        <a href="#booking" class="px-3 py-2 rounded-full hover:bg-gray-100">እቃ ማድረሻ ይዘዙ</a>
-        <a href="#driver" class="px-3 py-2 rounded-full hover:bg-gray-100">አሽከርካሪ ምዝገባ</a>
-        <a href="#payment" class="px-3 py-2 rounded-full hover:bg-gray-100">ክፍያ</a>
+      <nav class="hidden lg:flex items-center gap-1 text-sm font-semibold text-slate-600">
+        <a href="#services" class="px-3.5 py-2 rounded-full hover:bg-slate-100 hover:text-emerald-700 transition" data-i18n="nav_services">Services</a>
+        <a href="#rides" class="px-3.5 py-2 rounded-full hover:bg-slate-100 hover:text-emerald-700 transition" data-i18n="nav_rides">Book Ride</a>
+        <a href="#hotels" class="px-3.5 py-2 rounded-full hover:bg-slate-100 hover:text-emerald-700 transition" data-i18n="nav_hotels">Book Hotel</a>
+        <a href="#estimate" class="px-3.5 py-2 rounded-full hover:bg-slate-100 hover:text-emerald-700 transition" data-i18n="nav_estimator">Fare Estimator</a>
+        <a href="#driver" class="px-3.5 py-2 rounded-full hover:bg-slate-100 hover:text-emerald-700 transition" data-i18n="nav_driver">Partner Register</a>
+        <a href="#payment" class="px-3.5 py-2 rounded-full hover:bg-slate-100 hover:text-emerald-700 transition" data-i18n="nav_payment">Payment</a>
       </nav>
 
-      <div class="flex items-center gap-3">
-        <a href="tel:0945900829" class="bg-emerald-600 text-white px-4 py-2 rounded-2xl text-sm font-semibold hover:bg-emerald-700">📞 0945 900 829</a>
+      <div class="flex items-center gap-2">
+        <button id="installBtn" class="hidden bg-emerald-700 text-white px-3 py-1.5 text-xs font-bold rounded-xl hover:bg-emerald-800 transition items-center gap-1 shadow-sm">
+          📥 <span data-i18n="install_app">Install</span>
+        </button>
+
+        <button id="langToggle" class="px-3 py-1.5 text-xs font-bold rounded-xl border border-slate-300 bg-white hover:bg-slate-100 transition flex items-center gap-1.5 shadow-sm">
+          🇪🇹 <span id="langText">አማርኛ</span>
+        </button>
+
+        <a href="tel:0928664142/0907394142" class="hidden sm:inline-flex items-center gap-1.5 bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-emerald-700 transition shadow-sm">
+          📞 0928664142 / 0907394142
+        </a>
       </div>
     </div>
   </header>
 
-  <!-- HERO -->
-  <main class="max-w-6xl mx-auto px-4 py-12" id="home">
-    <div class="grid md:grid-cols-2 gap-8 items-center">
-      <div data-aos="fade-up">
-        <h1 class="text-3xl md:text-5xl font-extrabold leading-tight">የጂንካ ገበያ እቃ ማድረሻ (Delivery) አገልግሎት</h1>
-        <p class="mt-4 text-gray-600">በጂንካ እና አካባቢዋ ከጂንካ ገበያ የገዟቸውን እቃዎች ወይም የትራንስፖርት አገልግሎት በባጀጅ፣ ሞተር እና መኪና በፍጥነት እናደርሳለን።</p>
+  <!-- PROMOTION SLIDER BANNER -->
+  <section class="max-w-7xl mx-auto px-4 pt-6">
+    <div class="relative bg-gradient-to-r from-emerald-800 via-teal-700 to-emerald-900 text-white rounded-3xl p-5 md:p-6 shadow-lg overflow-hidden" data-aos="fade-down">
+      <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl">🏨</div>
+      <div id="promoSliderContainer" class="min-h-[48px] flex items-center transition-all duration-500">
+        <div class="flex items-center gap-3">
+          <span class="bg-amber-400 text-slate-900 text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm" data-i18n="promo_badge">Special Offer</span>
+          <p id="slideText" class="text-sm md:text-base font-semibold">🚚 Book your hotel room and get 15% discount on your first Bajaj or Car ride in Jinka!</p>
+        </div>
+      </div>
+      <div class="flex gap-2 mt-3 justify-center md:justify-start">
+        <span class="w-2.5 h-2.5 rounded-full bg-white/50 cursor-pointer promo-dot transition-all" data-slide="0"></span>
+        <span class="w-2.5 h-2.5 rounded-full bg-white/50 cursor-pointer promo-dot transition-all" data-slide="1"></span>
+        <span class="w-2.5 h-2.5 rounded-full bg-white/50 cursor-pointer promo-dot transition-all" data-slide="2"></span>
+      </div>
+    </div>
+  </section>
 
-        <div class="mt-6 flex flex-wrap gap-3">
-          <a href="#booking" class="inline-flex items-center gap-2 bg-emerald-600 text-white px-5 py-3 rounded-2xl font-semibold shadow hover:bg-emerald-700">እቃ እንዲደርስዎ ይዘዙ</a>
-          <a href="#driver" class="inline-flex items-center gap-2 border border-gray-300 bg-white px-5 py-3 rounded-2xl font-semibold hover:bg-gray-50">አሽከርካሪ ይሁኑ</a>
+  <!-- HERO SECTION -->
+  <main class="max-w-7xl mx-auto px-4 py-8 md:py-12" id="home">
+    <div class="grid lg:grid-cols-2 gap-10 items-center">
+      <div data-aos="fade-up">
+        <div class="inline-flex items-center gap-2 bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1.5 rounded-full mb-4">
+          ✨ All-in-One Booking Super App
+        </div>
+        <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight" data-i18n="hero_title">
+          Fast Rides, Goods Delivery & Hotel Booking in Jinka
+        </h1>
+        <p class="mt-4 text-slate-600 text-base md:text-lg leading-relaxed" data-i18n="hero_desc">
+          Get items delivered from Jinka Market, request instant Bajaj or Taxi rides, or reserve top-rated hotels and resorts seamlessly.
+        </p>
+
+        <!-- Quick Switcher CTAs -->
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="#rides" class="inline-flex items-center gap-2 bg-emerald-600 text-white px-6 py-3.5 rounded-2xl font-bold shadow-lg shadow-emerald-600/30 hover:bg-emerald-700 transition" data-i18n="btn_book_ride">
+            🚖 Book Ride / Delivery
+          </a>
+          <a href="#hotels" class="inline-flex items-center gap-2 border-2 border-slate-300 bg-white text-slate-800 px-6 py-3.5 rounded-2xl font-bold hover:bg-slate-100 transition shadow-sm" data-i18n="btn_book_hotel">
+            🏨 Reserve Hotel
+          </a>
         </div>
 
-        <ul class="mt-6 space-y-2 text-gray-600 text-sm">
-          <li>• ⚡️ ፈጣን እና አስተማማኝ እቃ ማድረስ</li>
-          <li>• 💰 ግልጽ የትራንስፖርት ታሪፍ</li>
-          <li>• 🛡️ የተረጋገጡ አሽከርካሪዎች</li>
+        <ul class="mt-8 space-y-2.5 text-slate-600 text-sm font-medium">
+          <li class="flex items-center gap-2" data-i18n="hero_feat_1">⚡️ Real-time driver dispatch & express city delivery</li>
+          <li class="flex items-center gap-2" data-i18n="hero_feat_2">🏨 Handpicked hotels with verified prices & rooms</li>
+          <li class="flex items-center gap-3" data-i18n="hero_feat_3">💳 Easy payments via Telebirr, CBE & Bank Transfer</li>
         </ul>
       </div>
 
-      <div data-aos="fade-left" class="flex items-center justify-center">
-       <img src="https://cdn.imageurlgenerator.com/uploads/5697026a-313c-45f1-855d-2bff36a9d77c.png" alt="Jinka Market Delivery Banner" class="rounded-2xl max-h-96 w-full object-cover shadow-lg"/>
+      <!-- Hero Visual Gallery -->
+      <div data-aos="fade-left" class="grid grid-cols-2 gap-4">
+        <div class="space-y-4">
+          <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80" alt="Hotel Room" class="rounded-3xl h-52 w-full object-cover shadow-md border border-slate-100 hover:scale-105 transition duration-300"/>
+          <div class="bg-emerald-600 text-white p-5 rounded-3xl shadow-md">
+            <div class="text-3xl font-extrabold">24/7</div>
+            <div class="text-xs text-emerald-100 mt-1 font-semibold" data-i18n="hero_card_support">Customer & Ride Support</div>
+          </div>
+        </div>
+        <div class="space-y-4 pt-6">
+          <div class="bg-slate-900 text-white p-5 rounded-3xl shadow-md">
+            <div class="text-2xl font-bold" data-i18n="hero_card_city">Jinka & Area</div>
+            <div class="text-xs text-slate-400 mt-1" data-i18n="hero_card_coverage">Full Coverage & Delivery</div>
+          </div>
+          <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=600&q=80" alt="Ride Transport" class="rounded-3xl h-52 w-full object-cover shadow-md border border-slate-100 hover:scale-105 transition duration-300"/>
+        </div>
       </div>
     </div>
   </main>
 
-  <!-- SERVICES -->
-  <section id="services" class="max-w-6xl mx-auto px-4 py-8">
-    <h2 class="text-2xl font-bold" data-aos="fade-right">የማጓጓዣ አማራጮች</h2>
-    <div class="mt-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      <div class="p-5 bg-white rounded-2xl shadow" data-aos="fade-up"><div class="font-bold text-lg">🛺 ባጀጅ</div><div class="text-sm text-gray-600 mt-1">አነስተኛ እቃዎችና በከተማ ውስጥ • ~ETB 40/km</div></div>
-      <div class="p-5 bg-white rounded-2xl shadow" data-aos="fade-up" data-aos-delay="50"><div class="font-bold text-lg">🏍️ ሞተር</div><div class="text-sm text-gray-600 mt-1">ቀለል ያሉ እቃዎችና ሰነዶች • ~ETB 30/km</div></div>
-      <div class="p-5 bg-white rounded-2xl shadow" data-aos="fade-up" data-aos-delay="100"><div class="font-bold text-lg">🚕 ታክሲ / ላዳ</div><div class="text-sm text-gray-600 mt-1">መካከለኛ እቃዎችና ጉዞ • ~ETB 50/km</div></div>
-      <div class="p-5 bg-white rounded-2xl shadow" data-aos="fade-up" data-aos-delay="150"><div class="font-bold text-lg">🚗 መኪና / ካርጎ</div><div class="text-sm text-gray-600 mt-1">ከበድ ያሉ እቃዎችና ኪራይ • ~ETB 80/km</div></div>
+  <!-- SERVICES OVERVIEW -->
+  <section id="services" class="max-w-7xl mx-auto px-4 py-8">
+    <h2 class="text-2xl font-extrabold text-slate-900" data-aos="fade-right" data-i18n="sec_services">Our Services Overview</h2>
+    <div class="mt-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="p-6 bg-white rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition" data-aos="fade-up">
+        <div class="text-3xl mb-2">🛺</div>
+        <div class="font-bold text-lg text-slate-800" data-i18n="serv_bajaj_title">Bajaj Express</div>
+        <div class="text-xs text-slate-500 mt-1 leading-relaxed" data-i18n="serv_bajaj_desc">Quick market goods & short distance city transport • ~ETB 40/km</div>
+      </div>
+      <div class="p-6 bg-white rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition" data-aos="fade-up" data-aos-delay="50">
+        <div class="text-3xl mb-2">🏍️</div>
+        <div class="font-bold text-lg text-slate-800" data-i18n="serv_motor_title">Motorbike Parcel</div>
+        <div class="text-xs text-slate-500 mt-1 leading-relaxed" data-i18n="serv_motor_desc">Express document delivery & small urgent packages • ~ETB 30/km</div>
+      </div>
+      <div class="p-6 bg-white rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition" data-aos="fade-up" data-aos-delay="100">
+        <div class="text-3xl mb-2">🚕</div>
+        <div class="font-bold text-lg text-slate-800" data-i18n="serv_taxi_title">City Taxi & Car</div>
+        <div class="text-xs text-slate-500 mt-1 leading-relaxed" data-i18n="serv_taxi_desc">Comfortable passenger rides & medium luggage • ~ETB 50/km</div>
+      </div>
+      <div class="p-6 bg-white rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition" data-aos="fade-up" data-aos-delay="150">
+        <div class="text-3xl mb-2">🏨</div>
+        <div class="font-bold text-lg text-slate-800" data-i18n="serv_hotel_title">Hotel Rooms</div>
+        <div class="text-xs text-slate-500 mt-1 leading-relaxed" data-i18n="serv_hotel_desc">Top hotels, eco-lodges & luxury resort room reservations</div>
+      </div>
     </div>
   </section>
 
-  <!-- ESTIMATOR -->
-  <section id="estimate" class="max-w-6xl mx-auto px-4 py-8">
-    <div class="bg-white p-6 rounded-2xl shadow" data-aos="fade-up">
-      <h3 class="font-bold text-lg">የዴሊቨሪ ዋጋ ማስያ (Estimator)</h3>
-      <div class="mt-4 grid md:grid-cols-4 gap-4">
-        <div class="md:col-span-2">
-          <label class="text-sm font-medium">ርቀት (በ ኪሎሜትር - km)</label>
-          <input id="distanceKm" type="number" step="0.1" min="0" placeholder="ለምሳሌ: 3" class="mt-1 w-full border rounded-2xl px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
+  <!-- RIDE & DELIVERY BOOKING SECTION -->
+  <section id="rides" class="max-w-7xl mx-auto px-4 py-8">
+    <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100" data-aos="fade-up">
+      <div class="flex items-center gap-3 mb-2">
+        <span class="text-2xl">🚖</span>
+        <h3 class="font-extrabold text-2xl text-emerald-900" data-i18n="book_ride_title">Ride & Transport Booking</h3>
+      </div>
+      <p class="text-xs text-slate-500 mb-6" data-i18n="book_ride_sub">Request a ride or item delivery anywhere in Jinka and surrounding areas.</p>
+      
+      <form id="bookingForm" class="grid md:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="lbl_name">Full Name</label>
+          <input name="name" required data-i18n-placeholder="book_placeholder_name" placeholder="Abebe Kebede" class="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50"/>
         </div>
         <div>
-          <label class="text-sm font-medium">የተሽከርካሪ አይነት</label>
-          <select id="vehicleType" class="mt-1 w-full border rounded-2xl px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none">
-            <option value="bajaj">ባጀጅ</option>
-            <option value="motor">ሞተር</option>
-            <option value="taxi">ታክሲ</option>
-            <option value="car">መኪና</option>
+          <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="lbl_phone">Phone Number</label>
+          <input name="phone" required data-i18n-placeholder="book_placeholder_phone" placeholder="0911......" class="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50"/>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="lbl_vehicle">Vehicle Type</label>
+          <select name="vehicle" class="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50">
+            <option value="Bajaj" data-i18n="opt_bajaj">🛺 Bajaj</option>
+            <option value="Motorbike" data-i18n="opt_motor">🏍️ Motorbike</option>
+            <option value="Taxi" data-i18n="opt_taxi">🚕 City Taxi</option>
+            <option value="Cargo Car" data-i18n="opt_car">🚗 Cargo / Car</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="lbl_pickup">Pickup Location</label>
+          <input name="pickup" required data-i18n-placeholder="book_placeholder_pickup" placeholder="e.g. Jinka Main Market" class="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50"/>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="lbl_destination">Destination Location</label>
+          <input name="destination" required data-i18n-placeholder="book_placeholder_destination" placeholder="e.g. Jinka Hospital Area" class="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50"/>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="lbl_notes">Additional Notes</label>
+          <input name="notes" data-i18n-placeholder="book_placeholder_notes" placeholder="Item description, instructions..." class="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50"/>
+        </div>
+        <div class="md:col-span-3 pt-2">
+          <button type="submit" class="bg-emerald-600 text-white px-8 py-3.5 rounded-2xl font-bold shadow-md hover:bg-emerald-700 transition w-full md:w-auto" data-i18n="book_submit">
+            🚀 Send Ride Request
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- HOTEL BOOKING SECTION (ROOME UI STYLE) -->
+  <section id="hotels" class="max-w-7xl mx-auto px-4 py-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-6">
+      <div data-aos="fade-right">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl">🏨</span>
+          <h2 class="text-2xl font-extrabold text-slate-900" data-i18n="hotel_sec_title">Explore Hotels & Resorts</h2>
+        </div>
+        <p class="text-xs text-slate-500 mt-1" data-i18n="hotel_sec_sub">Find and book verified stays in Jinka with best prices</p>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="flex gap-2 mt-4 md:mt-0 overflow-x-auto no-scrollbar pb-1" id="hotelFilterTabs">
+        <button onclick="filterHotels('all')" class="filter-tab active px-4 py-2 text-xs font-bold rounded-full bg-emerald-600 text-white transition shadow-sm" data-category="all" data-i18n="cat_all">All Stays</button>
+        <button onclick="filterHotels('resort')" class="filter-tab px-4 py-2 text-xs font-bold rounded-full bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition" data-category="resort" data-i18n="cat_resort">Resorts</button>
+        <button onclick="filterHotels('hotel')" class="filter-tab px-4 py-2 text-xs font-bold rounded-full bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition" data-category="hotel" data-i18n="cat_hotel">Hotels</button>
+        <button onclick="filterHotels('lodge')" class="filter-tab px-4 py-2 text-xs font-bold rounded-full bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition" data-category="lodge" data-i18n="cat_lodge">Eco Lodges</button>
+      </div>
+    </div>
+
+    <!-- Hotel Cards Grid -->
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="hotelGrid">
+
+      <!-- Hotel Card 1 -->
+      <div class="hotel-card bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-lg transition duration-300" data-category="resort" data-aos="fade-up">
+        <div class="relative h-48">
+          <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80" alt="Jinka Resort" class="w-full h-full object-cover"/>
+          <span class="absolute top-3 left-3 bg-emerald-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider">Top Choice</span>
+          <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-rose-500 hover:bg-white transition">❤️</button>
+        </div>
+        <div class="p-5">
+          <div class="flex justify-between items-start">
+            <div>
+              <h4 class="font-bold text-slate-900 text-base">Jinka Resort & Spa</h4>
+              <p class="text-xs text-slate-500 flex items-center gap-1 mt-0.5">📍 Downtown Jinka, Ethiopia</p>
+            </div>
+            <div class="bg-emerald-50 text-emerald-800 text-xs font-extrabold px-2 py-1 rounded-lg border border-emerald-100">⭐ 9.4</div>
+          </div>
+          <div class="mt-4 flex items-center gap-2 text-[11px] text-slate-500">
+            <span class="bg-slate-100 px-2 py-1 rounded-md">📶 Free WiFi</span>
+            <span class="bg-slate-100 px-2 py-1 rounded-md">🏊 Pool</span>
+            <span class="bg-slate-100 px-2 py-1 rounded-md">🍳 Breakfast</span>
+          </div>
+          <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
+            <div>
+              <span class="text-lg font-extrabold text-emerald-700">1,800 ETB</span>
+              <span class="text-[11px] text-slate-400"> / night</span>
+            </div>
+            <button onclick="openHotelModal('Jinka Resort & Spa', '1,800 ETB')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-sm" data-i18n="btn_book_room">Book Room</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hotel Card 2 -->
+      <div class="hotel-card bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-lg transition duration-300" data-category="lodge" data-aos="fade-up" data-aos-delay="100">
+        <div class="relative h-48">
+          <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80" alt="Omo Eco Lodge" class="w-full h-full object-cover"/>
+          <span class="absolute top-3 left-3 bg-amber-500 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider">Eco Friendly</span>
+          <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-slate-400 hover:text-rose-500 transition">🤍</button>
+        </div>
+        <div class="p-5">
+          <div class="flex justify-between items-start">
+            <div>
+              <h4 class="font-bold text-slate-900 text-base">Omo Valley Eco Lodge</h4>
+              <p class="text-xs text-slate-500 flex items-center gap-1 mt-0.5">📍 Near Omo National Park Entrance</p>
+            </div>
+            <div class="bg-emerald-50 text-emerald-800 text-xs font-extrabold px-2 py-1 rounded-lg border border-emerald-100">⭐ 9.1</div>
+          </div>
+          <div class="mt-4 flex items-center gap-2 text-[11px] text-slate-500">
+            <span class="bg-slate-100 px-2 py-1 rounded-md">🌿 Nature View</span>
+            <span class="bg-slate-100 px-2 py-1 rounded-md">🅿️ Free Parking</span>
+          </div>
+          <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
+            <div>
+              <span class="text-lg font-extrabold text-emerald-700">1,400 ETB</span>
+              <span class="text-[11px] text-slate-400"> / night</span>
+            </div>
+            <button onclick="openHotelModal('Omo Valley Eco Lodge', '1,400 ETB')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-sm" data-i18n="btn_book_room">Book Room</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hotel Card 3 -->
+      <div class="hotel-card bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-lg transition duration-300" data-category="hotel" data-aos="fade-up" data-aos-delay="200">
+        <div class="relative h-48">
+          <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80" alt="Paradise Hotel" class="w-full h-full object-cover"/>
+          <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-slate-400 hover:text-rose-500 transition">🤍</button>
+        </div>
+        <div class="p-5">
+          <div class="flex justify-between items-start">
+            <div>
+              <h4 class="font-bold text-slate-900 text-base">Grand Paradise Hotel</h4>
+              <p class="text-xs text-slate-500 flex items-center gap-1 mt-0.5">📍 Jinka Airport Road</p>
+            </div>
+            <div class="bg-emerald-50 text-emerald-800 text-xs font-extrabold px-2 py-1 rounded-lg border border-emerald-100">⭐ 8.8</div>
+          </div>
+          <div class="mt-4 flex items-center gap-2 text-[11px] text-slate-500">
+            <span class="bg-slate-100 px-2 py-1 rounded-md">📶 WiFi</span>
+            <span class="bg-slate-100 px-2 py-1 rounded-md">🍽️ Restaurant</span>
+            <span class="bg-slate-100 px-2 py-1 rounded-md">🚕 Shuttle</span>
+          </div>
+          <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
+            <div>
+              <span class="text-lg font-extrabold text-emerald-700">1,200 ETB</span>
+              <span class="text-[11px] text-slate-400"> / night</span>
+            </div>
+            <button onclick="openHotelModal('Grand Paradise Hotel', '1,200 ETB')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-sm" data-i18n="btn_book_room">Book Room</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FARE ESTIMATOR -->
+  <section id="estimate" class="max-w-7xl mx-auto px-4 py-8">
+    <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100" data-aos="fade-up">
+      <h3 class="font-extrabold text-xl text-emerald-900" data-i18n="est_title">Delivery & Ride Fare Estimator</h3>
+      <p class="text-xs text-slate-500 mt-1 mb-4" data-i18n="est_sub">Calculate approximate ride costs before booking</p>
+      
+      <div class="grid md:grid-cols-4 gap-4">
+        <div class="md:col-span-2">
+          <label class="text-xs font-bold text-slate-700 block mb-1" data-i18n="est_distance_label">Distance (in Kilometers - km)</label>
+          <input id="distanceKm" type="number" step="0.1" min="0" placeholder="e.g. 3.5" class="w-full border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50"/>
+        </div>
+        <div>
+          <label class="text-xs font-bold text-slate-700 block mb-1" data-i18n="est_vehicle_label">Vehicle Type</label>
+          <select id="vehicleType" class="w-full border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50">
+            <option value="bajaj" data-i18n="opt_bajaj">🛺 Bajaj</option>
+            <option value="motor" data-i18n="opt_motor">🏍️ Motorbike</option>
+            <option value="taxi" data-i18n="opt_taxi">🚕 City Taxi</option>
+            <option value="car" data-i18n="opt_car">🚗 Cargo / Car</option>
           </select>
         </div>
         <div class="flex items-end">
-          <div id="estimateOut" class="w-full rounded-2xl border px-3 py-2 bg-emerald-50 text-emerald-800 text-center font-bold text-lg">~ ETB 0</div>
+          <div id="estimateOut" class="w-full rounded-2xl border border-emerald-200 px-4 py-3 bg-emerald-50 text-emerald-900 text-center font-extrabold text-lg shadow-inner">
+            ~ ETB 0
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CUSTOMER BOOKING -->
-  <section id="booking" class="max-w-6xl mx-auto px-4 py-8">
-    <div class="bg-white p-6 rounded-2xl shadow" data-aos="fade-up">
-      <h3 class="font-bold text-xl text-emerald-800">የዴሊቨሪ/ትራንስፖርት ትእዛዝ መሙያ</h3>
-      <form id="bookingForm" class="mt-4 grid md:grid-cols-3 gap-4">
-        <input name="name" required placeholder="የእርስዎ ስም" class="rounded-2xl border px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
-        <input name="phone" required placeholder="ስልክ ቁጥር" class="rounded-2xl border px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
-        <select name="vehicle" class="rounded-2xl border px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none">
-          <option value="ባጀጅ">ባጀጅ</option>
-          <option value="ሞተር">ሞተር</option>
-          <option value="ታክሲ">ታክሲ</option>
-          <option value="መኪና">መኪና</option>
-        </select>
-        <input name="pickup" required placeholder="እቃው የሚነሳበት ቦታ (Pickup)" class="rounded-2xl border px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
-        <input name="destination" required placeholder="እቃው የሚደርስበት ቦታ (Destination)" class="rounded-2xl border px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
-        <input name="notes" placeholder="ተጨማሪ ማስታወሻ (የእቃው አይነት)" class="rounded-2xl border px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
-        <div class="md:col-span-3">
-          <button type="submit" class="bg-emerald-600 text-white px-6 py-3 rounded-2xl font-semibold hover:bg-emerald-700 w-full md:w-auto">ትእዛዝ ላክ</button>
-        </div>
-      </form>
-    </div>
-  </section>
+  <!-- DRIVER & PARTNER REGISTRATION -->
+  <section id="driver" class="max-w-7xl mx-auto px-4 py-8">
+    <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100" data-aos="fade-up">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="text-2xl">👨‍✈️</span>
+        <h3 class="font-extrabold text-xl text-emerald-900" data-i18n="drv_title">Driver & Hotel Partner Registration</h3>
+      </div>
+      <p class="text-xs text-slate-500 mb-6" data-i18n="drv_sub">Join our platform as a Bajaj driver, Taxi operator, or Hotel owner in Jinka</p>
 
-  <!-- DRIVER REGISTRATION -->
-  <section id="driver" class="max-w-6xl mx-auto px-4 py-8">
-    <div class="bg-white p-6 rounded-2xl shadow" data-aos="fade-up">
-      <h3 class="font-bold text-xl text-emerald-800">የአሽከርካሪዎች ምዝገባ</h3>
-      <form id="driverForm" class="mt-4 grid md:grid-cols-3 gap-4">
-        <input name="fullName" required placeholder="ሙሉ ስም" class="rounded-2xl border px-4 py-2 outline-none"/>
-        <input name="phone" required placeholder="ስልክ ቁጥር" class="rounded-2xl border px-4 py-2 outline-none"/>
-        <select name="vehicleType" required class="rounded-2xl border px-4 py-2 outline-none">
-          <option value="ባጀጅ">ባጀጅ</option>
-          <option value="ሞተር">ሞተር</option>
-          <option value="ታክሲ">ታክሲ</option>
-          <option value="መኪና">መኪና</option>
+      <form id="driverForm" class="grid md:grid-cols-3 gap-4">
+        <input name="fullName" required data-i18n-placeholder="drv_placeholder_name" placeholder="Full Name" class="rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50"/>
+        <input name="phone" required data-i18n-placeholder="book_placeholder_phone" placeholder="Phone Number" class="rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50"/>
+        <select name="vehicleType" required class="rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50">
+          <option value="Bajaj" data-i18n="opt_bajaj">🛺 Bajaj</option>
+          <option value="Motorbike" data-i18n="opt_motor">🏍️ Motorbike</option>
+          <option value="Taxi" data-i18n="opt_taxi">🚕 Taxi</option>
+          <option value="Car" data-i18n="opt_car">🚗 Car / Cargo</option>
+          <option value="Hotel Owner">🏨 Hotel / Guest House</option>
         </select>
-        <input name="plate" required placeholder="የታርጋ ቁጥር" class="rounded-2xl border px-4 py-2 outline-none"/>
-        <select name="city" class="rounded-2xl border px-4 py-2 outline-none">
-          <option>ጂንካ</option>
-          <option>ኮንሶ</option>
-          <option>ሀዋሳ</option>
+        <input name="plate" required data-i18n-placeholder="drv_placeholder_plate" placeholder="License Plate / Business Name" class="rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50"/>
+        <select name="city" class="rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50">
+          <option value="Jinka">Jinka</option>
+          <option value="Konso">Konso</option>
+          <option value="Hawassa">Hawassa</option>
         </select>
-        <input name="experienceYears" type="number" min="0" placeholder="የልምድ ዓመታት" class="rounded-2xl border px-4 py-2 outline-none"/>
+        <input name="experienceYears" type="number" min="0" data-i18n-placeholder="drv_placeholder_exp" placeholder="Years of Experience" class="rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50"/>
         
         <div>
-          <label class="block text-xs font-semibold text-gray-600 mb-1">🪪 የብሔራዊ መታወቂያ (National ID) ፎቶ</label>
-          <input type="file" id="nationalIdFile" accept="image/*" required class="w-full text-xs text-gray-500 file:mr-2 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"/>
+          <label class="block text-xs font-semibold text-slate-600 mb-1" data-i18n="drv_national_id">🪪 National ID Photo</label>
+          <input type="file" id="nationalIdFile" accept="image/*" required class="w-full text-xs text-slate-500 file:mr-2 file:py-2.5 file:px-3 file:rounded-xl file:border-0 file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer"/>
         </div>
         
         <div>
-          <label class="block text-xs font-semibold text-gray-600 mb-1">🖼️ ጉርድ ፎቶ (ለአሽከርካሪ መታወቂያ የሚሆን)</label>
-          <input type="file" id="driverPhotoFile" accept="image/*" required class="w-full text-xs text-gray-500 file:mr-2 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"/>
+          <label class="block text-xs font-semibold text-slate-600 mb-1" data-i18n="drv_photo">🖼️ Passport Photo</label>
+          <input type="file" id="driverPhotoFile" accept="image/*" required class="w-full text-xs text-slate-500 file:mr-2 file:py-2.5 file:px-3 file:rounded-xl file:border-0 file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer"/>
         </div>
 
-        <label class="md:col-span-3 flex items-center gap-2 text-sm text-gray-600 mt-2">
-          <input required type="checkbox" class="rounded text-emerald-600"> ሕግና ደንቦችን እቀበላለሁ
+        <label class="md:col-span-3 flex items-center gap-2 text-xs text-slate-600 mt-2 cursor-pointer">
+          <input required type="checkbox" class="rounded text-emerald-600 w-4 h-4"> <span data-i18n="drv_terms">I agree to terms, conditions and safety policies</span>
         </label>
-        <div class="md:col-span-3">
-          <button type="submit" class="bg-emerald-600 text-white px-6 py-3 rounded-2xl font-semibold hover:bg-emerald-700">ምዝገባ ላክ</button>
+        
+        <div class="md:col-span-3 pt-2">
+          <button type="submit" class="bg-emerald-600 text-white px-8 py-3.5 rounded-2xl font-bold hover:bg-emerald-700 transition shadow-md" data-i18n="drv_submit">Submit Application</button>
         </div>
       </form>
     </div>
   </section>
 
-  <!-- BANK PAYMENT -->
-  <section id="payment" class="max-w-6xl mx-auto px-4 py-8">
-    <div class="bg-white p-6 rounded-2xl shadow" data-aos="fade-up">
-      <h3 class="font-bold text-xl text-emerald-800">የባንክ / የቴሌብር ክፍያ ማረጋገጫ</h3>
-      <form id="bankForm" class="mt-4 grid md:grid-cols-2 gap-4">
-        <input name="fullName" required placeholder="ሙሉ ስም" class="rounded-2xl border px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
-        <input name="phone" required placeholder="ስልክ ቁጥር" class="rounded-2xl border px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
-        <select name="bank" required class="rounded-2xl border px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none">
+  <!-- BANK PAYMENT VERIFICATION -->
+  <section id="payment" class="max-w-7xl mx-auto px-4 py-8">
+    <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100" data-aos="fade-up">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="text-2xl">💳</span>
+        <h3 class="font-extrabold text-xl text-emerald-900" data-i18n="pay_title">Bank / Telebirr Payment Verification</h3>
+      </div>
+      <p class="text-xs text-slate-500 mb-6" data-i18n="pay_sub">Upload payment screenshots or transaction numbers for ride/hotel confirmation</p>
+
+      <form id="bankForm" class="grid md:grid-cols-2 gap-4">
+        <input name="fullName" required data-i18n-placeholder="book_placeholder_name" placeholder="Full Name" class="rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50"/>
+        <input name="phone" required data-i18n-placeholder="book_placeholder_phone" placeholder="Phone Number" class="rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50"/>
+        
+        <select name="bank" required class="rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50">
           <option value="Telebirr">Telebirr</option>
           <option value="CBE">Commercial Bank of Ethiopia (CBE)</option>
           <option value="Abyssinia">Bank of Abyssinia</option>
           <option value="Awash">Awash Bank</option>
         </select>
-        <input name="amount" type="number" min="1" required placeholder="የተከፈለው መጠን (ETB)" class="rounded-2xl border px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
+
+        <input name="amount" type="number" min="1" required data-i18n-placeholder="pay_placeholder_amount" placeholder="Amount Paid (ETB)" class="rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50"/>
+        <input name="reference" data-i18n-placeholder="pay_placeholder_ref" placeholder="Transaction Ref (FT/Ref) - Optional" class="rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50 md:col-span-2"/>
         
-        <input name="reference" placeholder="የግብይት መለያ ቁጥር (Transaction Ref/FT) - አማራጭ" class="rounded-2xl border px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
-        
-        <!-- 📄 አዲስ የተጨመረው የደረሰኝ ፎቶ ወይም PDF መስቀያ -->
-        <div>
-          <label class="block text-xs font-semibold text-gray-600 mb-1">📄 የክፍያ ደረሰኝ (Photo / Image ወይም PDF)</label>
-          <input type="file" id="receiptFile" accept="image/*,.pdf" required class="w-full text-xs text-gray-500 file:mr-2 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"/>
+        <div class="md:col-span-2">
+          <label class="block text-xs font-semibold text-slate-600 mb-1" data-i18n="pay_receipt_label">📄 Payment Receipt (Photo or PDF)</label>
+          <input type="file" id="receiptFile" accept="image/*,.pdf" required class="w-full text-xs text-slate-500 file:mr-2 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer"/>
         </div>
 
-        <div class="md:col-span-2">
-          <button type="submit" class="bg-emerald-600 text-white px-6 py-3 rounded-2xl font-semibold hover:bg-emerald-700 w-full">ክፍያ አረጋግጥ</button>
+        <div class="md:col-span-2 pt-2">
+          <button type="submit" class="bg-emerald-600 text-white px-8 py-3.5 rounded-2xl font-bold hover:bg-emerald-700 transition w-full shadow-md" data-i18n="pay_submit">Verify Payment</button>
         </div>
       </form>
     </div>
   </section>
-  <!-- FOOTER -->
-  <footer class="bg-white border-t mt-12">
-    <div class="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
-      <div>
-        <div class="font-bold text-emerald-800">ጂንካ ገበያ Delivery</div>
-        <div class="text-sm text-gray-600 mt-1">📞 0945 900 829</div>
+
+  <!-- HOTEL BOOKING MODAL -->
+  <div id="hotelModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 relative max-h-[90vh] overflow-y-auto">
+      <button onclick="closeHotelModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center font-bold">✕</button>
+      
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-xl">🏨</span>
+        <h3 id="modalHotelName" class="text-xl font-extrabold text-slate-900">Hotel Name</h3>
       </div>
-      <div class="text-sm text-gray-600">© <span id="yearNow"></span> ጂንካ ገበያ — መብቱ በሕግ የተጠበቀ ነው</div>
+      <p id="modalHotelPrice" class="text-sm font-bold text-emerald-700 mb-4">0 ETB / night</p>
+
+      <form id="hotelBookingForm" class="space-y-3">
+        <input type="hidden" id="modalHotelInputName" name="hotelName"/>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="lbl_name">Full Name</label>
+          <input name="guestName" required placeholder="Guest Name" class="w-full rounded-2xl border border-slate-200 px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50"/>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="lbl_phone">Phone Number</label>
+          <input name="guestPhone" required placeholder="0911......" class="w-full rounded-2xl border border-slate-200 px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50"/>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Check-in Date</label>
+            <input name="checkIn" type="date" required class="w-full rounded-2xl border border-slate-200 px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50"/>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Check-out Date</label>
+            <input name="checkOut" type="date" required class="w-full rounded-2xl border border-slate-200 px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50"/>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Guests</label>
+            <select name="guests" class="w-full rounded-2xl border border-slate-200 px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50">
+              <option value="1 Guest">1 Guest</option>
+              <option value="2 Guests">2 Guests</option>
+              <option value="3+ Guests">3+ Guests</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Room Type</label>
+            <select name="roomType" class="w-full rounded-2xl border border-slate-200 px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50">
+              <option value="Standard Room">Standard Room</option>
+              <option value="Deluxe Room">Deluxe Room</option>
+              <option value="VIP Suite">VIP Suite</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-2xl hover:bg-emerald-700 transition shadow-md mt-2" data-i18n="btn_confirm_hotel">
+          Confirm Reservation
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-slate-200 mt-16">
+    <div class="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div>
+        <div class="font-extrabold text-emerald-900 text-lg" data-i18n="brand_title">Jinka & Hotels</div>
+        <div class="text-xs text-slate-500 mt-1">📞 0928664142 / 0907394142 | Jinka, Ethiopia</div>
+      </div>
+      <div class="text-xs text-slate-500">
+        © <span id="yearNow"></span> <span data-i18n="footer_rights">Jinka & Hotel Services — All rights reserved</span>
+      </div>
     </div>
   </footer>
 
-  <!-- SCRIPTS -->
+  <!-- JAVASCRIPT & TELEGRAM LOGIC -->
   <script>
     // AOS Init
     AOS.init({ once: true, duration: 600, easing: 'ease-out' });
     document.getElementById('yearNow').textContent = new Date().getFullYear();
 
-    // Telegram Bot መረጃዎች
+    // Telegram Bot Information
     const BOT_TOKEN = "8779386690:AAFrSyxbsheMNod0TVfiHHWaeLSihQ7MMKg";
     const CHAT_ID = "801120038";
 
-    // 1. Estimator Logic
+    // PWA Install Prompt Handler
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const installBtn = document.getElementById('installBtn');
+      if (installBtn) installBtn.classList.remove('hidden');
+    });
+
+    document.getElementById('installBtn')?.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          document.getElementById('installBtn').classList.add('hidden');
+        }
+        deferredPrompt = null;
+      }
+    });
+
+    // Promotion Slider Data & Logic
+    const promoSlides = {
+      en: [
+        "🚚 Book your hotel room and get 15% discount on your first Bajaj or Car ride in Jinka!",
+        "🏨 Top rated Eco Lodges and Resorts available in Jinka with instant reservation!",
+        "💳 Pay securely via Telebirr or CBE and verify your order instantly!"
+      ],
+      am: [
+        "🚚 በጂንካ ሆቴል ሲይዙ ለመጀመሪያው የባጀጅ ወይም መኪና ጉዞዎ የ15% ቅናሽ ያግኙ!",
+        "🏨 በጂንካ ያሉ ምርጥ ሆቴሎችን እና ኢኮ-ሎጆችን በቅናሽ ዋጋ በቅጽበት ይዘዙ!",
+        "💳 በቴሌብር ወይም በባንክ በሰላም ከፍለው ትዕዛዝዎን ወዲያውኑ ያረጋግጡ!"
+      ]
+    };
+
+    let currentSlideIndex = 0;
+    function updateSlide() {
+      const slideTextEl = document.getElementById('slideText');
+      if (slideTextEl) {
+        slideTextEl.textContent = promoSlides[currentLang][currentSlideIndex];
+      }
+      document.querySelectorAll('.promo-dot').forEach((dot, idx) => {
+        if (idx === currentSlideIndex) {
+          dot.classList.add('bg-white');
+          dot.classList.remove('bg-white/50');
+        } else {
+          dot.classList.remove('bg-white');
+          dot.classList.add('bg-white/50');
+        }
+      });
+    }
+
+    setInterval(() => {
+      currentSlideIndex = (currentSlideIndex + 1) % 3;
+      updateSlide();
+    }, 4500);
+
+    document.querySelectorAll('.promo-dot').forEach((dot, idx) => {
+      dot.addEventListener('click', () => {
+        currentSlideIndex = idx;
+        updateSlide();
+      });
+    });
+
+    // Bilingual Dictionary
+    const translations = {
+      en: {
+        meta_title: "Jinka Market — Ride, Delivery & Hotel Booking",
+        brand_title: "Jinka Market & Hotels",
+        brand_subtitle: "Ride, Delivery & Stay",
+        install_app: "Install",
+        promo_badge: "Special Offer",
+        nav_services: "Services",
+        nav_rides: "Book Ride",
+        nav_hotels: "Book Hotel",
+        nav_estimator: "Fare Estimator",
+        nav_driver: "Partner Register",
+        nav_payment: "Payment",
+        hero_title: "Fast Rides, Goods Delivery & Hotel Booking in Jinka",
+        hero_desc: "Get items delivered from Jinka Market, request instant Bajaj or Taxi rides, or reserve top-rated hotels and resorts seamlessly.",
+        btn_book_ride: "🚖 Book Ride / Delivery",
+        btn_book_hotel: "🏨 Reserve Hotel",
+        hero_feat_1: "⚡️ Real-time driver dispatch & express city delivery",
+        hero_feat_2: "🏨 Handpicked hotels with verified prices & rooms",
+        hero_feat_3: "💳 Easy payments via Telebirr, CBE & Bank Transfer",
+        hero_card_support: "Customer & Ride Support",
+        hero_card_city: "Jinka & Area",
+        hero_card_coverage: "Full Coverage & Delivery",
+        sec_services: "Our Services Overview",
+        serv_bajaj_title: "Bajaj Express",
+        serv_bajaj_desc: "Quick market goods & short distance city transport • ~ETB 40/km",
+        serv_motor_title: "Motorbike Parcel",
+        serv_motor_desc: "Express document delivery & small urgent packages • ~ETB 30/km",
+        serv_taxi_title: "City Taxi & Car",
+        serv_taxi_desc: "Comfortable passenger rides & medium luggage • ~ETB 50/km",
+        serv_hotel_title: "Hotel Rooms",
+        serv_hotel_desc: "Top hotels, eco-lodges & luxury resort room reservations",
+        book_ride_title: "Ride & Transport Booking",
+        book_ride_sub: "Request a ride or item delivery anywhere in Jinka and surrounding areas.",
+        lbl_name: "Full Name",
+        lbl_phone: "Phone Number",
+        lbl_vehicle: "Vehicle Type",
+        lbl_pickup: "Pickup Location",
+        lbl_destination: "Destination Location",
+        lbl_notes: "Additional Notes",
+        opt_bajaj: "🛺 Bajaj",
+        opt_motor: "🏍️ Motorbike",
+        opt_taxi: "🚕 City Taxi",
+        opt_car: "🚗 Cargo / Car",
+        book_placeholder_name: "Abebe Kebede",
+        book_placeholder_phone: "0911......",
+        book_placeholder_pickup: "e.g. Jinka Main Market",
+        book_placeholder_destination: "e.g. Jinka Hospital Area",
+        book_placeholder_notes: "Item description, instructions...",
+        book_submit: "🚀 Send Ride Request",
+        hotel_sec_title: "Explore Hotels & Resorts",
+        hotel_sec_sub: "Find and book verified stays in Jinka with best prices",
+        cat_all: "All Stays",
+        cat_resort: "Resorts",
+        cat_hotel: "Hotels",
+        cat_lodge: "Eco Lodges",
+        btn_book_room: "Book Room",
+        est_title: "Delivery & Ride Fare Estimator",
+        est_sub: "Calculate approximate ride costs before booking",
+        est_distance_label: "Distance (in Kilometers - km)",
+        est_vehicle_label: "Vehicle Type",
+        drv_title: "Driver & Hotel Partner Registration",
+        drv_sub: "Join our platform as a Bajaj driver, Taxi operator, or Hotel owner in Jinka",
+        drv_placeholder_name: "Full Name",
+        drv_placeholder_plate: "License Plate / Business Name",
+        drv_placeholder_exp: "Years of Experience",
+        drv_national_id: "🪪 National ID Photo",
+        drv_photo: "🖼️ Passport Photo",
+        drv_terms: "I agree to terms, conditions and safety policies",
+        drv_submit: "Submit Application",
+        pay_title: "Bank / Telebirr Payment Verification",
+        pay_sub: "Upload payment screenshots or transaction numbers for ride/hotel confirmation",
+        pay_placeholder_amount: "Amount Paid (ETB)",
+        pay_placeholder_ref: "Transaction Ref (FT/Ref) - Optional",
+        pay_receipt_label: "📄 Payment Receipt (Photo or PDF)",
+        pay_submit: "Verify Payment",
+        btn_confirm_hotel: "Confirm Reservation",
+        footer_rights: "Jinka Market & Hotel Services — All rights reserved"
+      },
+      am: {
+        meta_title: "ጂንካ ገበያ — የራይድ፣ እቃ ማድረሻ እና የሆቴል ቡኪንግ",
+        brand_title: "ጂንካ ገበያ እና ሆቴሎች",
+        brand_subtitle: "ራይድ፣ ዴሊቨሪ እና ሆቴል",
+        install_app: "አፕ ይጫኑ",
+        promo_badge: "ልዩ ቅናሽ",
+        nav_services: "አገልግሎቶች",
+        nav_rides: "ራይድ ይዘዙ",
+        nav_hotels: "ሆቴል ይዘዙ",
+        nav_estimator: "የታሪፍ ማስያ",
+        nav_driver: "አጋር ይሁኑ",
+        nav_payment: "ክፍያ",
+        hero_title: "ፈጣን የራይድ፣ እቃ ማድረስ እና የሆቴል ቡኪንግ በጂንካ",
+        hero_desc: "ከጂንካ ገበያ እቃ እንዲደርስዎ ያድርጉ፣ የባጀጅ እና ታክሲ ራይድ በጥሪ ይዘዙ ወይም በጂንካ ያሉ ምርጥ ሆቴሎችን በቀላሉ ይመዝገቡ።",
+        btn_book_ride: "🚖 ራይድ / እቃ ማድረሻ ይዘዙ",
+        btn_book_hotel: "🏨 ሆቴል ይዘዙ",
+        hero_feat_1: "⚡️ ፈጣን አሽከርካሪ ማገናኘት እና የከተማ ዴሊቨሪ",
+        hero_feat_2: "🏨 የተረጋገጡ ምርጥ የጂንካ ሆቴሎች እና ሎጆች",
+        hero_feat_3: "💳 በቴሌብር እና በባንክ ቀላል የክፍያ ስርዓት",
+        hero_card_support: "የደንበኞች እና የትራንስፖርት ድጋፍ",
+        hero_card_city: "ጂንካ እና አካባቢዋ",
+        hero_card_coverage: "ሙሉ የከተማ አገልግሎት ሽፋን",
+        sec_services: "የአገልግሎቶቻችን አጠቃላይ እይታ",
+        serv_bajaj_title: "ባጀጅ ኤክስፕረስ",
+        serv_bajaj_desc: "አነስተኛ እቃዎችና የከተማ ውስጥ ፈጣን ጉዞ • ~ETB 40/km",
+        serv_motor_title: "የሞተር ዴሊቨሪ",
+        serv_motor_desc: "ቀለል ያሉ እቃዎችና አስቸኳይ ሰነዶች • ~ETB 30/km",
+        serv_taxi_title: "ከተማ ታክሲ / መኪና",
+        serv_taxi_desc: "ምቹ የሰው ጉዞዎችና መካከለኛ እቃዎች • ~ETB 50/km",
+        serv_hotel_title: "የሆቴል ክፍሎች",
+        serv_hotel_desc: "የጂንካ ምርጥ ሆቴሎች፣ ሎጆች እና ሪዞርቶች የክፍል ምዝገባ",
+        book_ride_title: "የራይድ እና እቃ ማድረሻ ማዘዣ",
+        book_ride_sub: "በጂንካ እና አካባቢው የትም ቦታ የራይድ ወይም የእቃ ማድረስ ትእዛዝ ይላኩ።",
+        lbl_name: "ሙሉ ስም",
+        lbl_phone: "ስልክ ቁጥር",
+        lbl_vehicle: "የተሽከርካሪ አይነት",
+        lbl_pickup: "መነሻ ቦታ (Pickup)",
+        lbl_destination: "መድረሻ ቦታ (Destination)",
+        lbl_notes: "ተጨማሪ ማስታወሻ",
+        opt_bajaj: "🛺 ባጀጅ",
+        opt_motor: "🏍️ ሞተር",
+        opt_taxi: "🚕 ታክሲ",
+        opt_car: "🚗 መኪና / ካርጎ",
+        book_placeholder_name: "አበበ ከበደ",
+        book_placeholder_phone: "0911......",
+        book_placeholder_pickup: "ምሳሌ፡ ጂንካ ገበያ",
+        book_placeholder_destination: "ምሳሌ፡ ጂንካ ሆስፒታል አካባቢ",
+        book_placeholder_notes: "የእቃው አይነት፣ መመሪያ...",
+        book_submit: "🚀 የራይድ ትእዛዝ ላክ",
+        hotel_sec_title: "በጂንካ ያሉ ሆቴሎች እና ሪዞርቶች",
+        hotel_sec_sub: "ምርጥ ሆቴሎችን በቅናሽ ዋጋ ይፈልጉ እና ይዘዙ",
+        cat_all: "ሁሉም",
+        cat_resort: "ሪዞርቶች",
+        cat_hotel: "ሆቴሎች",
+        cat_lodge: "ኢኮ ሎጆች",
+        btn_book_room: "ክፍል ይዘዙ",
+        est_title: "የዴሊቨሪ እና ራይድ ዋጋ ማስያ",
+        est_sub: "ከማዘዝዎ በፊት የጉዞውን ግምታዊ ዋጋ ያስሉ",
+        est_distance_label: "ርቀት (በ ኪሎሜትር - km)",
+        est_vehicle_label: "የተሽከርካሪ አይነት",
+        drv_title: "የአሽከርካሪ እና ሆቴል አጋርነት ምዝገባ",
+        drv_sub: "የባጀጅ፣ የታክሲ አሽከርካሪ ወይም የሆቴል ባለቤት ከሆኑ ከአገልግሎታችን ጋር ይስሩ",
+        drv_placeholder_name: "ሙሉ ስም",
+        drv_placeholder_plate: "የታርጋ ቁጥር / የድርጅት ስም",
+        drv_placeholder_exp: "የልምድ ዓመታት",
+        drv_national_id: "🪪 የብሔራዊ መታወቂያ ፎቶ",
+        drv_photo: "🖼️ ጉርድ ፎቶ",
+        drv_terms: "ሕግና ደንቦችን እቀበላለሁ",
+        drv_submit: "ምዝገባ ላክ",
+        pay_title: "የባንክ / ቴሌብር ክፍያ ማረጋገጫ",
+        pay_sub: "ለራይድ ወይም ለሆቴል የከፈሉትን ደረሰኝ እዚህ ይላኩ",
+        pay_placeholder_amount: "የተከፈለው መጠን (ETB)",
+        pay_placeholder_ref: "የግብይት መለያ (Transaction Ref/FT)",
+        pay_receipt_label: "📄 የክፍያ ደረሰኝ (Photo / PDF)",
+        pay_submit: "ክፍያ አረጋግጥ",
+        btn_confirm_hotel: "ቡኪንግ አረጋግጥ",
+        footer_rights: "መብቱ በሕግ የተጠበቀ ነው"
+      }
+    };
+
+    let currentLang = localStorage.getItem('jinka_lang') || 'en';
+
+    function updateLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('jinka_lang', lang);
+      document.getElementById('htmlRoot').setAttribute('lang', lang === 'am' ? 'am' : 'en');
+      document.getElementById('langText').textContent = lang === 'am' ? 'English' : 'አማርኛ';
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (translations[lang][key]) {
+          el.placeholder = translations[lang][key];
+        }
+      });
+
+      updateSlide();
+    }
+
+    document.getElementById('langToggle').addEventListener('click', () => {
+      updateLanguage(currentLang === 'en' ? 'am' : 'en');
+    });
+
+    updateLanguage(currentLang);
+
+    // Hotel Filtering Logic
+    function filterHotels(category) {
+      document.querySelectorAll('#hotelFilterTabs button').forEach(btn => {
+        if(btn.getAttribute('data-category') === category) {
+          btn.className = "filter-tab active px-4 py-2 text-xs font-bold rounded-full bg-emerald-600 text-white transition shadow-sm";
+        } else {
+          btn.className = "filter-tab px-4 py-2 text-xs font-bold rounded-full bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition";
+        }
+      });
+
+      document.querySelectorAll('.hotel-card').forEach(card => {
+        if (category === 'all' || card.getAttribute('data-category') === category) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Hotel Modal Logic
+    function openHotelModal(name, price) {
+      document.getElementById('modalHotelName').textContent = name;
+      document.getElementById('modalHotelPrice').textContent = price + ' / night';
+      document.getElementById('modalHotelInputName').value = name;
+      document.getElementById('hotelModal').classList.remove('hidden');
+    }
+
+    function closeHotelModal() {
+      document.getElementById('hotelModal').classList.add('hidden');
+    }
+
+    // Fare Estimator Calculation Logic
     const rates = { bajaj: 40, motor: 30, taxi: 50, car: 80 };
-    const base = 30;
+    const baseFare = 30;
     const distanceEl = document.getElementById('distanceKm');
     const vehicleEl = document.getElementById('vehicleType');
     const outEl = document.getElementById('estimateOut');
@@ -232,26 +809,26 @@
         outEl.textContent = '~ ETB 0'; 
         return; 
       }
-      const price = Math.round((base + d * (rates[v] || 30)) / 5) * 5;
+      const price = Math.round((baseFare + d * (rates[v] || 30)) / 5) * 5;
       outEl.textContent = `~ ETB ${price}`;
     }
 
     distanceEl?.addEventListener('input', calcEstimate);
     vehicleEl?.addEventListener('change', calcEstimate);
 
-    // 2. የዴሊቨሪ ትእዛዝ ለቴሌግራም መላኪያ
+    // 1. Ride Booking Telegram Sender
     document.getElementById('bookingForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const formData = new FormData(e.target);
       const data = Object.fromEntries(formData.entries());
 
-      const textMessage = `🚨 *አዲስ የዴሊቨሪ ትእዛዝ ደርሷል!* 📦\n\n` +
-                          `👤 *ስም:* ${data.name}\n` +
-                          `📞 *ስልክ:* ${data.phone}\n` +
-                          `🚖 *የተሽከርካሪ አይነት:* ${data.vehicle}\n` +
-                          `📍 *መነሻ ቦታ (Pickup):* ${data.pickup}\n` +
-                          `🏁 *መድረሻ ቦታ (Destination):* ${data.destination}\n` +
-                          `📝 *ማስታወሻ:* ${data.notes || 'የለም'}`;
+      const textMessage = `🚨 *New Ride / Delivery Order!* 🚖\n\n` +
+                          `👤 *Name:* ${data.name}\n` +
+                          `📞 *Phone:* ${data.phone}\n` +
+                          `🛺 *Vehicle:* ${data.vehicle}\n` +
+                          `📍 *Pickup:* ${data.pickup}\n` +
+                          `🏁 *Destination:* ${data.destination}\n` +
+                          `📝 *Notes:* ${data.notes || 'None'}`;
 
       try {
         await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
@@ -259,91 +836,114 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ chat_id: CHAT_ID, text: textMessage, parse_mode: 'Markdown' })
         });
-        alert('የዴሊቨሪ ትእዛዝዎ ተቀብለናል! አድሚኑ በቴሌግራም ደርሶታል፣ በጥቂት ደቂቃዎች ውስጥ እናነጋግርዎታለን።');
+        alert(currentLang === 'am' ? 'የራይድ ትእዛዝዎ በስኬት ተልኳል! አድሚኑ በቴሌግራም ደርሶታል' : 'Ride order submitted successfully! Admin has been notified.');
         e.target.reset();
       } catch (err) {
-        alert('ትእዛዙን ሲላክ ስህተት አጋጥሟል! እባክዎ እንደገና ይሞክሩ።');
+        alert(currentLang === 'am' ? 'ትእዛዙን ሲላክ ስህተት አጋጥሟል!' : 'Error submitting ride order!');
       }
     });
 
-    // 3. የአሽከርካሪዎች ምዝገባ እና ፎቶዎችን ወደ Telegram መላኪያ
+    // 2. Hotel Booking Telegram Sender
+    document.getElementById('hotelBookingForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+
+      const textMessage = `🏨 *New Hotel Reservation!* 🛌\n\n` +
+                          `🏢 *Hotel:* ${data.hotelName}\n` +
+                          `👤 *Guest Name:* ${data.guestName}\n` +
+                          `📞 *Phone:* ${data.guestPhone}\n` +
+                          `📅 *Check-In:* ${data.checkIn}\n` +
+                          `📅 *Check-Out:* ${data.checkOut}\n` +
+                          `👥 *Guests:* ${data.guests}\n` +
+                          `🛏️ *Room Type:* ${data.roomType}`;
+
+      try {
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: CHAT_ID, text: textMessage, parse_mode: 'Markdown' })
+        });
+        alert(currentLang === 'am' ? 'የሆቴል ምዝገባዎ በስኬት ተልኳል! በቅርቡ እናረጋግጣለን' : 'Hotel reservation sent successfully!');
+        closeHotelModal();
+        e.target.reset();
+      } catch (err) {
+        alert(currentLang === 'am' ? 'ቡኪንግ ሲላክ ስህተት አጋጥሟል!' : 'Error submitting hotel reservation!');
+      }
+    });
+
+    // 3. Driver & Partner Form Telegram Sender
     document.getElementById('driverForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const formData = new FormData(e.target);
       const data = Object.fromEntries(formData.entries());
 
-      const textMessage = `👨‍✈️ *አዲስ የአሽከርካሪ ምዝገባ!* 🚖\n\n` +
-                          `👤 *ሙሉ ስም:* ${data.fullName}\n` +
-                          `📞 *ስልክ:* ${data.phone}\n` +
-                          `🛺 *የተሽከርካሪ አይነት:* ${data.vehicleType}\n` +
-                          `🔢 *የታርጋ ቁጥር:* ${data.plate}\n` +
-                          `🏙️ *ከተማ:* ${data.city}\n` +
-                          `⏳ *የልምድ ዓመታት:* ${data.experienceYears || 0} ዓመት`;
+      const textMessage = `👨‍✈️ *New Partner / Driver Registration!* 🚖\n\n` +
+                          `👤 *Full Name:* ${data.fullName}\n` +
+                          `📞 *Phone:* ${data.phone}\n` +
+                          `🛺 *Category:* ${data.vehicleType}\n` +
+                          `🔢 *Plate/Business:* ${data.plate}\n` +
+                          `🏙️ *City:* ${data.city}\n` +
+                          `⏳ *Experience:* ${data.experienceYears || 0} yrs`;
 
       try {
-        // 1. የፅሁፍ መረጃ መላክ
         await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ chat_id: CHAT_ID, text: textMessage, parse_mode: 'Markdown' })
         });
 
-        // 2. National ID ፎቶ መላክ
         const nationalIdFile = document.getElementById('nationalIdFile').files[0];
         if(nationalIdFile) {
           const photoData = new FormData();
           photoData.append('chat_id', CHAT_ID);
-          photoData.append('caption', `🪪 ብሔራዊ መታወቂያ: ${data.fullName}`);
+          photoData.append('caption', `🪪 ID: ${data.fullName}`);
           photoData.append('photo', nationalIdFile);
           await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: photoData });
         }
 
-        // 3. ጉርድ ፎቶ መላክ
         const driverPhotoFile = document.getElementById('driverPhotoFile').files[0];
         if(driverPhotoFile) {
           const photoData = new FormData();
           photoData.append('chat_id', CHAT_ID);
-          photoData.append('caption', `🖼️ ጉርድ ፎቶ (ለመታወቂያ): ${data.fullName}`);
+          photoData.append('caption', `🖼️ Photo: ${data.fullName}`);
           photoData.append('photo', driverPhotoFile);
           await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: photoData });
         }
 
-        alert('ምዝገባዎ እና ፎቶዎችዎ በስኬት ተልከዋል! እናረጋግጣለን።');
+        alert(currentLang === 'am' ? 'ምዝገባዎ እና ፎቶዎችዎ በስኬት ተልከዋል!' : 'Partner registration and files sent successfully!');
         e.target.reset();
       } catch (err) {
-        alert('ምዝገባውን ሲላክ ስህተት አጋጥሟል! እባክዎ እንደገና ይሞክሩ።');
+        alert(currentLang === 'am' ? 'ምዝገባውን ሲላክ ስህተት አጋጥሟል!' : 'Error submitting registration!');
       }
     });
 
-   // 4. የባንክ ክፍያ ማረጋገጫ እና ደረሰኝ (Photo/PDF) ለቴሌግራም መላኪያ
+    // 4. Payment Verification Telegram Sender
     document.getElementById('bankForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const formData = new FormData(e.target);
       const data = Object.fromEntries(formData.entries());
 
-      const textMessage = `💳 *አዲስ የባንክ/ቴሌብር ክፍያ ማረጋገጫ!* 💵\n\n` +
-                          `👤 *ስም:* ${data.fullName}\n` +
-                          `📞 *ስልክ:* ${data.phone}\n` +
-                          `🏦 *የባንክ/አገልግሎት አይነት:* ${data.bank}\n` +
-                          `💰 *የተከፈለው መጠን:* ${data.amount} ETB\n` +
-                          `🔢 *የግብይት መለያ (Ref):* ${data.reference || 'በደረሰኝ ተያይዟል'}`;
+      const textMessage = `💳 *New Payment Verification!* 💵\n\n` +
+                          `👤 *Name:* ${data.fullName}\n` +
+                          `📞 *Phone:* ${data.phone}\n` +
+                          `🏦 *Bank/Wallet:* ${data.bank}\n` +
+                          `💰 *Amount:* ${data.amount} ETB\n` +
+                          `🔢 *Ref:* ${data.reference || 'Attached receipt'}`;
 
       try {
-        // 1. የጽሁፍ መረጃውን መላክ
         await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ chat_id: CHAT_ID, text: textMessage, parse_mode: 'Markdown' })
         });
 
-        // 2. የደረሰኝ ፋይል (Photo ወይም PDF) መላክ
         const receiptFile = document.getElementById('receiptFile').files[0];
         if (receiptFile) {
           const fileData = new FormData();
           fileData.append('chat_id', CHAT_ID);
-          fileData.append('caption', `📄 የክፍያ ደረሰኝ: ${data.fullName} (${data.amount} ETB)`);
+          fileData.append('caption', `📄 Receipt: ${data.fullName} (${data.amount} ETB)`);
 
-          // ፋይሉ PDF ከሆነ እንደ Document፣ ምስል ከሆነ እንደ Photo ይላካል
           if (receiptFile.type === 'application/pdf') {
             fileData.append('document', receiptFile);
             await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendDocument`, { method: 'POST', body: fileData });
@@ -353,10 +953,10 @@
           }
         }
 
-        alert('የክፍያ መረጃዎ እና ደረሰኝዎ በስኬት ተልኳል! አድሚኑ አረጋግጦ በጥቂት ደቂቃዎች ውስጥ ያሳውቅዎታል።');
+        alert(currentLang === 'am' ? 'የክፍያ መረጃዎ እና ደረሰኝዎ በስኬት ተልኳል!' : 'Payment receipt submitted successfully!');
         e.target.reset();
       } catch (err) {
-        alert('ክፍያውን ሲላክ ስህተት አጋጥሟል! እባክዎ እንደገና ይሞክሩ።');
+        alert(currentLang === 'am' ? 'ክፍያውን ሲላክ ስህተት አጋጥሟል!' : 'Error submitting payment verification!');
       }
     });
   </script>
