@@ -799,7 +799,21 @@
           አካውንት የሎትም? <a onclick="switchAuthView('signup')">አዲስ ይመዝገቡ</a>
         </div>
       </div>
-
+<!-- የይለፍ ቃል ማግኛ ቅጽ (Forgot Password Form) -->
+      <div id="forgotPasswordForm" style="display: none;">
+        <h2>የይለፍ ቃል ማግኛ</h2>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; text-align: center;">
+          እባክዎን አካውንትዎ የተመዘገበበትን ኢሜይል ያስገቡ። የይለፍ ቃል መቀየሪያ ሊንክ እንልክልዎታለን።
+        </p>
+        <div class="form-group">
+          <label>ኢሜይል</label>
+          <input type="email" id="forgotEmail" placeholder="example@gmail.com">
+        </div>
+        <button class="auth-btn" onclick="handleForgotPassword()">ሊንክ ላክ</button>
+        <div class="auth-toggle">
+          ወደ መግቢያ ለመመለስ? <a onclick="switchAuthView('login')">እዚህ ይግቡ</a>
+        </div>
+      </div>
       <div id="signupForm" style="display: none;">
         <h2>አዲስ አካውንት ይክፈቱ</h2>
         <div class="form-group">
@@ -1906,7 +1920,46 @@
 
 // ፉንክሽኑን መጥራት
 loadVideoReels();
-    });
+// የቅጽ ማሳያዎችን ለመቀያየር (Login, Signup, Forgot Password)
+    function switchAuthView(view) {
+      const loginForm = document.getElementById('loginForm');
+      const signupForm = document.getElementById('signupForm');
+      const forgotForm = document.getElementById('forgotPasswordForm');
+
+      if (loginForm) loginForm.style.display = (view === 'login') ? 'block' : 'none';
+      if (signupForm) signupForm.style.display = (view === 'signup') ? 'block' : 'none';
+      if (forgotForm) forgotForm.style.display = (view === 'forgotPassword') ? 'block' : 'none';
+    }
+
+    // የይለፍ ቃል የማደስ ጥያቄን በ Firebase በኩል ለመላክ
+    function handleForgotPassword() {
+      const email = document.getElementById('forgotEmail').value.trim();
+      
+      if (!email) {
+        alert("እባክዎን ኢሜይል አድራሻዎን ያስገቡ!");
+        return;
+      }
+
+      auth.sendPasswordResetEmail(email)
+        .then(() => {
+          alert("የይለፍ ቃል መቀየሪያ ሊንክ ወደ ኢሜይልዎ ተልኳል! እባክዎን የኢሜይል ሳጥንዎን (Inbox ወይም Spam) ይዩ።");
+          document.getElementById('forgotEmail').value = '';
+          switchAuthView('login');
+        })
+        .catch((error) => {
+          console.error("Password reset error:", error);
+          let errorMessage = "ስህተት አጋጥሟል፦ ";
+          if (error.code === 'auth/user-not-found') {
+            errorMessage += "በዚህ ኢሜይል የተመዘገበ ተጠቃሚ አልተገኘም።";
+          } else if (error.code === 'auth/invalid-email') {
+            errorMessage += "ያስገቡት ኢሜይል ትክክለኛ አይደለም።";
+          } else {
+            errorMessage += error.message;
+          }
+          alert(errorMessage);
+        });
+    }    
+});
   </script>
 </body>
 </html>
