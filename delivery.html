@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title data-i18n="meta_title">Jinka — Ride, Delivery & Hotel Booking</title>
-  <meta name="description" content="Jinka Market — Ride Booking, Goods Delivery & Premium Hotel Reservations in Jinka."/>
+  <title data-i18n="meta_title">Jinka — Ride, Delivery</title>
+  <meta name="description" content="Jinka Market — Ride Booking, Goods Delivery"/>
   
   <!-- PWA Web App Manifest -->
   <link rel="manifest" href='data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Jinka%20Market%20%26%20Hotels%22%2C%22short_name%22%3A%22JinkaApp%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f8fafc%22%2C%22theme_color%22%3A%22%23059669%22%7D'>
@@ -31,7 +31,6 @@
           📍
         </div>
         <div>
-          <div class="font-extrabold text-emerald-900 text-base leading-tight" data-i18n="brand_title">Jinka & Hotels</div>
           <div class="text-xs text-emerald-600 font-medium" data-i18n="brand_subtitle">Ride, Delivery & Stay</div>
         </div>
       </a>
@@ -39,7 +38,6 @@
       <nav class="hidden lg:flex items-center gap-1 text-sm font-semibold text-slate-600">
         <a href="#services" class="px-3.5 py-2 rounded-full hover:bg-slate-100 hover:text-emerald-700 transition" data-i18n="nav_services">Services</a>
         <a href="#rides" class="px-3.5 py-2 rounded-full hover:bg-slate-100 hover:text-emerald-700 transition" data-i18n="nav_rides">Book Ride</a>
-        <a href="#hotels" class="px-3.5 py-2 rounded-full hover:bg-slate-100 hover:text-emerald-700 transition" data-i18n="nav_hotels">Book Hotel</a>
         <a href="#estimate" class="px-3.5 py-2 rounded-full hover:bg-slate-100 hover:text-emerald-700 transition" data-i18n="nav_estimator">Fare Estimator</a>
         <a href="#driver" class="px-3.5 py-2 rounded-full hover:bg-slate-100 hover:text-emerald-700 transition" data-i18n="nav_driver">Partner Register</a>
         <a href="#payment" class="px-3.5 py-2 rounded-full hover:bg-slate-100 hover:text-emerald-700 transition" data-i18n="nav_payment">Payment</a>
@@ -79,33 +77,15 @@
     </div>
   </section>
 
-  <!-- HERO SECTION -->
-  <main class="max-w-7xl mx-auto px-4 py-8 md:py-12" id="home">
-    <div class="grid lg:grid-cols-2 gap-10 items-center">
-      <div data-aos="fade-up">
-        <div class="inline-flex items-center gap-2 bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1.5 rounded-full mb-4">
-          ✨ All-in-One Booking Super App
-        </div>
-        <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight" data-i18n="hero_title">
-          Fast Rides, Goods Delivery & Hotel Booking in Jinka
-        </h1>
-        <p class="mt-4 text-slate-600 text-base md:text-lg leading-relaxed" data-i18n="hero_desc">
-          Get items delivered from Jinka Market, request instant Bajaj or Taxi rides, or reserve top-rated hotels and resorts seamlessly.
-        </p>
-
         <!-- Quick Switcher CTAs -->
         <div class="mt-8 flex flex-wrap gap-3">
           <a href="#rides" class="inline-flex items-center gap-2 bg-emerald-600 text-white px-6 py-3.5 rounded-2xl font-bold shadow-lg shadow-emerald-600/30 hover:bg-emerald-700 transition" data-i18n="btn_book_ride">
             🚖 Book Ride / Delivery
           </a>
-          <a href="#hotels" class="inline-flex items-center gap-2 border-2 border-slate-300 bg-white text-slate-800 px-6 py-3.5 rounded-2xl font-bold hover:bg-slate-100 transition shadow-sm" data-i18n="btn_book_hotel">
-            🏨 Reserve Hotel
-          </a>
         </div>
 
         <ul class="mt-8 space-y-2.5 text-slate-600 text-sm font-medium">
           <li class="flex items-center gap-2" data-i18n="hero_feat_1">⚡️ Real-time driver dispatch & express city delivery</li>
-          <li class="flex items-center gap-2" data-i18n="hero_feat_2">🏨 Handpicked hotels with verified prices & rooms</li>
           <li class="flex items-center gap-3" data-i18n="hero_feat_3">💳 Easy payments via Telebirr, CBE & Bank Transfer</li>
         </ul>
       </div>
@@ -148,12 +128,6 @@
         <div class="text-3xl mb-2">🚕</div>
         <div class="font-bold text-lg text-slate-800" data-i18n="serv_taxi_title">City Taxi & Car</div>
         <div class="text-xs text-slate-500 mt-1 leading-relaxed" data-i18n="serv_taxi_desc">Comfortable passenger rides & medium luggage • ~ETB 50/km</div>
-      </div>
-      <div class="p-6 bg-white rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition" data-aos="fade-up" data-aos-delay="150">
-        <div class="text-3xl mb-2">🏨</div>
-        <div class="font-bold text-lg text-slate-800" data-i18n="serv_hotel_title">Hotel Rooms</div>
-        <div class="text-xs text-slate-500 mt-1 leading-relaxed" data-i18n="serv_hotel_desc">Top hotels, eco-lodges & luxury resort room reservations</div>
-      </div>
     </div>
   </section>
 
@@ -205,120 +179,6 @@
     </div>
   </section>
 
-  <!-- HOTEL BOOKING SECTION (ROOME UI STYLE) -->
-  <section id="hotels" class="max-w-7xl mx-auto px-4 py-8">
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-6">
-      <div data-aos="fade-right">
-        <div class="flex items-center gap-2">
-          <span class="text-2xl">🏨</span>
-          <h2 class="text-2xl font-extrabold text-slate-900" data-i18n="hotel_sec_title">Explore Hotels & Resorts</h2>
-        </div>
-        <p class="text-xs text-slate-500 mt-1" data-i18n="hotel_sec_sub">Find and book verified stays in Jinka with best prices</p>
-      </div>
-
-      <!-- Filter Tabs -->
-      <div class="flex gap-2 mt-4 md:mt-0 overflow-x-auto no-scrollbar pb-1" id="hotelFilterTabs">
-        <button onclick="filterHotels('all')" class="filter-tab active px-4 py-2 text-xs font-bold rounded-full bg-emerald-600 text-white transition shadow-sm" data-category="all" data-i18n="cat_all">All Stays</button>
-        <button onclick="filterHotels('resort')" class="filter-tab px-4 py-2 text-xs font-bold rounded-full bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition" data-category="resort" data-i18n="cat_resort">Resorts</button>
-        <button onclick="filterHotels('hotel')" class="filter-tab px-4 py-2 text-xs font-bold rounded-full bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition" data-category="hotel" data-i18n="cat_hotel">Hotels</button>
-        <button onclick="filterHotels('lodge')" class="filter-tab px-4 py-2 text-xs font-bold rounded-full bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition" data-category="lodge" data-i18n="cat_lodge">Eco Lodges</button>
-      </div>
-    </div>
-
-    <!-- Hotel Cards Grid -->
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="hotelGrid">
-
-      <!-- Hotel Card 1 -->
-      <div class="hotel-card bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-lg transition duration-300" data-category="resort" data-aos="fade-up">
-        <div class="relative h-48">
-          <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80" alt="Jinka Resort" class="w-full h-full object-cover"/>
-          <span class="absolute top-3 left-3 bg-emerald-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider">Top Choice</span>
-          <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-rose-500 hover:bg-white transition">❤️</button>
-        </div>
-        <div class="p-5">
-          <div class="flex justify-between items-start">
-            <div>
-              <h4 class="font-bold text-slate-900 text-base">Jinka Resort & Spa</h4>
-              <p class="text-xs text-slate-500 flex items-center gap-1 mt-0.5">📍 Downtown Jinka, Ethiopia</p>
-            </div>
-            <div class="bg-emerald-50 text-emerald-800 text-xs font-extrabold px-2 py-1 rounded-lg border border-emerald-100">⭐ 9.4</div>
-          </div>
-          <div class="mt-4 flex items-center gap-2 text-[11px] text-slate-500">
-            <span class="bg-slate-100 px-2 py-1 rounded-md">📶 Free WiFi</span>
-            <span class="bg-slate-100 px-2 py-1 rounded-md">🏊 Pool</span>
-            <span class="bg-slate-100 px-2 py-1 rounded-md">🍳 Breakfast</span>
-          </div>
-          <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
-            <div>
-              <span class="text-lg font-extrabold text-emerald-700">1,800 ETB</span>
-              <span class="text-[11px] text-slate-400"> / night</span>
-            </div>
-            <button onclick="openHotelModal('Jinka Resort & Spa', '1,800 ETB')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-sm" data-i18n="btn_book_room">Book Room</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Hotel Card 2 -->
-      <div class="hotel-card bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-lg transition duration-300" data-category="lodge" data-aos="fade-up" data-aos-delay="100">
-        <div class="relative h-48">
-          <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80" alt="Omo Eco Lodge" class="w-full h-full object-cover"/>
-          <span class="absolute top-3 left-3 bg-amber-500 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider">Eco Friendly</span>
-          <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-slate-400 hover:text-rose-500 transition">🤍</button>
-        </div>
-        <div class="p-5">
-          <div class="flex justify-between items-start">
-            <div>
-              <h4 class="font-bold text-slate-900 text-base">Omo Valley Eco Lodge</h4>
-              <p class="text-xs text-slate-500 flex items-center gap-1 mt-0.5">📍 Near Omo National Park Entrance</p>
-            </div>
-            <div class="bg-emerald-50 text-emerald-800 text-xs font-extrabold px-2 py-1 rounded-lg border border-emerald-100">⭐ 9.1</div>
-          </div>
-          <div class="mt-4 flex items-center gap-2 text-[11px] text-slate-500">
-            <span class="bg-slate-100 px-2 py-1 rounded-md">🌿 Nature View</span>
-            <span class="bg-slate-100 px-2 py-1 rounded-md">🅿️ Free Parking</span>
-          </div>
-          <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
-            <div>
-              <span class="text-lg font-extrabold text-emerald-700">1,400 ETB</span>
-              <span class="text-[11px] text-slate-400"> / night</span>
-            </div>
-            <button onclick="openHotelModal('Omo Valley Eco Lodge', '1,400 ETB')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-sm" data-i18n="btn_book_room">Book Room</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Hotel Card 3 -->
-      <div class="hotel-card bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-lg transition duration-300" data-category="hotel" data-aos="fade-up" data-aos-delay="200">
-        <div class="relative h-48">
-          <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80" alt="Paradise Hotel" class="w-full h-full object-cover"/>
-          <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-slate-400 hover:text-rose-500 transition">🤍</button>
-        </div>
-        <div class="p-5">
-          <div class="flex justify-between items-start">
-            <div>
-              <h4 class="font-bold text-slate-900 text-base">Grand Paradise Hotel</h4>
-              <p class="text-xs text-slate-500 flex items-center gap-1 mt-0.5">📍 Jinka Airport Road</p>
-            </div>
-            <div class="bg-emerald-50 text-emerald-800 text-xs font-extrabold px-2 py-1 rounded-lg border border-emerald-100">⭐ 8.8</div>
-          </div>
-          <div class="mt-4 flex items-center gap-2 text-[11px] text-slate-500">
-            <span class="bg-slate-100 px-2 py-1 rounded-md">📶 WiFi</span>
-            <span class="bg-slate-100 px-2 py-1 rounded-md">🍽️ Restaurant</span>
-            <span class="bg-slate-100 px-2 py-1 rounded-md">🚕 Shuttle</span>
-          </div>
-          <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
-            <div>
-              <span class="text-lg font-extrabold text-emerald-700">1,200 ETB</span>
-              <span class="text-[11px] text-slate-400"> / night</span>
-            </div>
-            <button onclick="openHotelModal('Grand Paradise Hotel', '1,200 ETB')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-sm" data-i18n="btn_book_room">Book Room</button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
   <!-- FARE ESTIMATOR -->
   <section id="estimate" class="max-w-7xl mx-auto px-4 py-8">
     <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100" data-aos="fade-up">
@@ -365,7 +225,6 @@
           <option value="Motorbike" data-i18n="opt_motor">🏍️ Motorbike</option>
           <option value="Taxi" data-i18n="opt_taxi">🚕 Taxi</option>
           <option value="Car" data-i18n="opt_car">🚗 Car / Cargo</option>
-          <option value="Hotel Owner">🏨 Hotel / Guest House</option>
         </select>
         <input name="plate" required data-i18n-placeholder="drv_placeholder_plate" placeholder="License Plate / Business Name" class="rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50"/>
         <select name="city" class="rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50">
@@ -431,56 +290,7 @@
     </div>
   </section>
 
-  <!-- HOTEL BOOKING MODAL -->
-  <div id="hotelModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 relative max-h-[90vh] overflow-y-auto">
-      <button onclick="closeHotelModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center font-bold">✕</button>
-      
-      <div class="flex items-center gap-2 mb-1">
-        <span class="text-xl">🏨</span>
-        <h3 id="modalHotelName" class="text-xl font-extrabold text-slate-900">Hotel Name</h3>
-      </div>
-      <p id="modalHotelPrice" class="text-sm font-bold text-emerald-700 mb-4">0 ETB / night</p>
-
-      <form id="hotelBookingForm" class="space-y-3">
-        <input type="hidden" id="modalHotelInputName" name="hotelName"/>
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="lbl_name">Full Name</label>
-          <input name="guestName" required placeholder="Guest Name" class="w-full rounded-2xl border border-slate-200 px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50"/>
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="lbl_phone">Phone Number</label>
-          <input name="guestPhone" required placeholder="0911......" class="w-full rounded-2xl border border-slate-200 px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50"/>
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Check-in Date</label>
-            <input name="checkIn" type="date" required class="w-full rounded-2xl border border-slate-200 px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50"/>
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Check-out Date</label>
-            <input name="checkOut" type="date" required class="w-full rounded-2xl border border-slate-200 px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50"/>
-          </div>
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Guests</label>
-            <select name="guests" class="w-full rounded-2xl border border-slate-200 px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50">
-              <option value="1 Guest">1 Guest</option>
-              <option value="2 Guests">2 Guests</option>
-              <option value="3+ Guests">3+ Guests</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Room Type</label>
-            <select name="roomType" class="w-full rounded-2xl border border-slate-200 px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50">
-              <option value="Standard Room">Standard Room</option>
-              <option value="Deluxe Room">Deluxe Room</option>
-              <option value="VIP Suite">VIP Suite</option>
-            </select>
-          </div>
-        </div>
-        <button type="submit" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-2xl hover:bg-emerald-700 transition shadow-md mt-2" data-i18n="btn_confirm_hotel">
+          <button type="submit" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-2xl hover:bg-emerald-700 transition shadow-md mt-2" data-i18n="btn_confirm_hotel">
           Confirm Reservation
         </button>
       </form>
@@ -534,12 +344,10 @@
     const promoSlides = {
       en: [
         "🚚 Book your hotel room and get 15% discount on your first Bajaj or Car ride in Jinka!",
-        "🏨 Top rated Eco Lodges and Resorts available in Jinka with instant reservation!",
         "💳 Pay securely via Telebirr or CBE and verify your order instantly!"
       ],
       am: [
         "🚚 በጂንካ ሆቴል ሲይዙ ለመጀመሪያው የባጀጅ ወይም መኪና ጉዞዎ የ15% ቅናሽ ያግኙ!",
-        "🏨 በጂንካ ያሉ ምርጥ ሆቴሎችን እና ኢኮ-ሎጆችን በቅናሽ ዋጋ በቅጽበት ይዘዙ!",
         "💳 በቴሌብር ወይም በባንክ በሰላም ከፍለው ትዕዛዝዎን ወዲያውኑ ያረጋግጡ!"
       ]
     };
@@ -590,9 +398,7 @@
         hero_title: "Fast Rides, Goods Delivery & Hotel Booking in Jinka",
         hero_desc: "Get items delivered from Jinka Market, request instant Bajaj or Taxi rides, or reserve top-rated hotels and resorts seamlessly.",
         btn_book_ride: "🚖 Book Ride / Delivery",
-        btn_book_hotel: "🏨 Reserve Hotel",
         hero_feat_1: "⚡️ Real-time driver dispatch & express city delivery",
-        hero_feat_2: "🏨 Handpicked hotels with verified prices & rooms",
         hero_feat_3: "💳 Easy payments via Telebirr, CBE & Bank Transfer",
         hero_card_support: "Customer & Ride Support",
         hero_card_city: "Jinka & Area",
@@ -604,8 +410,6 @@
         serv_motor_desc: "Express document delivery & small urgent packages • ~ETB 30/km",
         serv_taxi_title: "City Taxi & Car",
         serv_taxi_desc: "Comfortable passenger rides & medium luggage • ~ETB 50/km",
-        serv_hotel_title: "Hotel Rooms",
-        serv_hotel_desc: "Top hotels, eco-lodges & luxury resort room reservations",
         book_ride_title: "Ride & Transport Booking",
         book_ride_sub: "Request a ride or item delivery anywhere in Jinka and surrounding areas.",
         lbl_name: "Full Name",
@@ -624,18 +428,14 @@
         book_placeholder_destination: "e.g. Jinka Hospital Area",
         book_placeholder_notes: "Item description, instructions...",
         book_submit: "🚀 Send Ride Request",
-        hotel_sec_title: "Explore Hotels & Resorts",
-        hotel_sec_sub: "Find and book verified stays in Jinka with best prices",
         cat_all: "All Stays",
         cat_resort: "Resorts",
-        cat_hotel: "Hotels",
         cat_lodge: "Eco Lodges",
         btn_book_room: "Book Room",
         est_title: "Delivery & Ride Fare Estimator",
         est_sub: "Calculate approximate ride costs before booking",
         est_distance_label: "Distance (in Kilometers - km)",
         est_vehicle_label: "Vehicle Type",
-        drv_title: "Driver & Hotel Partner Registration",
         drv_sub: "Join our platform as a Bajaj driver, Taxi operator, or Hotel owner in Jinka",
         drv_placeholder_name: "Full Name",
         drv_placeholder_plate: "License Plate / Business Name",
@@ -661,14 +461,12 @@
         promo_badge: "ልዩ ቅናሽ",
         nav_services: "አገልግሎቶች",
         nav_rides: "ራይድ ይዘዙ",
-        nav_hotels: "ሆቴል ይዘዙ",
         nav_estimator: "የታሪፍ ማስያ",
         nav_driver: "አጋር ይሁኑ",
         nav_payment: "ክፍያ",
         hero_title: "ፈጣን የራይድ፣ እቃ ማድረስ እና የሆቴል ቡኪንግ በጂንካ",
         hero_desc: "ከጂንካ ገበያ እቃ እንዲደርስዎ ያድርጉ፣ የባጀጅ እና ታክሲ ራይድ በጥሪ ይዘዙ ወይም በጂንካ ያሉ ምርጥ ሆቴሎችን በቀላሉ ይመዝገቡ።",
         btn_book_ride: "🚖 ራይድ / እቃ ማድረሻ ይዘዙ",
-        btn_book_hotel: "🏨 ሆቴል ይዘዙ",
         hero_feat_1: "⚡️ ፈጣን አሽከርካሪ ማገናኘት እና የከተማ ዴሊቨሪ",
         hero_feat_2: "🏨 የተረጋገጡ ምርጥ የጂንካ ሆቴሎች እና ሎጆች",
         hero_feat_3: "💳 በቴሌብር እና በባንክ ቀላል የክፍያ ስርዓት",
@@ -682,8 +480,6 @@
         serv_motor_desc: "ቀለል ያሉ እቃዎችና አስቸኳይ ሰነዶች • ~ETB 30/km",
         serv_taxi_title: "ከተማ ታክሲ / መኪና",
         serv_taxi_desc: "ምቹ የሰው ጉዞዎችና መካከለኛ እቃዎች • ~ETB 50/km",
-        serv_hotel_title: "የሆቴል ክፍሎች",
-        serv_hotel_desc: "የጂንካ ምርጥ ሆቴሎች፣ ሎጆች እና ሪዞርቶች የክፍል ምዝገባ",
         book_ride_title: "የራይድ እና እቃ ማድረሻ ማዘዣ",
         book_ride_sub: "በጂንካ እና አካባቢው የትም ቦታ የራይድ ወይም የእቃ ማድረስ ትእዛዝ ይላኩ።",
         lbl_name: "ሙሉ ስም",
@@ -702,11 +498,8 @@
         book_placeholder_destination: "ምሳሌ፡ ጂንካ ሆስፒታል አካባቢ",
         book_placeholder_notes: "የእቃው አይነት፣ መመሪያ...",
         book_submit: "🚀 የራይድ ትእዛዝ ላክ",
-        hotel_sec_title: "በጂንካ ያሉ ሆቴሎች እና ሪዞርቶች",
-        hotel_sec_sub: "ምርጥ ሆቴሎችን በቅናሽ ዋጋ ይፈልጉ እና ይዘዙ",
         cat_all: "ሁሉም",
         cat_resort: "ሪዞርቶች",
-        cat_hotel: "ሆቴሎች",
         cat_lodge: "ኢኮ ሎጆች",
         btn_book_room: "ክፍል ይዘዙ",
         est_title: "የዴሊቨሪ እና ራይድ ዋጋ ማስያ",
@@ -764,37 +557,6 @@
 
     updateLanguage(currentLang);
 
-    // Hotel Filtering Logic
-    function filterHotels(category) {
-      document.querySelectorAll('#hotelFilterTabs button').forEach(btn => {
-        if(btn.getAttribute('data-category') === category) {
-          btn.className = "filter-tab active px-4 py-2 text-xs font-bold rounded-full bg-emerald-600 text-white transition shadow-sm";
-        } else {
-          btn.className = "filter-tab px-4 py-2 text-xs font-bold rounded-full bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition";
-        }
-      });
-
-      document.querySelectorAll('.hotel-card').forEach(card => {
-        if (category === 'all' || card.getAttribute('data-category') === category) {
-          card.style.display = 'block';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    }
-
-    // Hotel Modal Logic
-    function openHotelModal(name, price) {
-      document.getElementById('modalHotelName').textContent = name;
-      document.getElementById('modalHotelPrice').textContent = price + ' / night';
-      document.getElementById('modalHotelInputName').value = name;
-      document.getElementById('hotelModal').classList.remove('hidden');
-    }
-
-    function closeHotelModal() {
-      document.getElementById('hotelModal').classList.add('hidden');
-    }
-
     // Fare Estimator Calculation Logic
     const rates = { bajaj: 40, motor: 30, taxi: 50, car: 80 };
     const baseFare = 30;
@@ -840,35 +602,6 @@
         e.target.reset();
       } catch (err) {
         alert(currentLang === 'am' ? 'ትእዛዙን ሲላክ ስህተት አጋጥሟል!' : 'Error submitting ride order!');
-      }
-    });
-
-    // 2. Hotel Booking Telegram Sender
-    document.getElementById('hotelBookingForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      const data = Object.fromEntries(formData.entries());
-
-      const textMessage = `🏨 *New Hotel Reservation!* 🛌\n\n` +
-                          `🏢 *Hotel:* ${data.hotelName}\n` +
-                          `👤 *Guest Name:* ${data.guestName}\n` +
-                          `📞 *Phone:* ${data.guestPhone}\n` +
-                          `📅 *Check-In:* ${data.checkIn}\n` +
-                          `📅 *Check-Out:* ${data.checkOut}\n` +
-                          `👥 *Guests:* ${data.guests}\n` +
-                          `🛏️ *Room Type:* ${data.roomType}`;
-
-      try {
-        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ chat_id: CHAT_ID, text: textMessage, parse_mode: 'Markdown' })
-        });
-        alert(currentLang === 'am' ? 'የሆቴል ምዝገባዎ በስኬት ተልኳል! በቅርቡ እናረጋግጣለን' : 'Hotel reservation sent successfully!');
-        closeHotelModal();
-        e.target.reset();
-      } catch (err) {
-        alert(currentLang === 'am' ? 'ቡኪንግ ሲላክ ስህተት አጋጥሟል!' : 'Error submitting hotel reservation!');
       }
     });
 
@@ -959,80 +692,6 @@
         alert(currentLang === 'am' ? 'ክፍያውን ሲላክ ስህተት አጋጥሟል!' : 'Error submitting payment verification!');
       }
     });
-    // ከ Firebase Firestore ሆቴሎችን በዲናሚክ ማምጣት እና በ index.html/delivery_3.html ላይ መጫን
-async function fetchAndRenderHotels() {
-  const hotelGrid = document.getElementById('hotelGrid');
-  if (!hotelGrid) return;
-
-  // ሲጫን የሚታይ የሎዲንግ መልዕክት
-  hotelGrid.innerHTML = '<p class="text-center col-span-3 text-slate-500 py-8">ሆቴሎችን በመጫን ላይ... / Loading hotels...</p>';
-
-  try {
-    // ከ Firestore 'hotels' ኮሌክሽን ዳታውን መቀበል 
-    // (db የሚለው ከእርስዎ የፋየርቤዝ ኢኒሻላይዜሽን ኮድ ጋር የተገናኘ መሆን አለበት)
-    const querySnapshot = await getDocs(collection(db, "hotels"));
-    
-    hotelGrid.innerHTML = ""; // ሎዲንግ ማጥፋት
-
-    if (querySnapshot.empty) {
-      hotelGrid.innerHTML = '<p class="text-center col-span-3 text-slate-500 py-8">ምንም ሆቴሎች አልተገኙም</p>';
-      return;
-    }
-
-    querySnapshot.forEach((doc) => {
-      const hotel = doc.data();
-      
-      // የአገልግሎቶች (Amenities) ሊስት መፍጠር
-      let amenitiesHTML = '';
-      if (hotel.amenities && Array.isArray(hotel.amenities)) {
-        amenitiesHTML = hotel.amenities.map(amenity => 
-          `<span class="bg-slate-100 px-2 py-1 rounded-md">${amenity}</span>`
-        ).join('');
-      }
-
-      // የሆቴል ካርድ ኤችቲኤምኤል መዋቅር
-      const cardHTML = `
-        <div class="hotel-card bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-lg transition duration-300" data-category="${hotel.category || 'hotel'}">
-          <div class="relative h-48">
-            <img src="${hotel.imageUrl || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80'}" alt="${hotel.name}" class="w-full h-full object-cover"/>
-            <span class="absolute top-3 left-3 bg-emerald-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider">Verified</span>
-            <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-rose-500 hover:bg-white transition">❤️</button>
-          </div>
-          <div class="p-5">
-            <div class="flex justify-between items-start">
-              <div>
-                <h4 class="font-bold text-slate-900 text-base">${hotel.name}</h4>
-                <p class="text-xs text-slate-500 flex items-center gap-1 mt-0.5">📍 ${hotel.location}</p>
-              </div>
-              <div class="bg-emerald-50 text-emerald-800 text-xs font-extrabold px-2 py-1 rounded-lg border border-emerald-100">⭐ ${hotel.rating || '9.0'}</div>
-            </div>
-            <div class="mt-4 flex items-center gap-2 text-[11px] text-slate-500 flex-wrap">
-              ${amenitiesHTML}
-            </div>
-            <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
-              <div>
-                <span class="text-lg font-extrabold text-emerald-700">${hotel.price}</span>
-                <span class="text-[11px] text-slate-400"> / night</span>
-              </div>
-              <button onclick="openHotelModal('${hotel.name}', '${hotel.price}')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-sm">Book Room</button>
-            </div>
-          </div>
-        </div>
-      `;
-
-      hotelGrid.insertAdjacentHTML('beforeend', cardHTML);
-    });
-
-  } catch (error) {
-    console.error("Error fetching hotels: ", error);
-    hotelGrid.innerHTML = '<p class="text-center col-span-3 text-rose-500 py-8">ሆቴሎችን መጫን አልተቻለም። እባክዎ እንደገና ይሞክሩ።</p>';
-  }
-}
-
-// ገጹ ሲከፈት ተግባራዊ እንዲሆን ማድረግ
-document.addEventListener("DOMContentLoaded", () => {
-  fetchAndRenderHotels();
-});
   </script>
 </body>
 </html>
