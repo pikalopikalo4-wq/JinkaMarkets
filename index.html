@@ -199,7 +199,6 @@
     footer a { color: var(--primary); text-decoration: none; margin: 0 5px; }
 
     @media (max-width: 600px) { .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } .hero-slider { height: 200px; } }
-
   #google_translate_element {
     display: inline-block;
     margin-left: 15px;
@@ -1998,33 +1997,17 @@ loadVideoReels();
         });
     }    
 });
-  // Default ቋንቋ እንግሊዝኛ ነው (ለAdSense ሲባል)
-  let currentLang = 'en';
-
-  function toggleLanguage() {
-    const langBtnText = document.getElementById('lang-text');
-    const langFlag = document.getElementById('lang-flag');
-    
-    if (currentLang === 'en') {
-      currentLang = 'am';
-      langBtnText.innerText = 'አማርኛ';
-      langFlag.innerText = '🇪🇹';
-    } else {
-      currentLang = 'en';
-      langBtnText.innerText = 'English';
-      langFlag.innerText = '🇬🇧';
-    }
-  <!-- Google Translate Script -->
+ <!-- Google Translate Script with Oromo, Tigrinya & International Languages -->
 <script type="text/javascript">
   function googleTranslateElementInit() {
     new google.translate.TranslateElement({
       pageLanguage: 'en',
-      includedLanguages: 'en,am',
+      // የተካተቱት ቋንቋዎች፡ እንግሊዝኛ፣ አማርኛ፣ ኦሮምኛ፣ ትግርኛ፣ አረብኛ፣ ቻይንኛ፣ ፈረንሳይኛ፣ ጀርመንኛ፣ ጣሊያንኛ፣ ስፓኒሽ፣ ሩሲያኛ፣ ቱርክኛ
+      includedLanguages: 'en,am,om,ti,ar,zh-CN,fr,de,it,es,ru,tr',
       layout: google.translate.TranslateElement.InlineLayout.SIMPLE
     }, 'google_translate_element');
   }
-</script>
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
 </script>
 </body>
 </html>
