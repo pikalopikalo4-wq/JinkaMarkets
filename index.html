@@ -201,30 +201,38 @@
     @media (max-width: 600px) { .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } .hero-slider { height: 200px; } }
 </style>
   <style>
-  .language-toggle {
-    display: inline-block;
-    margin-left: 15px;
-  }
-  #lang-toggle-btn {
-    background-color: #007bff;
-    color: #ffffff;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-weight: bold;
+  /* የጎግል አላስፈላጊ ቶፕ ባነርን መደበቂያ እና ዲዛይን ማስተካከያ */
+  .goog-te-banner-frame.skiptranslate { display: none !important; }
+  body { top: 0px !important; }
+  
+  /* የቋንቋ መምረጫ ሳጥን ዲዛይን */
+  #google_translate_element select {
+    background-color: #ffffff;
+    color: #333333;
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    outline: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   }
-  #lang-toggle-btn:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
+  #google_translate_element select:hover {
+    border-color: #007bff;
+  }
+  .goog-te-gadget {
+    font-family: inherit !important;
+    font-size: 0px !important;
+  }
+  .goog-te-gadget span {
+    display: none;
+  }
+  .goog-te-gadget select {
+    font-size: 14px !important;
   }
 </style>
 </head>
-  
 <body>
 <!-- WELCOME VOICE GREETING BANNER -->
 <div id="welcomeAudioBanner" class="bg-emerald-900 text-white px-4 py-2 text-xs flex items-center justify-between shadow-inner">
@@ -316,12 +324,8 @@
         </div>
         </div>
       </div>
-     <!-- Custom Amharic | English Language Toggle Button -->
-<div class="language-toggle">
-  <button id="lang-toggle-btn" onclick="toggleLanguage()">
-    <span id="lang-flag">🇬🇧</span> <span id="lang-text">English</span>
-  </button>
-</div>
+   <!-- ቋንቋ መምረጫ የሚታይበት ቦታ -->
+<div id="google_translate_element" style="display: inline-block; margin-left: 10px;"></div>
   </header>
   <!-- Main Content Area -->
   <main class="main-container">
@@ -2013,33 +2017,17 @@ loadVideoReels();
         });
     }    
 });
-  // Default ቋንቋ እንግሊዝኛ ነው (ለAdSense ሲባል)
-  let currentLang = 'en';
-
-  function toggleLanguage() {
-    const langBtnText = document.getElementById('lang-text');
-    const langFlag = document.getElementById('lang-flag');
-    
-    if (currentLang === 'en') {
-      currentLang = 'am';
-      langBtnText.innerText = 'አማርኛ';
-      langFlag.innerText = '🇪🇹';
-    } else {
-      currentLang = 'en';
-      langBtnText.innerText = 'English';
-      langFlag.innerText = '🇬🇧';
-    }
-
-    // በድረ-ገጹ ላይ ያሉትን ሁሉንም 'data-en' እና 'data-am' ያላቸውን ጽሁፎች መቀየር
-    const translatableElements = document.querySelectorAll('[data-en][data-am]');
-    translatableElements.forEach(el => {
-      if (currentLang === 'am') {
-        el.innerText = el.getAttribute('data-am');
-      } else {
-        el.innerText = el.getAttribute('data-en');
-      }
-    });
+ <script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'en', // ዌብሳይቱ በነባሪነት በእንግሊዝኛ እንዲጀምር (ለAdSense)
+      includedLanguages: 'en,am,om,ti,ar,fr,de,it,es,ru,zh-CN', // የኢትዮጵያ እና ዋና ዋና አለም አቀፍ ቋንቋዎች
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+      autoDisplay: false
+    }, 'google_translate_element');
   }
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </script>
 </body>
 </html>
