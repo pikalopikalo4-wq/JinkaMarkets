@@ -1989,45 +1989,43 @@ loadVideoReels();
     }
 
     // የይለፍ ቃል የማደስ ጥያቄን በ Firebase በኩል ለመላክ
-    function handleForgotPassword() {
-      const email = document.getElementById('forgotEmail').value.trim();
-      
-      if (!email) {
-        alert("እባክዎን ኢሜይል አድራሻዎን ያስገቡ!");
-        return;
-      }
+function handleForgotPassword() {
+  const email = document.getElementById('forgotEmail').value.trim();
+  if (!email) {
+    alert("እባክዎን ኢሜይል አድራሻዎን ያስገቡ!");
+    return;
+  }
 
-      auth.sendPasswordResetEmail(email)
-        .then(() => {
-          alert("የይለፍ ቃል መቀየሪያ ሊንክ ወደ ኢሜይልዎ ተልኳል! እባክዎን የኢሜይል ሳጥንዎን (Inbox ወይም Spam) ይዩ።");
-          document.getElementById('forgotEmail').value = '';
-          switchAuthView('login');
-        })
-        .catch((error) => {
-          console.error("Password reset error:", error);
-          let errorMessage = "ስህተት አጋጥሟል፦ ";
-          if (error.code === 'auth/user-not-found') {
-            errorMessage += "በዚህ ኢሜይል የተመዘገበ ተጠቃሚ አልተገኘም።";
-          } else if (error.code === 'auth/invalid-email') {
-            errorMessage += "ያስገቡት ኢሜይል ትክክለኛ አይደለም።";
-          } else {
-            errorMessage += error.message;
-          }
-          alert(errorMessage);
-        });
-    }    
-});
- <script type="text/javascript">
+  auth.sendPasswordResetEmail(email)
+    .then(() => {
+      alert("የይለፍ ቃል መቀየሪያ ሊንክ ወደ ኢሜይልዎ ተልኳል! እባክዎን የኢሜይል ሳጥንዎን (Inbox ወይም Spam) ይዩ።");
+      document.getElementById('forgotEmail').value = '';
+      switchAuthView('login');
+    })
+    .catch((error) => {
+      console.error("Password reset error:", error);
+      let errorMessage = "ስህተት አጋጥሟል፦ ";
+      if (error.code === 'auth/user-not-found') {
+        errorMessage += "በዚህ ኢሜይል የተመዘገበ ተጠቃሚ አልተገኘም።";
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage += "ያስገቡት ኢሜይል ትክክለኛ አይደለም።";
+      } else {
+        errorMessage += error.message;
+      }
+      alert(errorMessage);
+    });
+}
+<!-- Google Translate Script -->
+<script type="text/javascript">
   function googleTranslateElementInit() {
     new google.translate.TranslateElement({
-      pageLanguage: 'en', // ዌብሳይቱ በነባሪነት በእንግሊዝኛ እንዲጀምር (ለAdSense)
-      includedLanguages: 'en,am,om,ti,ar,fr,de,it,es,ru,zh-CN', // የኢትዮጵያ እና ዋና ዋና አለም አቀፍ ቋንቋዎች
+      pageLanguage: 'en',
+      includedLanguages: 'en,am,om,ti,ar,fr,de,it,es,ru,zh-CN',
       layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
       autoDisplay: false
     }, 'google_translate_element');
   }
 </script>
 <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-</script>
 </body>
 </html>
