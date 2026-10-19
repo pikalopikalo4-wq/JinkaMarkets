@@ -200,17 +200,27 @@
 
     @media (max-width: 600px) { .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } .hero-slider { height: 200px; } }
   </style>
-  <style>
-  #google_translate_element {
+ <style>
+  .language-toggle {
     display: inline-block;
     margin-left: 15px;
-    vertical-align: middle;
   }
-  .goog-te-gadget-simple {
-    border: 1px solid #ddd !important;
-    padding: 4px 8px !important;
-    border-radius: 6px !important;
-    background-color: #f9f9f9 !important;
+  #lang-toggle-btn {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  #lang-toggle-btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
   }
 </style>
 </head>
@@ -303,9 +313,12 @@
           <span id="userRoleBadge" style="font-size:0.75rem; background: var(--primary); color: white; padding: 3px 10px; border-radius: 10px;"></span>
           <button class="btn-auth" style="background: #ef4444;" onclick="handleLogout()">ውጣ</button>
         </div>
-        <!-- Google Translate Button Container -->
-<div id="google_translate_element"></div>
-      </div>
+        <!-- Custom Amharic | English Language Toggle Button -->
+<div class="language-toggle">
+  <button id="lang-toggle-btn" onclick="toggleLanguage()">
+    <span id="lang-flag">🇬🇧</span> <span id="lang-text">English</span>
+  </button>
+</div>
     </div>
   </header>
 
@@ -1999,18 +2012,34 @@ loadVideoReels();
         });
     }    
 });
-  </script>
-  <!-- Google Translate Script with Oromo, Tigrinya & International Languages -->
-<script type="text/javascript">
-  function googleTranslateElementInit() {
-    new google.translate.TranslateElement({
-      pageLanguage: 'en',
-      // የተካተቱት ቋንቋዎች፡ እንግሊዝኛ፣ አማርኛ፣ ኦሮምኛ፣ ትግርኛ፣ አረብኛ፣ ቻይንኛ፣ ፈረንሳይኛ፣ ጀርመንኛ፣ ጣሊያንኛ፣ ስፓኒሽ፣ ሩሲያኛ፣ ቱርክኛ
-      includedLanguages: 'en,am,om,ti,ar,zh-CN,fr,de,it,es,ru,tr',
-      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-    }, 'google_translate_element');
+ <script>
+  // Default ቋንቋ እንግሊዝኛ ነው (ለAdSense ሲባል)
+  let currentLang = 'en';
+
+  function toggleLanguage() {
+    const langBtnText = document.getElementById('lang-text');
+    const langFlag = document.getElementById('lang-flag');
+    
+    if (currentLang === 'en') {
+      currentLang = 'am';
+      langBtnText.innerText = 'አማርኛ';
+      langFlag.innerText = '🇪🇹';
+    } else {
+      currentLang = 'en';
+      langBtnText.innerText = 'English';
+      langFlag.innerText = '🇬🇧';
+    }
+
+    // በድረ-ገጹ ላይ ያሉትን ሁሉንም 'data-en' እና 'data-am' ያላቸውን ጽሁፎች መቀየር
+    const translatableElements = document.querySelectorAll('[data-en][data-am]');
+    translatableElements.forEach(el => {
+      if (currentLang === 'am') {
+        el.innerText = el.getAttribute('data-am');
+      } else {
+        el.innerText = el.getAttribute('data-en');
+      }
+    });
   }
 </script>
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
