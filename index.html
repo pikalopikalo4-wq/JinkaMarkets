@@ -595,11 +595,7 @@
         <h3 style="color: #10b981; margin: 5px 0 0 0; font-size: 24px;" id="checkoutTotalAmount">0 ETB</h3>
       </div>
 
-      <div style="display: grid; gap: 10px; margin-bottom: 20px;">
-        <label style="display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer;">
-          <input type="radio" name="paymentMethodRadio" value="chapa" onclick="togglePaymentDetails('chapa')">
-          <span>💳 Chapa (Telebirr, CBE Birr, Cards)</span>
-        </label>
+      <div style="display: grid; gap: 10px; margin-bottom: 20px;"
         <label style="display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer;">
           <input type="radio" name="paymentMethodRadio" value="telebirr" onclick="togglePaymentDetails('telebirr')">
           <span>📱 Telebirr (በቀጥታ)</span>
@@ -612,28 +608,6 @@
           <input type="radio" name="paymentMethodRadio" value="bank" onclick="togglePaymentDetails('bank')">
           <span>🏦 ባንክ ማስተላለፊያ (Bank Transfer)</span>
         </label>
-      </div>
-
-      <!-- Chapa Form Box -->
-      <div id="chapaDetailsBox" style="display: none; background: #eef2ff; padding: 15px; border-radius: 8px; border-left: 5px solid #6366f1; margin-bottom: 20px; color:#333;">
-        <h4 style="margin-top: 0; color: #4338ca;">💳 በ Chapa ክፍያ መክፈያ፦</h4>
-        <p style="margin: 5px 0 15px 0; font-size: 0.9rem;">በ Telebirr፣ በ CBE Birr ወይም በቪዛ ካርድ መክፈል ይችላሉ።</p>
-
-        <form method="POST" action="https://api.chapa.co/v1/hosted/pay" id="chapaForm">
-          <input type="hidden" name="public_key" value="CHAPUBK_TEST-6KUQLYTP2VJt2kmEgTytIvLiurTRPCvy" />
-          <input type="hidden" name="tx_ref" id="chapa_tx_ref" value="" />
-          <input type="hidden" name="amount" id="chapa_amount" value="0" />
-          <input type="hidden" name="currency" value="ETB" />
-          <input type="hidden" name="email" id="chapa_email" value="customer@example.com" />
-          <input type="hidden" name="first_name" id="chapa_first_name" value="Guest" />
-          <input type="hidden" name="last_name" id="chapa_last_name" value="User" />
-          <input type="hidden" name="title" value="ጂንካ ገበያ" />
-          <input type="hidden" name="description" value="የእቃዎች ክፍያ" />
-          <input type="hidden" name="return_url" value="https://jinkamarkets.et/success.html" />
-          <button type="submit" onclick="prepareChapaForm()" style="width: 100%; padding: 12px 24px; background-color: #28a745; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
-            በ Chapa አሁኑኑ ክፈል
-          </button>
-        </form>
       </div>
 
       <!-- Telebirr Details -->
